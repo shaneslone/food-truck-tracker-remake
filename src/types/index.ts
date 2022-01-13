@@ -15,3 +15,8 @@ export interface Role {
     name: string;
   };
 }
+
+export interface Action {
+  type: string;
+  payload: any;
+}
