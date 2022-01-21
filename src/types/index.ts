@@ -1,3 +1,8 @@
+export interface Credentials {
+  username: string;
+  password: string;
+}
+
 export interface User {
   userid: number;
   username: string;
@@ -14,9 +19,4 @@ export interface Role {
     roleid: number;
     name: string;
   };
-}
-
-export interface Action {
-  type: string;
-  payload: any;
 }
