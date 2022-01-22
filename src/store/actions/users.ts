@@ -1,6 +1,8 @@
 import { Dispatch } from 'react';
 import { User } from '../../types';
-import axiosWithAuth from '../../utils/axoisWithAuth';
+import axiosWithAuth, { baseURL } from '../../utils/axoisWithAuth';
+import axios from 'axios';
+import { Credentials } from '../../types';
 
 export const USER_LOADING = 'USER_LOADING';
 export const USER_FAIL = 'USER_FAIL';
@@ -12,11 +14,16 @@ export interface UserLoading {
 
 export interface UserFail {
   type: typeof USER_FAIL;
+  payload: string;
 }
 
 export interface UserSuccess {
   type: typeof USER_SUCCESS;
   payload: User;
+}
+
+interface Token {
+  access_token: string;
 }
 
 export type UserDispatchTypes = UserLoading | UserFail | UserSuccess;
@@ -27,7 +34,7 @@ export const getUser = () => async (dispatch: Dispatch<UserDispatchTypes>) => {
       type: USER_LOADING,
     });
 
-    const res = await axiosWithAuth().get('/users/getuserinfo');
+    const res = await axiosWithAuth().get<User>('/users/getuserinfo');
 
     dispatch({
       type: USER_SUCCESS,
@@ -36,6 +43,38 @@ export const getUser = () => async (dispatch: Dispatch<UserDispatchTypes>) => {
   } catch (e) {
     dispatch({
       type: USER_FAIL,
+      payload: 'Failed to fetch user information!',
     });
   }
 };
+
+export const login =
+  (credentials: Credentials) =>
+  async (dispatch: Dispatch<UserDispatchTypes>) => {
+    const auth = `${process.env.REACT_APP_OAUTHCLIENTID}:${process.env.REACT_APP_OAUTHCLIENTSECRET}`;
+    console.log(auth);
+    try {
+      dispatch({
+        type: USER_LOADING,
+      });
+      const res = await axios.post<Token>(
+        `${baseURL}/login`,
+        `grant_type=password&username=${credentials.username}&password=${credentials.password}`,
+        {
+          headers: {
+            // btoa is converting our client id/client secret into base64
+            Authorization: `Basic ${btoa(auth)}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      );
+      localStorage.setItem('token', res.data.access_token);
+
+      getUser()(dispatch);
+    } catch (e) {
+      dispatch({
+        type: USER_FAIL,
+        payload: 'Incorrect username or password!',
+      });
+    }
+  };

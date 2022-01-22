@@ -6,13 +6,13 @@ import {
   USER_SUCCESS,
 } from '../actions/users';
 
-export interface IState {
+export interface userState {
   user: User;
   loading: boolean;
   errorMessage: string;
 }
 
-const initalState: IState = {
+const initalState: userState = {
   user: {
     userid: 0,
     username: '',
@@ -20,6 +20,7 @@ const initalState: IState = {
     currentLocation: '',
     roles: [],
     ownedTrucks: [],
+    favoriteTrucks: [],
     truckReviews: [],
     menuItemReview: [],
   },
@@ -27,7 +28,7 @@ const initalState: IState = {
   errorMessage: '',
 };
 
-export const reducer = (state = initalState, action: UserDispatchTypes) => {
+export const userReducer = (state = initalState, action: UserDispatchTypes) => {
   switch (action.type) {
     case USER_LOADING:
       return { ...state, loading: true };
@@ -35,10 +36,15 @@ export const reducer = (state = initalState, action: UserDispatchTypes) => {
       return {
         ...state,
         loading: false,
-        errorMessage: 'Failed to load user information!',
+        errorMessage: action.payload,
       };
     case USER_SUCCESS:
-      return { ...state, loading: false, errorMessage: '' };
+      return {
+        ...state,
+        loading: false,
+        errorMessage: '',
+        user: action.payload,
+      };
     default:
       return state;
   }
