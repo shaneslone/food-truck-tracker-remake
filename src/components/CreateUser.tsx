@@ -101,25 +101,29 @@ const CreateUser = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Row>
-          <Form.Check
-            inline
-            name='accountType'
-            type='radio'
-            id='DINER'
-            label='Diner'
-            checked={userInfo.accountType === 'DINER'}
-            onChange={onChange}
-          />
-          <Form.Check
-            inline
-            name='accountType'
-            type='radio'
-            id='OPERATOR'
-            label='Operator'
-            checked={userInfo.accountType === 'OPERATOR'}
-            onChange={onChange}
-          />
+        <Row className='d-flex justify-content-center'>
+          <Col md={2}>
+            <Form.Check
+              inline
+              name='accountType'
+              type='radio'
+              id='DINER'
+              label='Diner'
+              checked={userInfo.accountType === 'DINER'}
+              onChange={onChange}
+            />
+          </Col>
+          <Col md={2}>
+            <Form.Check
+              inline
+              name='accountType'
+              type='radio'
+              id='OPERATOR'
+              label='Operator'
+              checked={userInfo.accountType === 'OPERATOR'}
+              onChange={onChange}
+            />
+          </Col>
         </Row>
         <Row className='d-flex justify-content-center'>
           <Col md={4}>
