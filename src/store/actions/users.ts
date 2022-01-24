@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { User } from '../../types';
+import { User, UserMin } from '../../types';
 import axiosWithAuth, { baseURL } from '../../utils/axoisWithAuth';
 import axios from 'axios';
 import { Credentials } from '../../types';
@@ -28,6 +28,27 @@ interface Token {
 
 export type UserDispatchTypes = UserLoading | UserFail | UserSuccess;
 
+export const createUser =
+  (newUser: UserMin) => async (dispatch: Dispatch<UserDispatchTypes>) => {
+    try {
+      dispatch({
+        type: USER_LOADING,
+      });
+
+      const res = await axios.post<Token>(`${baseURL}/createnewuser`, newUser);
+
+      localStorage.setItem('token', res.data.access_token);
+
+      getUser()(dispatch);
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: USER_FAIL,
+        payload: 'Failed to create new user!',
+      });
+    }
+  };
+
 export const getUser = () => async (dispatch: Dispatch<UserDispatchTypes>) => {
   try {
     dispatch({
@@ -52,7 +73,6 @@ export const login =
   (credentials: Credentials) =>
   async (dispatch: Dispatch<UserDispatchTypes>) => {
     const auth = `${process.env.REACT_APP_OAUTHCLIENTID}:${process.env.REACT_APP_OAUTHCLIENTSECRET}`;
-    console.log(auth);
     try {
       dispatch({
         type: USER_LOADING,

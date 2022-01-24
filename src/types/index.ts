@@ -3,6 +3,14 @@ export interface Credentials {
   password: string;
 }
 
+export interface UserMin {
+  username: string;
+  password: string;
+  email: string;
+  currentLocation: string;
+  accountType: string;
+}
+
 export interface User {
   userid: number;
   username: string;
