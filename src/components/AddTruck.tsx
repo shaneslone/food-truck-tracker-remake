@@ -9,9 +9,11 @@ import {
 } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { ChangeEvent, useState } from "react";
+import { useNavigate } from 'react-router';
 
 const AddTruck = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const initalValues: TruckMin = {
     name: "",

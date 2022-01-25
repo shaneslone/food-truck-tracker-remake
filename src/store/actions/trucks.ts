@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
+import { NavigateFunction } from "react-router-dom";
 import { Truck, TruckMin } from "../../types";
-import axiosWithAuth, { baseURL } from "../../utils/axoisWithAuth";
-import axios from "axios";
+import axiosWithAuth from "../../utils/axoisWithAuth";
 
 export const TRUCK_LOADING = "TRUCK_LOADING";
 export const TRUCK_FAIL = "TRUCK_FAIL";
@@ -18,19 +18,25 @@ export interface TruckFail {
 
 export interface TruckSuccess {
   type: typeof TRUCK_SUCCESS;
-  payload: Truck;
 }
 
 export type TruckDispatchTypes = TruckLoading | TruckFail | TruckSuccess;
 
 export const createTruck =
-  (newTruck: TruckMin) => async (dispatch: Dispatch<TruckDispatchTypes>) => {
+  (newTruck: TruckMin, navigate: NavigateFunction) =>
+  async (dispatch: Dispatch<TruckDispatchTypes>) => {
     try {
       dispatch({
         type: TRUCK_LOADING,
       });
 
-      const res = await axiosWithAuth().post<Truck>("/trucks", newTruck);
+      const res = await axiosWithAuth().post<Truck>("/trucks/truck", newTruck);
+
+      dispatch({
+        type: TRUCK_SUCCESS,
+      });
+
+      navigate(`/truck/${res.data.truckId}`);
     } catch (e) {
       console.log(e);
       dispatch({
