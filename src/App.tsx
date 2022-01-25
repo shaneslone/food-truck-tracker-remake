@@ -1,4 +1,4 @@
-import TruckMap from './components/TruckMap';
+import TruckMap from "./components/TruckMap";
 
 function App() {
   return (

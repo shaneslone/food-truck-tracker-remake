@@ -85,7 +85,49 @@ const AddTruck = () => {
             </Form.Group>
           </Col>
         </Row>
+
+        <Row className="d-flex justify-content-center">
+          <Col md={4}>
+            <Form.Group>
+              <FloatingLabel label="Current Location">
+                <Form.Control
+                  type="text"
+                  placeholder="Current Location"
+                  name="currentLocation"
+                  value={truckInfo.currentLocation}
+                  onChange={onChange}
+                />
+              </FloatingLabel>
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row className="d-flex justify-content-center">
+          <Col md={4}>
+            <Form.Group>
+              <FloatingLabel label="Depature Time">
+                <Form.Control
+                  type="datetime-local"
+                  placeholder={new Date().toLocaleDateString()}
+                  name="cuisineType"
+                  value={truckInfo.depatureTime}
+                  onChange={onChange}
+                />
+              </FloatingLabel>
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row className="d-flex justify-content-center">
+          <Col md={4}>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Col>
+        </Row>
       </Form>
     </Container>
   );
 };
+
+export default AddTruck;
