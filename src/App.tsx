@@ -1,11 +1,10 @@
-import CreateUser from './components/CreateUser';
-import Login from './components/Login';
+import TruckMap from './components/TruckMap';
 
 function App() {
   return (
     <>
-      <Login />
-      <CreateUser />
+      <h2>test</h2>
+      <TruckMap />
     </>
   );
 }
