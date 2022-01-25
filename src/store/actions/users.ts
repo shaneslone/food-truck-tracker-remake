@@ -1,12 +1,12 @@
-import { Dispatch } from 'react';
-import { User, UserMin } from '../../types';
-import axiosWithAuth, { baseURL } from '../../utils/axoisWithAuth';
-import axios from 'axios';
-import { Credentials } from '../../types';
+import { Dispatch } from "react";
+import { User, UserMin } from "../../types";
+import axiosWithAuth, { baseURL } from "../../utils/axoisWithAuth";
+import axios from "axios";
+import { Credentials } from "../../types";
 
-export const USER_LOADING = 'USER_LOADING';
-export const USER_FAIL = 'USER_FAIL';
-export const USER_SUCCESS = 'USER_SUCESS';
+export const USER_LOADING = "USER_LOADING";
+export const USER_FAIL = "USER_FAIL";
+export const USER_SUCCESS = "USER_SUCESS";
 
 export interface UserLoading {
   type: typeof USER_LOADING;
@@ -37,14 +37,14 @@ export const createUser =
 
       const res = await axios.post<Token>(`${baseURL}/createnewuser`, newUser);
 
-      localStorage.setItem('token', res.data.access_token);
+      localStorage.setItem("token", res.data.access_token);
 
       getUser()(dispatch);
     } catch (e) {
       console.log(e);
       dispatch({
         type: USER_FAIL,
-        payload: 'Failed to create new user!',
+        payload: "Failed to create new user!",
       });
     }
   };
@@ -55,7 +55,7 @@ export const getUser = () => async (dispatch: Dispatch<UserDispatchTypes>) => {
       type: USER_LOADING,
     });
 
-    const res = await axiosWithAuth().get<User>('/users/getuserinfo');
+    const res = await axiosWithAuth().get<User>("/users/getuserinfo");
 
     dispatch({
       type: USER_SUCCESS,
@@ -64,7 +64,7 @@ export const getUser = () => async (dispatch: Dispatch<UserDispatchTypes>) => {
   } catch (e) {
     dispatch({
       type: USER_FAIL,
-      payload: 'Failed to fetch user information!',
+      payload: "Failed to fetch user information!",
     });
   }
 };
@@ -84,17 +84,17 @@ export const login =
           headers: {
             // btoa is converting our client id/client secret into base64
             Authorization: `Basic ${btoa(auth)}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
+            "Content-Type": "application/x-www-form-urlencoded",
           },
         }
       );
-      localStorage.setItem('token', res.data.access_token);
+      localStorage.setItem("token", res.data.access_token);
 
       getUser()(dispatch);
     } catch (e) {
       dispatch({
         type: USER_FAIL,
-        payload: 'Incorrect username or password!',
+        payload: "Incorrect username or password!",
       });
     }
   };
