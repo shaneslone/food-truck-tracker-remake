@@ -24,4 +24,18 @@ export interface TruckSuccess {
 export type TruckDispatchTypes = TruckLoading | TruckFail | TruckSuccess;
 
 export const createTruck =
-  (newTruck: TruckMin) => async (dispatch: Dispatch<TruckDispatchTypes>) => {};
+  (newTruck: TruckMin) => async (dispatch: Dispatch<TruckDispatchTypes>) => {
+    try {
+      dispatch({
+        type: TRUCK_LOADING,
+      });
+
+      const res = await axiosWithAuth().post<Truck>("/trucks", newTruck);
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: TRUCK_FAIL,
+        payload: "Failed to create new truck!",
+      });
+    }
+  };
