@@ -69,6 +69,22 @@ const AddTruck = () => {
             </Form.Group>
           </Col>
         </Row>
+
+        <Row className="d-flex justify-content-center">
+          <Col md={4}>
+            <Form.Group>
+              <FloatingLabel label="Cuisine Type">
+                <Form.Control
+                  type="text"
+                  placeholder="Cuisine Type"
+                  name="cuisineType"
+                  value={truckInfo.cuisineType}
+                  onChange={onChange}
+                />
+              </FloatingLabel>
+            </Form.Group>
+          </Col>
+        </Row>
       </Form>
     </Container>
   );
