@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from 'react';
-import { UserMin } from '../types';
+import { ChangeEvent, useState } from "react";
+import { UserMin } from "../types";
 import {
   Container,
   Col,
@@ -7,26 +7,26 @@ import {
   Form,
   Button,
   FloatingLabel,
-} from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { createUser } from '../store/actions/users';
+} from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { createUser } from "../store/actions/users";
 
 const CreateUser = () => {
   const dispatch = useDispatch();
 
   const initalValues: UserMin = {
-    username: '',
-    password: '',
-    email: '',
-    currentLocation: '',
-    accountType: '',
+    username: "",
+    password: "",
+    email: "",
+    currentLocation: "",
+    accountType: "",
   };
 
   const [userInfo, setUserInfo] = useState<UserMin>(initalValues);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = e.target.type === 'radio' ? e.target.id : e.target.value;
-    setUserInfo(userInfo => ({
+    const value = e.target.type === "radio" ? e.target.id : e.target.value;
+    setUserInfo((userInfo) => ({
       ...userInfo,
       [e.target.name]: value,
     }));
@@ -41,14 +41,14 @@ const CreateUser = () => {
   return (
     <Container>
       <Form onSubmit={onSubmit}>
-        <Row className='d-flex justify-content-center'>
+        <Row className="d-flex justify-content-center">
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label='Username'>
+              <FloatingLabel label="Username">
                 <Form.Control
-                  type='text'
-                  placeholder='Enter username.'
-                  name='username'
+                  type="text"
+                  placeholder="Enter username."
+                  name="username"
                   value={userInfo.username}
                   onChange={onChange}
                 />
@@ -56,14 +56,14 @@ const CreateUser = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+        <Row className="d-flex justify-content-center">
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label='Password'>
+              <FloatingLabel label="Password">
                 <Form.Control
-                  type='password'
-                  placeholder='Enter a password.'
-                  name='password'
+                  type="password"
+                  placeholder="Enter a password."
+                  name="password"
                   value={userInfo.password}
                   onChange={onChange}
                 />
@@ -71,14 +71,14 @@ const CreateUser = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+        <Row className="d-flex justify-content-center">
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label='Email'>
+              <FloatingLabel label="Email">
                 <Form.Control
-                  type='text'
-                  placeholder='Enter your email.'
-                  name='email'
+                  type="text"
+                  placeholder="Enter your email."
+                  name="email"
                   value={userInfo.email}
                   onChange={onChange}
                 />
@@ -86,14 +86,14 @@ const CreateUser = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+        <Row className="d-flex justify-content-center">
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label='Current Location'>
+              <FloatingLabel label="Current Location">
                 <Form.Control
-                  type='text'
-                  placeholder='Current Location.'
-                  name='currentLocation'
+                  type="text"
+                  placeholder="Current Location."
+                  name="currentLocation"
                   value={userInfo.currentLocation}
                   onChange={onChange}
                 />
@@ -101,33 +101,33 @@ const CreateUser = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+        <Row className="d-flex justify-content-center">
           <Col md={2}>
             <Form.Check
               inline
-              name='accountType'
-              type='radio'
-              id='DINER'
-              label='Diner'
-              checked={userInfo.accountType === 'DINER'}
+              name="accountType"
+              type="radio"
+              id="DINER"
+              label="Diner"
+              checked={userInfo.accountType === "DINER"}
               onChange={onChange}
             />
           </Col>
           <Col md={2}>
             <Form.Check
               inline
-              name='accountType'
-              type='radio'
-              id='OPERATOR'
-              label='Operator'
-              checked={userInfo.accountType === 'OPERATOR'}
+              name="accountType"
+              type="radio"
+              id="OPERATOR"
+              label="Operator"
+              checked={userInfo.accountType === "OPERATOR"}
               onChange={onChange}
             />
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+        <Row className="d-flex justify-content-center">
           <Col md={4}>
-            <Button variant='primary' type='submit'>
+            <Button variant="primary" type="submit">
               Submit
             </Button>
           </Col>
