@@ -1,5 +1,4 @@
-import { ChangeEvent, useState } from 'react';
-import { Credentials, User } from '../types';
+import { User } from '../types';
 import {
   Container,
   Col,
@@ -7,44 +6,39 @@ import {
   Form,
   Button,
   FloatingLabel,
+  Spinner,
+  Alert,
 } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../store/actions/users';
+import { useSelector } from 'react-redux';
 import { userState } from '../store/reducers/user';
+import useLogin from '../hooks/useLogin';
 
 const Login = () => {
-  const dispatch = useDispatch();
-
   const user = useSelector<userState, User>(state => state.user);
-  const error = useSelector<userState, string>(state => state.errorMessage);
+  const loading = useSelector<userState, boolean>(state => state.loading);
+  const ajaxError = useSelector<userState, string>(state => state.errorMessage);
 
-  const initalState: Credentials = {
-    username: '',
-    password: '',
-  };
+  const [credentials, errors, disabled, onChange, onSubmit] = useLogin();
 
-  const [credentials, setCredentials] = useState(initalState);
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setCredentials(credentials => ({
-      ...credentials,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const onSubmit = (e: ChangeEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    dispatch(login(credentials));
-    setCredentials(initalState);
-  };
+  if (loading) {
+    <Container
+      style={{ height: '100vh' }}
+      fluid
+      className='d-flex justify-content-center align-items-center'
+    >
+      <Spinner animation='border' variant='primary' />
+    </Container>;
+  }
 
   return (
     <Container>
       <Row>
         <Col>{user && JSON.stringify(user)}</Col>
       </Row>
-      <Row>
-        <Col>{error && <p>{error}</p>}</Col>
+      <Row className='d-flex justify-content-center'>
+        <Col md={4}>
+          {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}
+        </Col>
       </Row>
       <Form onSubmit={onSubmit}>
         <Row className='d-flex justify-content-center'>
@@ -57,7 +51,11 @@ const Login = () => {
                   name='username'
                   value={credentials.username}
                   onChange={onChange}
+                  isInvalid={!!errors.username}
                 />
+                <Form.Control.Feedback type='invalid' tooltip>
+                  {errors.username}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -72,14 +70,18 @@ const Login = () => {
                   name='password'
                   value={credentials.password}
                   onChange={onChange}
+                  isInvalid={!!errors.password}
                 />
+                <Form.Control.Feedback type='invalid' tooltip>
+                  {errors.password}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
         </Row>
         <Row className='d-flex justify-content-center'>
-          <Col md={4}>
-            <Button variant='primary' type='submit'>
+          <Col md='auto'>
+            <Button variant='primary' type='submit' disabled={disabled}>
               Log In
             </Button>
           </Col>

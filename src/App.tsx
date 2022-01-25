@@ -1,12 +1,7 @@
-import TruckMap from './components/TruckMap';
+import Login from './components/Login';
 
 function App() {
-  return (
-    <>
-      <h2>test</h2>
-      <TruckMap />
-    </>
-  );
+  return <Login />;
 }
 
 export default App;

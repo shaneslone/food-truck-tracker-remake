@@ -7,12 +7,17 @@ import {
   Form,
   Button,
   FloatingLabel,
+  Spinner,
+  Alert,
 } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../store/actions/users';
+import { userState } from '../store/reducers/user';
 
 const CreateUser = () => {
   const dispatch = useDispatch();
+  const loading = useSelector<userState, boolean>(state => state.loading);
+  const error = useSelector<userState, string>(state => state.errorMessage);
 
   const initalValues: UserMin = {
     username: '',
@@ -38,8 +43,21 @@ const CreateUser = () => {
     setUserInfo(initalValues);
   };
 
+  if (loading) {
+    <Container
+      style={{ height: '100vh' }}
+      fluid
+      className='d-flex justify-content-center align-items-center'
+    >
+      <Spinner animation='border' variant='primary' />
+    </Container>;
+  }
+
   return (
     <Container>
+      <Row className='d-flex justify-content-center'>
+        <Col md={4}>{error && <Alert variant='danger'>{error}</Alert>}</Col>
+      </Row>
       <Form onSubmit={onSubmit}>
         <Row className='d-flex justify-content-center'>
           <Col md={4}>
