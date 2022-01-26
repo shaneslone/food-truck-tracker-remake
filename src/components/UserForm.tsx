@@ -13,9 +13,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../store/actions/users';
 import { userState } from '../store/reducers/user';
+import { useNavigate } from 'react-router-dom';
 
 const UserForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const loading = useSelector<userState, boolean>(state => state.loading);
   const error = useSelector<userState, string>(state => state.errorMessage);
 
@@ -39,7 +41,7 @@ const UserForm = () => {
 
   const onSubmit = (e: ChangeEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    dispatch(createUser(userInfo));
+    dispatch(createUser(userInfo, navigate));
     setUserInfo(initalValues);
   };
 

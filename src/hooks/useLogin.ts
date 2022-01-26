@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { ValidationError } from 'yup';
 import { Credentials } from '../types';
 import { login } from '../store/actions/users';
+import { useNavigate } from 'react-router-dom';
 
 const useLogin = (): [
   Credentials,
@@ -13,6 +14,7 @@ const useLogin = (): [
   (e: ChangeEvent<HTMLFormElement>) => void
 ] => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const initalState: Credentials = {
     username: '',
@@ -59,8 +61,7 @@ const useLogin = (): [
 
   const onSubmit = (e: ChangeEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    dispatch(login(credentials));
-    setCredentials(initalState);
+    dispatch(login(credentials, navigate));
   };
   return [credentials, errors, disabled, onChange, onSubmit];
 };

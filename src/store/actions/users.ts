@@ -3,6 +3,7 @@ import { User, UserMin } from '../../types';
 import axiosWithAuth, { baseURL } from '../../utils/axoisWithAuth';
 import axios from 'axios';
 import { Credentials } from '../../types';
+import { NavigateFunction } from 'react-router-dom';
 
 export const USER_LOADING = 'USER_LOADING';
 export const USER_FAIL = 'USER_FAIL';
@@ -29,7 +30,8 @@ interface Token {
 export type UserDispatchTypes = UserLoading | UserFail | UserSuccess;
 
 export const createUser =
-  (newUser: UserMin) => async (dispatch: Dispatch<UserDispatchTypes>) => {
+  (newUser: UserMin, navigate: NavigateFunction) =>
+  async (dispatch: Dispatch<UserDispatchTypes>) => {
     try {
       dispatch({
         type: USER_LOADING,
@@ -39,7 +41,7 @@ export const createUser =
 
       localStorage.setItem('token', res.data.access_token);
 
-      getUser()(dispatch);
+      getUser(navigate)(dispatch);
     } catch (e) {
       console.log(e);
       dispatch({
@@ -49,28 +51,32 @@ export const createUser =
     }
   };
 
-export const getUser = () => async (dispatch: Dispatch<UserDispatchTypes>) => {
-  try {
-    dispatch({
-      type: USER_LOADING,
-    });
+export const getUser =
+  (navigate: NavigateFunction) =>
+  async (dispatch: Dispatch<UserDispatchTypes>) => {
+    try {
+      dispatch({
+        type: USER_LOADING,
+      });
 
-    const res = await axiosWithAuth().get<User>('/users/getuserinfo');
+      const res = await axiosWithAuth().get<User>('/users/getuserinfo');
 
-    dispatch({
-      type: USER_SUCCESS,
-      payload: res.data,
-    });
-  } catch (e) {
-    dispatch({
-      type: USER_FAIL,
-      payload: 'Failed to fetch user information!',
-    });
-  }
-};
+      dispatch({
+        type: USER_SUCCESS,
+        payload: res.data,
+      });
+
+      navigate('/map');
+    } catch (e) {
+      dispatch({
+        type: USER_FAIL,
+        payload: 'Failed to fetch user information!',
+      });
+    }
+  };
 
 export const login =
-  (credentials: Credentials) =>
+  (credentials: Credentials, navigate: NavigateFunction) =>
   async (dispatch: Dispatch<UserDispatchTypes>) => {
     const auth = `${process.env.REACT_APP_OAUTHCLIENTID}:${process.env.REACT_APP_OAUTHCLIENTSECRET}`;
     try {
@@ -90,7 +96,7 @@ export const login =
       );
       localStorage.setItem('token', res.data.access_token);
 
-      getUser()(dispatch);
+      getUser(navigate)(dispatch);
     } catch (e) {
       dispatch({
         type: USER_FAIL,
