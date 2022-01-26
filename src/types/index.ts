@@ -5,17 +5,14 @@ export interface Credentials {
 
 export interface UserMin {
   username: string;
-  password: string;
+  password?: string;
   email: string;
   currentLocation: string;
-  accountType: string;
+  accountType?: string;
 }
 
-export interface User {
+export interface User extends UserMin {
   userid: number;
-  username: string;
-  email: string;
-  currentLocation: string;
   roles: Role[];
   ownedTrucks: Truck[];
   favoriteTrucks: Truck[];
@@ -30,13 +27,16 @@ export interface Role {
   };
 }
 
-export interface Truck {
-  truckId: number;
+export interface TruckMin {
   name: string;
   imageOfTruck: string;
   cuisineType: string;
   currentLocation: string;
   depatureTime: string;
+}
+
+export interface Truck extends TruckMin {
+  truckId: number;
   dinerFavorites: DinerMin[];
   menu: MenuItem[];
   reviews: DinerReview[];

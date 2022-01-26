@@ -7,7 +7,7 @@ import { NavigateFunction } from 'react-router-dom';
 
 export const USER_LOADING = 'USER_LOADING';
 export const USER_FAIL = 'USER_FAIL';
-export const USER_SUCCESS = 'USER_SUCESS';
+export const USER_SUCCESS = 'USER_SUCCESS';
 
 export interface UserLoading {
   type: typeof USER_LOADING;
