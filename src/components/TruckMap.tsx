@@ -5,7 +5,7 @@ import {
   InfoWindow,
   useJsApiLoader,
 } from '@react-google-maps/api';
-import { Spinner, Container } from 'react-bootstrap';
+import { Spinner, Container, Button } from 'react-bootstrap';
 import axiosWithAuth from '../utils/axoisWithAuth';
 import { parseLocation } from '../utils/parseLocation';
 import { Truck } from '../types';
@@ -102,6 +102,16 @@ const TruckMap = () => {
           <h2>{selected.name}</h2>
         </InfoWindow>
       )}
+      <Button
+        style={{
+          position: 'absolute',
+          bottom: '15px',
+          left: '50%',
+          transform: 'translate(-50%)',
+        }}
+      >
+        Show Options
+      </Button>
     </GoogleMap>
   );
 };

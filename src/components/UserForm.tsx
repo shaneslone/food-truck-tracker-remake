@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../store/actions/users';
 import { userState } from '../store/reducers/user';
 
-const CreateUser = () => {
+const UserForm = () => {
   const dispatch = useDispatch();
   const loading = useSelector<userState, boolean>(state => state.loading);
   const error = useSelector<userState, string>(state => state.errorMessage);
@@ -155,4 +155,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default UserForm;
