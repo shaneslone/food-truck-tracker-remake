@@ -1,5 +1,3 @@
-import { ChangeEvent, useState } from 'react';
-import { UserMin } from '../types';
 import {
   Container,
   Col,
@@ -10,40 +8,15 @@ import {
   Spinner,
   Alert,
 } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { createUser } from '../store/actions/users';
+import { useSelector } from 'react-redux';
 import { userState } from '../store/reducers/user';
-import { useNavigate } from 'react-router-dom';
+import useUserForm from '../hooks/useUserForm';
 
 const UserForm = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const loading = useSelector<userState, boolean>(state => state.loading);
-  const error = useSelector<userState, string>(state => state.errorMessage);
+  const ajaxError = useSelector<userState, string>(state => state.errorMessage);
 
-  const initalValues: UserMin = {
-    username: '',
-    password: '',
-    email: '',
-    currentLocation: '',
-    accountType: '',
-  };
-
-  const [userInfo, setUserInfo] = useState<UserMin>(initalValues);
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = e.target.type === 'radio' ? e.target.id : e.target.value;
-    setUserInfo(userInfo => ({
-      ...userInfo,
-      [e.target.name]: value,
-    }));
-  };
-
-  const onSubmit = (e: ChangeEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    dispatch(createUser(userInfo, navigate));
-    setUserInfo(initalValues);
-  };
+  const [userInfo, errors, disabled, onChange, onSubmit] = useUserForm();
 
   if (loading) {
     <Container
@@ -58,7 +31,9 @@ const UserForm = () => {
   return (
     <Container>
       <Row className='d-flex justify-content-center'>
-        <Col md={4}>{error && <Alert variant='danger'>{error}</Alert>}</Col>
+        <Col md={4}>
+          {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}
+        </Col>
       </Row>
       <Form onSubmit={onSubmit}>
         <Row className='d-flex justify-content-center'>
@@ -71,7 +46,11 @@ const UserForm = () => {
                   name='username'
                   value={userInfo.username}
                   onChange={onChange}
+                  isInvalid={!!errors.username}
                 />
+                <Form.Control.Feedback type='invalid' tooltip>
+                  {errors.username}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -86,7 +65,11 @@ const UserForm = () => {
                   name='password'
                   value={userInfo.password}
                   onChange={onChange}
+                  isInvalid={!!errors.password}
                 />
+                <Form.Control.Feedback type='invalid' tooltip>
+                  {errors.password}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -101,7 +84,11 @@ const UserForm = () => {
                   name='email'
                   value={userInfo.email}
                   onChange={onChange}
+                  isInvalid={!!errors.email}
                 />
+                <Form.Control.Feedback type='invalid' tooltip>
+                  {errors.email}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -132,6 +119,9 @@ const UserForm = () => {
               checked={userInfo.accountType === 'DINER'}
               onChange={onChange}
             />
+            <Form.Control.Feedback type='invalid' tooltip>
+              {errors.accountType}
+            </Form.Control.Feedback>
           </Col>
           <Col md={2}>
             <Form.Check
@@ -147,7 +137,7 @@ const UserForm = () => {
         </Row>
         <Row className='d-flex justify-content-center'>
           <Col md={4}>
-            <Button variant='primary' type='submit'>
+            <Button variant='primary' type='submit' disabled={disabled}>
               Submit
             </Button>
           </Col>
