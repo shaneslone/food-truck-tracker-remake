@@ -5,10 +5,11 @@ import {
   InfoWindow,
   useJsApiLoader,
 } from '@react-google-maps/api';
-import { Spinner, Container, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import axiosWithAuth from '../utils/axoisWithAuth';
-import { parseLocation } from '../utils/parseLocation';
+import { parseLocation } from '../utils/locationHelpers';
 import { Truck } from '../types';
+import LoadingSpinner from './LoadingSpinner';
 
 const libraries: 'places'[] = ['places'];
 
@@ -57,21 +58,12 @@ const TruckMap = () => {
     }
   }, []);
 
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_API_KEY!,
-    libraries: libraries,
-  });
+  // const { isLoaded, loadError } = useJsApiLoader({
+  //   googleMapsApiKey: process.env.REACT_APP_API_KEY!,
+  //   libraries: libraries,
+  // });
 
-  if (!isLoaded)
-    return (
-      <Container
-        style={{ height: '100vh' }}
-        fluid
-        className='d-flex justify-content-center align-items-center'
-      >
-        <Spinner animation='border' variant='primary' />
-      </Container>
-    );
+  // if (!isLoaded) return <LoadingSpinner />;
 
   return (
     <GoogleMap

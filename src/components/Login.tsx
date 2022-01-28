@@ -6,12 +6,12 @@ import {
   Form,
   Button,
   FloatingLabel,
-  Spinner,
   Alert,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { userState } from '../store/reducers/user';
 import useLogin from '../hooks/useLogin';
+import LoadingSpinner from './LoadingSpinner';
 
 const Login = () => {
   const user = useSelector<userState, User>(state => state.user);
@@ -20,28 +20,17 @@ const Login = () => {
 
   const [credentials, errors, disabled, onChange, onSubmit] = useLogin();
 
-  if (loading) {
-    <Container
-      style={{ height: '100vh' }}
-      fluid
-      className='d-flex justify-content-center align-items-center'
-    >
-      <Spinner animation='border' variant='primary' />
-    </Container>;
-  }
+  if (loading) return <LoadingSpinner />;
 
   return (
     <Container>
-      <Row>
-        <Col>{user && JSON.stringify(user)}</Col>
-      </Row>
       <Row className='d-flex justify-content-center'>
         <Col md={4}>
           {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}
         </Col>
       </Row>
       <Form onSubmit={onSubmit}>
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label='Username'>
@@ -60,7 +49,7 @@ const Login = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label='Password'>

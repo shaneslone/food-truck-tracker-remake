@@ -10,6 +10,7 @@ const useUserForm = (): [
   UserMin,
   UserMin,
   boolean,
+  (location: string) => void,
   (e: ChangeEvent<HTMLInputElement>) => void,
   (e: ChangeEvent<HTMLFormElement>) => void
 ] => {
@@ -84,7 +85,14 @@ const useUserForm = (): [
     setUserInfo(initalValues);
   };
 
-  return [userInfo, errors, disabled, onChange, onSubmit];
+  const updateLocation = (location: string) => {
+    setUserInfo(prevUserInfo => ({
+      ...prevUserInfo,
+      currentLocation: location,
+    }));
+  };
+
+  return [userInfo, errors, disabled, updateLocation, onChange, onSubmit];
 };
 
 export default useUserForm;

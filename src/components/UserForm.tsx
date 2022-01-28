@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react';
 import {
   Container,
   Col,
@@ -5,28 +6,40 @@ import {
   Form,
   Button,
   FloatingLabel,
-  Spinner,
   Alert,
+  OverlayTrigger,
+  Popover,
+  PopoverHeader,
+  PopoverBody,
+  ListGroup,
+  ListGroupItem,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { userState } from '../store/reducers/user';
 import useUserForm from '../hooks/useUserForm';
+import LoadingSpinner from './LoadingSpinner';
+import usePlacesAutocomplete from 'use-places-autocomplete';
+import { getGeocode, getLatLng } from 'use-places-autocomplete';
+import { stringifyLoction } from '../utils/locationHelpers';
+import { useJsApiLoader } from '@react-google-maps/api';
+
+const libraries: 'places'[] = ['places'];
 
 const UserForm = () => {
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete();
   const loading = useSelector<userState, boolean>(state => state.loading);
   const ajaxError = useSelector<userState, string>(state => state.errorMessage);
 
-  const [userInfo, errors, disabled, onChange, onSubmit] = useUserForm();
+  const [userInfo, errors, disabled, updateLocation, onChange, onSubmit] =
+    useUserForm();
 
-  if (loading) {
-    <Container
-      style={{ height: '100vh' }}
-      fluid
-      className='d-flex justify-content-center align-items-center'
-    >
-      <Spinner animation='border' variant='primary' />
-    </Container>;
-  }
+  if (loading) return <LoadingSpinner />;
 
   return (
     <Container>
@@ -36,7 +49,7 @@ const UserForm = () => {
         </Col>
       </Row>
       <Form onSubmit={onSubmit}>
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label='Username'>
@@ -55,7 +68,7 @@ const UserForm = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label='Password'>
@@ -74,7 +87,7 @@ const UserForm = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label='Email'>
@@ -93,22 +106,62 @@ const UserForm = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
-            <Form.Group>
-              <FloatingLabel label='Current Location'>
-                <Form.Control
-                  type='text'
-                  placeholder='Current Location.'
-                  name='currentLocation'
-                  value={userInfo.currentLocation}
-                  onChange={onChange}
-                />
-              </FloatingLabel>
-            </Form.Group>
+            <OverlayTrigger
+              trigger='focus'
+              placement='bottom-start'
+              overlay={
+                <Popover>
+                  <PopoverHeader>Location Suggestions</PopoverHeader>
+                  <PopoverBody>
+                    <ListGroup>
+                      {status === 'OK' &&
+                        data.map(suggestion => (
+                          <ListGroupItem
+                            style={{ cursor: 'pointer' }}
+                            key={suggestion.place_id}
+                            onClick={async () => {
+                              setValue(suggestion.description);
+                              clearSuggestions();
+                              try {
+                                const results = await getGeocode({
+                                  address: suggestion.description,
+                                });
+                                const coords = await getLatLng(results[0]);
+                                updateLocation(stringifyLoction(coords));
+                              } catch (e) {
+                                console.log(e);
+                              }
+                            }}
+                          >
+                            {suggestion.description}
+                          </ListGroupItem>
+                        ))}
+                    </ListGroup>
+                  </PopoverBody>
+                </Popover>
+              }
+            >
+              <Form.Group>
+                <FloatingLabel label='Current Location'>
+                  <Form.Control
+                    autoComplete='off'
+                    type='text'
+                    placeholder='Current Location.'
+                    name='currentLocation'
+                    value={value}
+                    disabled={!ready}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setValue(e.target.value);
+                    }}
+                  />
+                </FloatingLabel>
+              </Form.Group>
+            </OverlayTrigger>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={2}>
             <Form.Check
               inline
@@ -136,7 +189,7 @@ const UserForm = () => {
           </Col>
         </Row>
         <Row className='d-flex justify-content-center'>
-          <Col md={4}>
+          <Col md='auto'>
             <Button variant='primary' type='submit' disabled={disabled}>
               Submit
             </Button>
