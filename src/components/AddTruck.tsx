@@ -1,69 +1,55 @@
-import { TruckMin } from "../types";
 import {
   Container,
-  Col,
   Row,
+  Col,
+  Alert,
   Form,
-  Button,
   FloatingLabel,
-} from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { ChangeEvent, useState } from "react";
-import { useNavigate } from 'react-router';
+  Button,
+} from 'react-bootstrap';
+
+import useAddTruckForm from '../hooks/useAddTruckForm';
 
 const AddTruck = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate()
-
-  const initalValues: TruckMin = {
-    name: "",
-    imageOfTruck: "",
-    cuisineType: "",
-    currentLocation: "",
-    depatureTime: "",
-  };
-
-  const [truckInfo, setTruckInfo] = useState<TruckMin>(initalValues);
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setTruckInfo((truckInfo) => ({
-      ...truckInfo,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const onSubmit = (e: ChangeEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    setTruckInfo(initalValues);
-  };
+  const [truckInfo, errors, disabled, ajaxError, onChange, onSubmit] =
+    useAddTruckForm();
 
   return (
     <Container>
+      <Row className='d-flex justify-content-center'>
+        <Col md={4}>
+          {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}
+        </Col>
+      </Row>
       <Form onSubmit={onSubmit}>
-        <Row className="d-flex justify-content-center">
+        <Row className='d-flex justify-content-center'>
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label="name">
+              <FloatingLabel label='name'>
                 <Form.Control
-                  type="text"
-                  placeholder="Enter Name"
-                  name="name"
+                  type='text'
+                  placeholder='Enter Name'
+                  name='name'
                   value={truckInfo.name}
                   onChange={onChange}
+                  isInvalid={!!errors.name}
                 />
+                <Form.Control.Feedback type='invalid' tooltip>
+                  {errors.name}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
         </Row>
 
-        <Row className="d-flex justify-content-center">
+        <Row className='d-flex justify-content-center'>
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label="Truck Image">
+              <FloatingLabel label='Truck Image'>
                 <Form.Control
-                  type="text"
-                  placeholder="Truck Image URL"
-                  name="imageOfTruck"
+                  type='text'
+                  placeholder='Truck Image URL'
+                  name='imageOfTruck'
                   value={truckInfo.imageOfTruck}
                   onChange={onChange}
                 />
@@ -72,57 +58,69 @@ const AddTruck = () => {
           </Col>
         </Row>
 
-        <Row className="d-flex justify-content-center">
+        <Row className='d-flex justify-content-center'>
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label="Cuisine Type">
+              <FloatingLabel label='Cuisine Type'>
                 <Form.Control
-                  type="text"
-                  placeholder="Cuisine Type"
-                  name="cuisineType"
+                  type='text'
+                  placeholder='Cuisine Type'
+                  name='cuisineType'
                   value={truckInfo.cuisineType}
                   onChange={onChange}
+                  isInvalid={!!errors.cuisineType}
                 />
+                <Form.Control.Feedback type='invalid' tooltip>
+                  {errors.cuisineType}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
         </Row>
 
-        <Row className="d-flex justify-content-center">
+        <Row className='d-flex justify-content-center'>
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label="Current Location">
+              <FloatingLabel label='Current Location'>
                 <Form.Control
-                  type="text"
-                  placeholder="Current Location"
-                  name="currentLocation"
+                  type='text'
+                  placeholder='Current Location'
+                  name='currentLocation'
                   value={truckInfo.currentLocation}
                   onChange={onChange}
+                  isInvalid={!!errors.currentLocation}
                 />
+                <Form.Control.Feedback type='invalid' tooltip>
+                  {errors.cuisineType}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
         </Row>
 
-        <Row className="d-flex justify-content-center">
+        <Row className='d-flex justify-content-center'>
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label="Depature Time">
+              <FloatingLabel label='Depature Time'>
                 <Form.Control
-                  type="datetime-local"
-                  placeholder={new Date().toLocaleDateString()}
-                  name="cuisineType"
-                  value={truckInfo.depatureTime}
+                  type='datetime-local'
+                  placeholder={new Date().toLocaleString()}
+                  name='departureTime'
+                  value={truckInfo.departureTime}
                   onChange={onChange}
+                  isInvalid={!!errors.departureTime}
                 />
+                <Form.Control.Feedback type='invalid' tooltip>
+                  {errors.departureTime}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
         </Row>
 
-        <Row className="d-flex justify-content-center">
+        <Row className='d-flex justify-content-center'>
           <Col md={4}>
-            <Button variant="primary" type="submit">
+            <Button variant='primary' type='submit' disabled={disabled}>
               Submit
             </Button>
           </Col>

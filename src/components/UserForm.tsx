@@ -21,9 +21,6 @@ import LoadingSpinner from './LoadingSpinner';
 import usePlacesAutocomplete from 'use-places-autocomplete';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { stringifyLoction } from '../utils/locationHelpers';
-import { useJsApiLoader } from '@react-google-maps/api';
-
-const libraries: 'places'[] = ['places'];
 
 const UserForm = () => {
   const {

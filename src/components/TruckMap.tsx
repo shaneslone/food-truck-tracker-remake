@@ -1,17 +1,12 @@
 import { useRef, useCallback, useState, useEffect } from 'react';
-import {
-  GoogleMap,
-  Marker,
-  InfoWindow,
-  useJsApiLoader,
-} from '@react-google-maps/api';
-import { Button } from 'react-bootstrap';
+import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import { Alert, Button } from 'react-bootstrap';
 import axiosWithAuth from '../utils/axoisWithAuth';
 import { parseLocation } from '../utils/locationHelpers';
-import { Truck } from '../types';
-import LoadingSpinner from './LoadingSpinner';
-
-const libraries: 'places'[] = ['places'];
+import { Truck, User } from '../types';
+import { useSelector } from 'react-redux';
+import { userState } from '../store/reducers/user';
+import TruckMapCard from './TruckMapCard';
 
 const mapContainerStyle: React.CSSProperties = {
   width: '100%',
@@ -27,6 +22,10 @@ const TruckMap = () => {
   const [trucks, setTrucks] = useState<Truck[]>([]);
   const [error, setError] = useState<string>('');
   const [selected, setSelected] = useState<Truck | null>(null);
+  const user = useSelector<userState, User>(state => state.user);
+  const [center, setCenter] = useState<google.maps.LatLngLiteral>(
+    parseLocation('43.6034958,-110.7363361')
+  );
 
   const fetchTrucks = async () => {
     try {
@@ -39,11 +38,17 @@ const TruckMap = () => {
 
   useEffect(() => {
     fetchTrucks();
-  }, []);
-
-  const [center, setCenter] = useState<google.maps.LatLngLiteral>(
-    parseLocation('43.6034958,-110.7363361')
-  );
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        setCenter({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      });
+    } else {
+      setCenter(parseLocation(user.currentLocation));
+    }
+  }, [user.currentLocation]);
 
   const mapRef = useRef<google.maps.Map | null>(null);
   const onMapLoad = useCallback((map: google.maps.Map): void => {
@@ -58,13 +63,6 @@ const TruckMap = () => {
     }
   }, []);
 
-  // const { isLoaded, loadError } = useJsApiLoader({
-  //   googleMapsApiKey: process.env.REACT_APP_API_KEY!,
-  //   libraries: libraries,
-  // });
-
-  // if (!isLoaded) return <LoadingSpinner />;
-
   return (
     <GoogleMap
       mapContainerStyle={mapContainerStyle}
@@ -73,6 +71,19 @@ const TruckMap = () => {
       options={options}
       onLoad={onMapLoad}
     >
+      {error && (
+        <Alert
+          variant='danger'
+          style={{
+            position: 'absolute',
+            top: '15px',
+            left: '50%',
+            transform: 'translate(-50%)',
+          }}
+        >
+          {error}
+        </Alert>
+      )}
       {trucks &&
         trucks.map(truck => (
           <Marker
@@ -91,7 +102,7 @@ const TruckMap = () => {
             setSelected(null);
           }}
         >
-          <h2>{selected.name}</h2>
+          <TruckMapCard truck={selected} />
         </InfoWindow>
       )}
       <Button

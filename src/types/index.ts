@@ -8,7 +8,7 @@ export interface UserMin {
   password?: string;
   email: string;
   currentLocation: string;
-  accountType?: string;
+  accountType?: 'DINER' | 'OPERATOR' | '';
 }
 
 export interface User extends UserMin {
@@ -32,7 +32,7 @@ export interface TruckMin {
   imageOfTruck: string;
   cuisineType: string;
   currentLocation: string;
-  depatureTime: string;
+  departureTime: string;
 }
 
 export interface Truck extends TruckMin {

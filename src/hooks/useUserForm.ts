@@ -17,7 +17,7 @@ const useUserForm = (): [
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const initalValues: UserMin = {
+  const initialValues: UserMin = {
     username: '',
     password: '',
     email: '',
@@ -25,8 +25,8 @@ const useUserForm = (): [
     accountType: '',
   };
 
-  const [userInfo, setUserInfo] = useState<UserMin>(initalValues);
-  const [errors, setErrors] = useState<UserMin>(initalValues);
+  const [userInfo, setUserInfo] = useState<UserMin>(initialValues);
+  const [errors, setErrors] = useState<UserMin>(initialValues);
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const userValidation = yup.object().shape({
@@ -82,7 +82,7 @@ const useUserForm = (): [
   const onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(createUser(userInfo, navigate));
-    setUserInfo(initalValues);
+    setUserInfo(initialValues);
   };
 
   const updateLocation = (location: string) => {
