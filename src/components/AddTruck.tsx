@@ -164,7 +164,7 @@ const AddTruck = () => {
             Departure Time
             <DateTimePicker
               name='departureTime'
-              value={truckInfo.departureTime}
+              value={new Date(truckInfo.departureTime)}
               onChange={changeDepartureDate}
             />
           </Col>

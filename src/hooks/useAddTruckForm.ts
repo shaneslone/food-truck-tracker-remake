@@ -21,7 +21,7 @@ const useAddTruckForm = (): [
     imageOfTruck: '',
     cuisineType: '',
     currentLocation: '',
-    departureTime: new Date(),
+    departureTime: Date.now(),
   };
 
   const [truckInfo, setTruckInfo] = useState<TruckMin>(initalValues);
@@ -30,12 +30,12 @@ const useAddTruckForm = (): [
   const [ajaxError, setAjaxError] = useState<string>('');
 
   const truckValidation = yup.object().shape({
-    name: yup.string().required('Truck must have a name.'),
+    name: yup.string().trim().required('Truck must have a name.'),
     imageOfTruck: yup.string().optional(),
-    cuisineType: yup.string().required('Curise type is required.'),
+    cuisineType: yup.string().trim().required('Curise type is required.'),
     currentLocation: yup.string().required('Current location is required.'),
     departureTime: yup
-      .date()
+      .number()
       .required('Enter the departure time for your truck.'),
   });
 
@@ -71,7 +71,7 @@ const useAddTruckForm = (): [
   const changeDepartureDate = (date: Date): void => {
     setTruckInfo(prevTruckInfo => ({
       ...prevTruckInfo,
-      departureTime: date,
+      departureTime: date.getTime(),
     }));
   };
 
@@ -90,8 +90,6 @@ const useAddTruckForm = (): [
     } catch (e) {
       setAjaxError('Failed to create new truck!');
     }
-
-    setTruckInfo(initalValues);
   };
 
   return [

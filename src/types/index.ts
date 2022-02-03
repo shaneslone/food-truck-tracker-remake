@@ -32,7 +32,7 @@ export interface TruckMin {
   imageOfTruck: string;
   cuisineType: string;
   currentLocation: string;
-  departureTime: Date;
+  departureTime: number;
 }
 
 export interface Truck extends TruckMin {
