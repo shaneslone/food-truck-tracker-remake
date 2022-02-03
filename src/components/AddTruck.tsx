@@ -22,7 +22,7 @@ const AddTruck = () => {
         </Col>
       </Row>
       <Form onSubmit={onSubmit}>
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label='name'>
@@ -42,7 +42,7 @@ const AddTruck = () => {
           </Col>
         </Row>
 
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label='Truck Image'>
@@ -58,7 +58,7 @@ const AddTruck = () => {
           </Col>
         </Row>
 
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label='Cuisine Type'>
@@ -78,7 +78,7 @@ const AddTruck = () => {
           </Col>
         </Row>
 
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label='Current Location'>
@@ -98,7 +98,7 @@ const AddTruck = () => {
           </Col>
         </Row>
 
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label='Depature Time'>
@@ -119,7 +119,7 @@ const AddTruck = () => {
         </Row>
 
         <Row className='d-flex justify-content-center'>
-          <Col md={4}>
+          <Col md='auto'>
             <Button variant='primary' type='submit' disabled={disabled}>
               Submit
             </Button>
