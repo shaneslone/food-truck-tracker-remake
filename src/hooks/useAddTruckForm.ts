@@ -10,6 +10,8 @@ const useAddTruckForm = (): [
   TruckMin,
   boolean,
   string,
+  (date: Date) => void,
+  (location: string) => void,
   (e: ChangeEvent<HTMLInputElement>) => void,
   (e: ChangeEvent<HTMLFormElement>) => Promise<void>
 ] => {
@@ -19,7 +21,7 @@ const useAddTruckForm = (): [
     imageOfTruck: '',
     cuisineType: '',
     currentLocation: '',
-    departureTime: '',
+    departureTime: new Date(),
   };
 
   const [truckInfo, setTruckInfo] = useState<TruckMin>(initalValues);
@@ -29,10 +31,11 @@ const useAddTruckForm = (): [
 
   const truckValidation = yup.object().shape({
     name: yup.string().required('Truck must have a name.'),
+    imageOfTruck: yup.string().optional(),
     cuisineType: yup.string().required('Curise type is required.'),
     currentLocation: yup.string().required('Current location is required.'),
     departureTime: yup
-      .string()
+      .date()
       .required('Enter the departure time for your truck.'),
   });
 
@@ -65,6 +68,20 @@ const useAddTruckForm = (): [
     validateChange(e);
   };
 
+  const changeDepartureDate = (date: Date): void => {
+    setTruckInfo(prevTruckInfo => ({
+      ...prevTruckInfo,
+      departureTime: date,
+    }));
+  };
+
+  const updateLocation = (location: string): void => {
+    setTruckInfo(prevTruckInfo => ({
+      ...prevTruckInfo,
+      currentLocation: location,
+    }));
+  };
+
   const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -77,7 +94,16 @@ const useAddTruckForm = (): [
     setTruckInfo(initalValues);
   };
 
-  return [truckInfo, errors, disabled, ajaxError, onChange, onSubmit];
+  return [
+    truckInfo,
+    errors,
+    disabled,
+    ajaxError,
+    changeDepartureDate,
+    updateLocation,
+    onChange,
+    onSubmit,
+  ];
 };
 
 export default useAddTruckForm;
