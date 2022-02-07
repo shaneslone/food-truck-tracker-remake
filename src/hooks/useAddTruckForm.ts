@@ -1,4 +1,4 @@
-import { TruckMin } from '../types';
+import { TruckMin, TruckMinErrors } from '../types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import * as yup from 'yup';
@@ -7,7 +7,7 @@ import axiosWithAuth from '../utils/axoisWithAuth';
 
 const useAddTruckForm = (): [
   TruckMin,
-  TruckMin,
+  TruckMinErrors,
   boolean,
   string,
   (date: Date) => void,
@@ -16,6 +16,7 @@ const useAddTruckForm = (): [
   (e: ChangeEvent<HTMLFormElement>) => Promise<void>
 ] => {
   const navigate = useNavigate();
+
   const initalValues: TruckMin = {
     name: '',
     imageOfTruck: '',
@@ -23,9 +24,16 @@ const useAddTruckForm = (): [
     currentLocation: '',
     departureTime: Date.now(),
   };
+  const initalErrors: TruckMinErrors = {
+    name: '',
+    imageOfTruck: '',
+    cuisineType: '',
+    currentLocation: '',
+    departureTime: '',
+  };
 
   const [truckInfo, setTruckInfo] = useState<TruckMin>(initalValues);
-  const [errors, setErrors] = useState<TruckMin>(initalValues);
+  const [errors, setErrors] = useState<TruckMinErrors>(initalErrors);
   const [disabled, setDisabled] = useState<boolean>(true);
   const [ajaxError, setAjaxError] = useState<string>('');
 

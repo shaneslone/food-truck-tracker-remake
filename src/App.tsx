@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TruckMap from './components/TruckMap';
 import Login from './components/Login';
-import UserForm from './components/UserForm';
+import UserForm from './components/AddUserForm';
 import PrivateRoute from './components/PrivateRoute';
 import AddTruck from './components/AddTruck';
 

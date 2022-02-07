@@ -3,12 +3,25 @@ export interface Credentials {
   password: string;
 }
 
+export interface CredentialsErrors {
+  username: string;
+  password: string;
+}
+
 export interface UserMin {
   username: string;
   password?: string;
   email: string;
   currentLocation: string;
   accountType?: 'DINER' | 'OPERATOR' | '';
+}
+
+export interface UserMinErrors {
+  username: string;
+  password: string;
+  email: string;
+  currentLocation: string;
+  accountType: string;
 }
 
 export interface User extends UserMin {
@@ -33,6 +46,14 @@ export interface TruckMin {
   cuisineType: string;
   currentLocation: string;
   departureTime: number;
+}
+
+export interface TruckMinErrors {
+  name: string;
+  imageOfTruck: string;
+  cuisineType: string;
+  currentLocation: string;
+  departureTime: string;
 }
 
 export interface Truck extends TruckMin {

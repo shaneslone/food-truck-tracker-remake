@@ -16,7 +16,7 @@ import {
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { userState } from '../store/reducers/user';
-import useUserForm from '../hooks/useUserForm';
+import useAddUserForm from '../hooks/useAddUserForm';
 import LoadingSpinner from './LoadingSpinner';
 import usePlacesAutocomplete from 'use-places-autocomplete';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
@@ -34,7 +34,7 @@ const UserForm = () => {
   const ajaxError = useSelector<userState, string>(state => state.errorMessage);
 
   const [userInfo, errors, disabled, updateLocation, onChange, onSubmit] =
-    useUserForm();
+    useAddUserForm();
 
   if (loading) return <LoadingSpinner />;
 
