@@ -15,12 +15,12 @@ import {
   ListGroupItem,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { userState } from '../store/reducers/user';
 import useAddUserForm from '../hooks/useAddUserForm';
 import LoadingSpinner from './LoadingSpinner';
 import usePlacesAutocomplete from 'use-places-autocomplete';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { stringifyLoction } from '../utils/locationHelpers';
+import { RootState } from '../types';
 
 const UserForm = () => {
   const {
@@ -30,8 +30,10 @@ const UserForm = () => {
     setValue,
     clearSuggestions,
   } = usePlacesAutocomplete();
-  const loading = useSelector<userState, boolean>(state => state.loading);
-  const ajaxError = useSelector<userState, string>(state => state.errorMessage);
+  const loading = useSelector<RootState, boolean>(state => state.user.loading);
+  const ajaxError = useSelector<RootState, string>(
+    state => state.user.errorMessage
+  );
 
   const [userInfo, errors, disabled, updateLocation, onChange, onSubmit] =
     useAddUserForm();

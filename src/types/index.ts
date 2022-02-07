@@ -1,3 +1,11 @@
+import { TruckState } from '../store/reducers/truck';
+import { UserState } from '../store/reducers/user';
+
+export interface RootState {
+  user: UserState;
+  trucks: TruckState;
+}
+
 export interface Credentials {
   username: string;
   password: string;

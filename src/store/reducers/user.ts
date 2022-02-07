@@ -6,13 +6,13 @@ import {
   USER_SUCCESS,
 } from '../actions/users';
 
-export interface userState {
+export interface UserState {
   user: User;
   loading: boolean;
   errorMessage: string;
 }
 
-const initalState: userState = {
+const initalState: UserState = {
   user: {
     userid: 0,
     username: '',

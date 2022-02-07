@@ -3,10 +3,10 @@ import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import { Alert, Button } from 'react-bootstrap';
 import axiosWithAuth from '../utils/axoisWithAuth';
 import { parseLocation } from '../utils/locationHelpers';
-import { Truck, User } from '../types';
-import { useSelector } from 'react-redux';
-import { userState } from '../store/reducers/user';
+import { RootState, Truck, User } from '../types';
+import { useDispatch, useSelector } from 'react-redux';
 import TruckMapCard from './TruckMapCard';
+import { fetchTrucks } from '../store/actions/trucks';
 
 const mapContainerStyle: React.CSSProperties = {
   width: '100%',
@@ -19,25 +19,21 @@ const options: google.maps.MapOptions = {
 };
 
 const TruckMap = () => {
-  const [trucks, setTrucks] = useState<Truck[]>([]);
-  const [error, setError] = useState<string>('');
+  const dispatch = useDispatch();
+  const error = useSelector<RootState, string>(
+    state => state.trucks.errorMessage
+  );
+  const trucks = useSelector<RootState, Truck[]>(
+    state => state.trucks.allTrucks
+  );
   const [selected, setSelected] = useState<Truck | null>(null);
-  const user = useSelector<userState, User>(state => state.user);
+  const user = useSelector<RootState, User>(state => state.user.user);
   const [center, setCenter] = useState<google.maps.LatLngLiteral>(
     parseLocation('43.6034958,-110.7363361')
   );
 
-  const fetchTrucks = async () => {
-    try {
-      const res = await axiosWithAuth().get('/trucks/trucks');
-      setTrucks(res.data);
-    } catch (e) {
-      setError('Failed to load trucks!');
-    }
-  };
-
   useEffect(() => {
-    fetchTrucks();
+    dispatch(fetchTrucks());
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         setCenter({
