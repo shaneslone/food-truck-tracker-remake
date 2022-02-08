@@ -1,4 +1,3 @@
-import { User } from '../types';
 import {
   Container,
   Col,
@@ -9,14 +8,15 @@ import {
   Alert,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { userState } from '../store/reducers/user';
 import useLogin from '../hooks/useLogin';
+import { RootState } from '../types';
 import LoadingSpinner from './LoadingSpinner';
 
 const Login = () => {
-  const user = useSelector<userState, User>(state => state.user);
-  const loading = useSelector<userState, boolean>(state => state.loading);
-  const ajaxError = useSelector<userState, string>(state => state.errorMessage);
+  const loading = useSelector<RootState, boolean>(state => state.user.loading);
+  const ajaxError = useSelector<RootState, string>(
+    state => state.user.errorMessage
+  );
 
   const [credentials, errors, disabled, onChange, onSubmit] = useLogin();
 

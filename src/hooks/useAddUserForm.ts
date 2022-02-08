@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { ValidationError } from 'yup';
 import { createUser } from '../store/actions/users';
-import { UserMin } from '../types';
+import { UserMin, UserMinErrors } from '../types';
 
-const useUserForm = (): [
+const useAddUserForm = (): [
   UserMin,
-  UserMin,
+  UserMinErrors,
   boolean,
   (location: string) => void,
   (e: ChangeEvent<HTMLInputElement>) => void,
@@ -25,8 +25,16 @@ const useUserForm = (): [
     accountType: '',
   };
 
+  const initialErrors: UserMinErrors = {
+    username: '',
+    password: '',
+    email: '',
+    currentLocation: '',
+    accountType: '',
+  };
+
   const [userInfo, setUserInfo] = useState<UserMin>(initialValues);
-  const [errors, setErrors] = useState<UserMin>(initialValues);
+  const [errors, setErrors] = useState<UserMinErrors>(initialErrors);
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const userValidation = yup.object().shape({
@@ -95,4 +103,4 @@ const useUserForm = (): [
   return [userInfo, errors, disabled, updateLocation, onChange, onSubmit];
 };
 
-export default useUserForm;
+export default useAddUserForm;

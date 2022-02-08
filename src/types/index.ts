@@ -1,4 +1,17 @@
+import { TruckState } from '../store/reducers/truck';
+import { UserState } from '../store/reducers/user';
+
+export interface RootState {
+  user: UserState;
+  trucks: TruckState;
+}
+
 export interface Credentials {
+  username: string;
+  password: string;
+}
+
+export interface CredentialsErrors {
   username: string;
   password: string;
 }
@@ -9,6 +22,14 @@ export interface UserMin {
   email: string;
   currentLocation: string;
   accountType?: 'DINER' | 'OPERATOR' | '';
+}
+
+export interface UserMinErrors {
+  username: string;
+  password: string;
+  email: string;
+  currentLocation: string;
+  accountType: string;
 }
 
 export interface User extends UserMin {
@@ -33,6 +54,14 @@ export interface TruckMin {
   cuisineType: string;
   currentLocation: string;
   departureTime: number;
+}
+
+export interface TruckMinErrors {
+  name: string;
+  imageOfTruck: string;
+  cuisineType: string;
+  currentLocation: string;
+  departureTime: string;
 }
 
 export interface Truck extends TruckMin {

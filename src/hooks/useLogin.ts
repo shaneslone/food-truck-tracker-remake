@@ -2,13 +2,13 @@ import { useState, ChangeEvent, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { ValidationError } from 'yup';
-import { Credentials } from '../types';
+import { Credentials, CredentialsErrors } from '../types';
 import { login } from '../store/actions/users';
 import { useNavigate } from 'react-router-dom';
 
 const useLogin = (): [
   Credentials,
-  Credentials,
+  CredentialsErrors,
   boolean,
   (e: ChangeEvent<HTMLInputElement>) => void,
   (e: ChangeEvent<HTMLFormElement>) => void
@@ -22,7 +22,7 @@ const useLogin = (): [
   };
 
   const [credentials, setCredentials] = useState<Credentials>(initalState);
-  const [errors, setErrors] = useState<Credentials>(initalState);
+  const [errors, setErrors] = useState<CredentialsErrors>(initalState);
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const loginValidation = yup.object().shape({
