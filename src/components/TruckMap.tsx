@@ -1,12 +1,13 @@
 import { useRef, useCallback, useState, useEffect } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
-import { Alert, Button } from 'react-bootstrap';
-import axiosWithAuth from '../utils/axoisWithAuth';
+import { Alert } from 'react-bootstrap';
 import { parseLocation } from '../utils/locationHelpers';
 import { RootState, Truck, User } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
 import TruckMapCard from './TruckMapCard';
 import { fetchTrucks } from '../store/actions/trucks';
+import MenuContainer from './MenuContainer';
+import OptionsContainer from './OptionsContainer';
 
 const mapContainerStyle: React.CSSProperties = {
   width: '100%',
@@ -44,7 +45,7 @@ const TruckMap = () => {
     } else {
       setCenter(parseLocation(user.currentLocation));
     }
-  }, [user.currentLocation]);
+  }, [user.currentLocation, dispatch]);
 
   const mapRef = useRef<google.maps.Map | null>(null);
   const onMapLoad = useCallback((map: google.maps.Map): void => {
@@ -101,16 +102,6 @@ const TruckMap = () => {
           <TruckMapCard truck={selected} />
         </InfoWindow>
       )}
-      <Button
-        style={{
-          position: 'absolute',
-          bottom: '15px',
-          left: '50%',
-          transform: 'translate(-50%)',
-        }}
-      >
-        Show Options
-      </Button>
     </GoogleMap>
   );
 };
