@@ -18,10 +18,10 @@ const useAddTruckForm = (): [
   const navigate = useNavigate();
 
   const initalValues: TruckMin = {
-    name: '',
-    imageOfTruck: '',
-    cuisineType: '',
-    currentLocation: '',
+    name: "",
+    imageOfTruck: "",
+    cuisineType: "",
+    currentLocation: "",
     departureTime: Date.now(),
   };
   const initalErrors: TruckMinErrors = {
@@ -35,20 +35,20 @@ const useAddTruckForm = (): [
   const [truckInfo, setTruckInfo] = useState<TruckMin>(initalValues);
   const [errors, setErrors] = useState<TruckMinErrors>(initalErrors);
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [ajaxError, setAjaxError] = useState<string>('');
+  const [ajaxError, setAjaxError] = useState<string>("");
 
   const truckValidation = yup.object().shape({
-    name: yup.string().trim().required('Truck must have a name.'),
+    name: yup.string().trim().required("Truck must have a name."),
     imageOfTruck: yup.string().optional(),
-    cuisineType: yup.string().trim().required('Curise type is required.'),
-    currentLocation: yup.string().required('Current location is required.'),
+    cuisineType: yup.string().trim().required("Curise type is required."),
+    currentLocation: yup.string().required("Current location is required."),
     departureTime: yup
       .number()
-      .required('Enter the departure time for your truck.'),
+      .required("Enter the departure time for your truck."),
   });
 
   useEffect(() => {
-    truckValidation.isValid(truckInfo).then(valid => {
+    truckValidation.isValid(truckInfo).then((valid) => {
       setDisabled(!valid);
     });
   }, [truckValidation, truckInfo]);
@@ -58,10 +58,10 @@ const useAddTruckForm = (): [
       .reach(truckValidation, e.target.name)
       .validate(e.target.value)
       .then(() => {
-        setErrors(prevErrors => ({ ...prevErrors, [e.target.name]: '' }));
+        setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "" }));
       })
       .catch((error: ValidationError) => {
-        setErrors(prevErrors => ({
+        setErrors((prevErrors) => ({
           ...prevErrors,
           [e.target.name]: error.errors[0],
         }));
@@ -69,7 +69,7 @@ const useAddTruckForm = (): [
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setTruckInfo(truckInfo => ({
+    setTruckInfo((truckInfo) => ({
       ...truckInfo,
       [e.target.name]: e.target.value,
     }));
@@ -77,14 +77,14 @@ const useAddTruckForm = (): [
   };
 
   const changeDepartureDate = (date: Date): void => {
-    setTruckInfo(prevTruckInfo => ({
+    setTruckInfo((prevTruckInfo) => ({
       ...prevTruckInfo,
       departureTime: date.getTime(),
     }));
   };
 
   const updateLocation = (location: string): void => {
-    setTruckInfo(prevTruckInfo => ({
+    setTruckInfo((prevTruckInfo) => ({
       ...prevTruckInfo,
       currentLocation: location,
     }));
@@ -93,10 +93,10 @@ const useAddTruckForm = (): [
   const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axiosWithAuth().post('/trucks/truck', truckInfo);
-      navigate('/map');
+      await axiosWithAuth().post("/trucks/truck", truckInfo);
+      navigate("/map");
     } catch (e) {
-      setAjaxError('Failed to create new truck!');
+      setAjaxError("Failed to create new truck!");
     }
   };
 

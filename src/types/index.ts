@@ -72,11 +72,14 @@ export interface Truck extends TruckMin {
   customerRatingsAvg: number;
 }
 
-export interface MenuItem {
-  menuId: number;
+export interface MenuItemMin {
   itemName: string;
   itemDescription: string;
   itemPrice: number;
+}
+
+export interface MenuItem extends MenuItemMin {
+  menuId: number;
   itemPhotos: ItemPhoto[];
   customerRatings: DinerReview[];
   customerRatingsAvg: number;
