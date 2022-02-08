@@ -16,7 +16,7 @@ function App() {
           element={<PrivateRoute component={AddTruck} />}
         />
         <Route
-          path="/truck/:truckid/addmenuitem"
+          path="/truck/:truckId/addmenuitem"
           element={<PrivateRoute component={AddMenuItem} />}
         />
         <Route path="signup" element={<UserForm />} />

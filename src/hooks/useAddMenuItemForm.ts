@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { MenuItemMin } from "../types";
 import * as yup from "yup";
 import axiosWithAuth from "../utils/axoisWithAuth";
+import { useParams } from "react-router-dom";
 
 export default function useAddMenuItem(): [
   MenuItemMin,
@@ -25,13 +26,18 @@ export default function useAddMenuItem(): [
 
   const [ajaxError, setAjaxError] = useState<string>("");
 
+  const { truckId } = useParams();
+
   const menuItemValidation = yup.object().shape({
     itemName: yup.string().trim().required("Menu Item must have a name."),
     itemDescription: yup
       .string()
       .trim()
       .required("Please provide an item description"),
-    itemPrice: yup.number().required("Please provide an item price"),
+    itemPrice: yup
+      .number()
+      .min(0, "Price can not be less than 0")
+      .required("Please provide an item price"),
   });
 
   useEffect(() => {
@@ -64,7 +70,10 @@ export default function useAddMenuItem(): [
   const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axiosWithAuth().post("", menuItem);
+      await axiosWithAuth().post(
+        `/menuitems/menuitem/truck/${truckId}`,
+        menuItem
+      );
     } catch (e) {
       setAjaxError("Failed to create new menu item!");
     }
