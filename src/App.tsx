@@ -4,7 +4,7 @@ import Login from "./components/Login";
 import UserForm from "./components/UserForm";
 import PrivateRoute from "./components/PrivateRoute";
 import AddTruck from "./components/AddTruck";
-import { AddMenuItem } from "./components/AddMenuItem";
+import AddMenuItem from "./components/AddMenuItem";
 
 function App() {
   return (

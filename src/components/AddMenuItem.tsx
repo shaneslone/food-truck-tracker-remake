@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import useAddMenuItem from "../hooks/useAddMenuItemForm";
 
-export const AddMenuItem = () => {
+const AddMenuItem = () => {
   const [menuItem, errors, disabled, ajaxError, onChange, onSubmit] =
     useAddMenuItem();
 
@@ -93,3 +93,5 @@ export const AddMenuItem = () => {
     </Container>
   );
 };
+
+export default AddMenuItem;
