@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchCurrentTruck } from "../store/actions/trucks";
 import { RootState, Truck } from "../types";
 
 export default function useFetchTruck(): [Truck, Boolean, String] {
+  const dispatch = useDispatch();
   const { truckId } = useParams();
 
   const currentTruck = useSelector<RootState, Truck>(
@@ -20,8 +21,8 @@ export default function useFetchTruck(): [Truck, Boolean, String] {
   );
 
   useEffect(() => {
-    if (truckId) fetchCurrentTruck(truckId);
-  }, []);
+    if (truckId) dispatch(fetchCurrentTruck(truckId));
+  }, [dispatch, truckId]);
 
   return [currentTruck, loading, errorMessage];
 }
