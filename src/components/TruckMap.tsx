@@ -6,8 +6,8 @@ import { RootState, Truck, User } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
 import TruckMapCard from './TruckMapCard';
 import { fetchTrucks } from '../store/actions/trucks';
-import MenuContainer from './MenuContainer';
 import OptionsContainer from './OptionsContainer';
+import CuisineFilter from './CuisineFilter';
 
 const mapContainerStyle: React.CSSProperties = {
   width: '100%',
@@ -102,6 +102,9 @@ const TruckMap = () => {
           <TruckMapCard truck={selected} />
         </InfoWindow>
       )}
+      <OptionsContainer>
+        <CuisineFilter />
+      </OptionsContainer>
     </GoogleMap>
   );
 };

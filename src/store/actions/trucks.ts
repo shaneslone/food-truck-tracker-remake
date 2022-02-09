@@ -55,3 +55,30 @@ export const fetchTrucks =
       });
     }
   };
+
+export const fetchTrucksByCuisine =
+  (cuisineType: string) => async (dispatch: Dispatch<TruckDispatchTypes>) => {
+    try {
+      dispatch({
+        type: TRUCK_LOADING,
+      });
+
+      const res = await axiosWithAuth().get(
+        `/trucks/trucks/cuisinetype/${cuisineType}`
+      );
+
+      dispatch({
+        type: TRUCK_SUCCESS,
+        payload: res.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: TRUCK_FAIL,
+        payload: 'Failed to load trucks.',
+      });
+    } finally {
+      dispatch({
+        type: TRUCK_LOADING_COMPLETE,
+      });
+    }
+  };
