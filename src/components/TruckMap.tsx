@@ -8,6 +8,7 @@ import TruckMapCard from './TruckMapCard';
 import { fetchTrucks } from '../store/actions/trucks';
 import OptionsContainer from './OptionsContainer';
 import CuisineFilter from './CuisineFilter';
+import RatingFilter from './RaitingFilter';
 
 const mapContainerStyle: React.CSSProperties = {
   width: '100%',
@@ -104,6 +105,7 @@ const TruckMap = () => {
       )}
       <OptionsContainer>
         <CuisineFilter />
+        <RatingFilter />
       </OptionsContainer>
     </GoogleMap>
   );
