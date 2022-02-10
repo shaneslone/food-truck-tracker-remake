@@ -16,17 +16,18 @@ const TruckInfo = () => {
 
   if (Loading) return <LoadingSpinner />;
   return (
-    <Container>
-      <Row>
-        <Col>{currentTruck.name}</Col>
+    <Container className="d-flex align-items-center flex-column bg-danger">
+      <Row className="w-25">
+        <Col className="d-flex justify-content-center">{currentTruck.name}</Col>
       </Row>
-      <Row>
-        <Col md={6}>
+      <Row className="w-75">
+        <Col>
           <Image
-          style={{
-            width: '100%'
-          }}
-          src={currentTruck.imageOfTruck} />
+            style={{
+              width: "100%",
+            }}
+            src={currentTruck.imageOfTruck}
+          />
         </Col>
       </Row>
       <Row>
