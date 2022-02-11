@@ -1,6 +1,14 @@
-import { Col, Container, Image, ListGroup, Row } from "react-bootstrap";
+import {
+  CardGroup,
+  Col,
+  Container,
+  Image,
+  ListGroup,
+  Row,
+} from "react-bootstrap";
 import useFetchTruck from "../hooks/useFetchTruck";
 import LoadingSpinner from "./LoadingSpinner";
+import MenuItemCard from "./MenuItemCard";
 
 const TruckInfo = () => {
   const [currentTruck, Loading, errorMessage] = useFetchTruck();
@@ -33,6 +41,13 @@ const TruckInfo = () => {
             </ListGroup.Item>
           </ListGroup>
         </Col>
+      </Row>
+      <Row xs={1} md={2} className="w-75">
+        {currentTruck.menu.map((menuItem) => (
+          <Col>
+            <MenuItemCard key={menuItem.menuId} menuItem={menuItem} />
+          </Col>
+        ))}
       </Row>
     </Container>
   );
