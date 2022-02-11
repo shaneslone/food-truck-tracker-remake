@@ -1,4 +1,4 @@
-import { Card, Carousel, Image } from "react-bootstrap";
+import { Button, ButtonGroup, Card, Carousel, Image } from "react-bootstrap";
 import { MenuItem } from "../types";
 
 interface Iprops {
@@ -11,7 +11,7 @@ const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
       <Card.Header className="d-flex justify-content-center">
         {menuItem.itemName}
       </Card.Header>
-      <Card.Body>
+      <Card.Body className="d-flex align-items-center flex-column">
         {menuItem.itemPhotos.length === 1 && (
           <Image src={menuItem.itemPhotos[0].url} style={{ width: "100%" }} />
         )}
@@ -30,9 +30,23 @@ const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
         <Card.Text className="d-flex justify-content-center">
           {`Price: ${menuItem.itemPrice}`}
         </Card.Text>
-        <Card.Text className="d-flex justify-content-center">
-          {`Average Customer rating: ${menuItem.customerRatingsAvg}`}
-        </Card.Text>
+        <ButtonGroup>
+          <Button variant="outline-primary">
+            <i className="bi bi-star"></i>
+          </Button>
+          <Button variant="outline-primary">
+            <i className="bi bi-star"></i>
+          </Button>
+          <Button variant="outline-primary">
+            <i className="bi bi-star"></i>
+          </Button>
+          <Button variant="outline-primary">
+            <i className="bi bi-star"></i>
+          </Button>
+          <Button variant="outline-primary">
+            <i className="bi bi-star"></i>
+          </Button>
+        </ButtonGroup>
       </Card.Body>
     </Card>
   );
