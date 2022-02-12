@@ -1,16 +1,26 @@
 import { Card, Carousel, Col, Container, Image, Row } from "react-bootstrap";
-import { MenuItem } from "../types";
+import { MenuItem, RootState, User } from "../types";
 import { Rating } from "react-simple-star-rating";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 interface Iprops {
   menuItem: MenuItem;
 }
 
 const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
+  const user = useSelector<RootState, User>((state) => state.user.user);
   const [rating, setRating] = useState<number>(0);
 
   const handleRating = (rating: number) => setRating(rating);
+
+  const getCustomerRating = () => {
+    const result = user.menuItemReviews.filter(
+      (review) => review.menuItem.menuId === menuItem.menuId
+    );
+    if (result.length) return result[0].score;
+    return 0;
+  };
 
   return (
     <Card className="w-100">
@@ -36,12 +46,36 @@ const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
         <Card.Text className="d-flex justify-content-center">
           {`Price: ${menuItem.itemPrice}`}
         </Card.Text>
-        <Container className="d-flex justify-content-center">
+        <Container className="d-flex align-items-center flex-column">
+          <Row className="w-auto">
+            <Col>Customer Average Rating</Col>
+          </Row>
+          <Row className="w-auto">
+            <Col>
+              <Rating
+                ratingValue={0}
+                initialValue={menuItem.customerRatingsAvg}
+                allowHalfIcon
+                transition
+                readonly
+                fillColorArray={[
+                  "#f17a45",
+                  "#f19745",
+                  "#f1a545",
+                  "#f1b345",
+                  "#f1d045",
+                ]}
+              />
+            </Col>
+          </Row>
+          <Row className="w-auto">
+            <Col>Your Rating</Col>
+          </Row>
           <Row className="w-auto">
             <Col>
               <Rating
                 ratingValue={rating}
-                initialValue={menuItem.customerRatingsAvg}
+                initialValue={getCustomerRating()}
                 onClick={handleRating}
                 allowHalfIcon
                 transition

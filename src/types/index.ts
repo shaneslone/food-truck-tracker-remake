@@ -1,5 +1,5 @@
-import { TruckState } from '../store/reducers/truck';
-import { UserState } from '../store/reducers/user';
+import { TruckState } from "../store/reducers/truck";
+import { UserState } from "../store/reducers/user";
 
 export interface RootState {
   user: UserState;
@@ -21,7 +21,7 @@ export interface UserMin {
   password?: string;
   email: string;
   currentLocation: string;
-  accountType?: 'DINER' | 'OPERATOR' | '';
+  accountType?: "DINER" | "OPERATOR" | "";
 }
 
 export interface UserMinErrors {
@@ -38,7 +38,7 @@ export interface User extends UserMin {
   ownedTrucks: Truck[];
   favoriteTrucks: Truck[];
   truckReviews: TruckReview[];
-  menuItemReview: MenuItemReview[];
+  menuItemReviews: MenuItemReview[];
 }
 
 export interface Role {
@@ -113,7 +113,7 @@ export interface TruckReview {
 
 export interface MenuItemReview {
   menuItem: {
-    menuItemId: number;
+    menuId: number;
   };
   score: number;
 }

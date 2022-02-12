@@ -1,10 +1,10 @@
-import { User } from '../../types';
+import { User } from "../../types";
 import {
   UserDispatchTypes,
   USER_FAIL,
   USER_LOADING,
   USER_SUCCESS,
-} from '../actions/users';
+} from "../actions/users";
 
 export interface UserState {
   user: User;
@@ -12,20 +12,26 @@ export interface UserState {
   errorMessage: string;
 }
 
-const initalState: UserState = {
-  user: {
+const setInitalUser = (): User => {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) return JSON.parse(storedUser);
+  return {
     userid: 0,
-    username: '',
-    email: '',
-    currentLocation: '',
+    username: "",
+    email: "",
+    currentLocation: "",
     roles: [],
     ownedTrucks: [],
     favoriteTrucks: [],
     truckReviews: [],
-    menuItemReview: [],
-  },
+    menuItemReviews: [],
+  };
+};
+
+const initalState: UserState = {
+  user: setInitalUser(),
   loading: false,
-  errorMessage: '',
+  errorMessage: "",
 };
 
 export const userReducer = (state = initalState, action: UserDispatchTypes) => {
@@ -42,7 +48,7 @@ export const userReducer = (state = initalState, action: UserDispatchTypes) => {
       return {
         ...state,
         loading: false,
-        errorMessage: '',
+        errorMessage: "",
         user: action.payload,
       };
     default:

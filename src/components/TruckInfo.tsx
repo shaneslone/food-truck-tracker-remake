@@ -6,8 +6,6 @@ import MenuItemCard from "./MenuItemCard";
 const TruckInfo = () => {
   const [currentTruck, Loading, errorMessage] = useFetchTruck();
 
-  console.log(currentTruck);
-
   if (Loading) return <LoadingSpinner />;
   return (
     <Container className="d-flex align-items-center flex-column bg-danger">
