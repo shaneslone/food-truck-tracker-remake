@@ -1,12 +1,17 @@
 import { Card, Carousel, Col, Container, Image, Row } from "react-bootstrap";
 import { MenuItem } from "../types";
-import StarRating from "./StarRating";
+import { Rating } from "react-simple-star-rating";
+import { ChangeEvent, useState } from "react";
 
 interface Iprops {
   menuItem: MenuItem;
 }
 
 const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
+  const [rating, setRating] = useState<number>(0);
+
+  const handleRating = (rating: number) => setRating(rating);
+
   return (
     <Card className="w-100">
       <Card.Header className="d-flex justify-content-center">
@@ -34,25 +39,19 @@ const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
         <Container className="d-flex justify-content-center">
           <Row className="w-auto">
             <Col>
-              <StarRating
-                overallRating={menuItem.customerRatingsAvg}
-                currentRating={1}
-              />
-              <StarRating
-                overallRating={menuItem.customerRatingsAvg}
-                currentRating={2}
-              />
-              <StarRating
-                overallRating={menuItem.customerRatingsAvg}
-                currentRating={3}
-              />
-              <StarRating
-                overallRating={menuItem.customerRatingsAvg}
-                currentRating={4}
-              />
-              <StarRating
-                overallRating={menuItem.customerRatingsAvg}
-                currentRating={5}
+              <Rating
+                ratingValue={rating}
+                initialValue={menuItem.customerRatingsAvg}
+                onClick={handleRating}
+                allowHalfIcon
+                transition
+                fillColorArray={[
+                  "#f17a45",
+                  "#f19745",
+                  "#f1a545",
+                  "#f1b345",
+                  "#f1d045",
+                ]}
               />
             </Col>
           </Row>
