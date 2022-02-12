@@ -1,5 +1,6 @@
-import { Button, ButtonGroup, Card, Carousel, Image } from "react-bootstrap";
+import { Card, Carousel, Col, Container, Image, Row } from "react-bootstrap";
 import { MenuItem } from "../types";
+import StarRating from "./StarRating";
 
 interface Iprops {
   menuItem: MenuItem;
@@ -30,23 +31,32 @@ const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
         <Card.Text className="d-flex justify-content-center">
           {`Price: ${menuItem.itemPrice}`}
         </Card.Text>
-        <ButtonGroup>
-          <Button variant="outline-primary">
-            <i className="bi bi-star"></i>
-          </Button>
-          <Button variant="outline-primary">
-            <i className="bi bi-star"></i>
-          </Button>
-          <Button variant="outline-primary">
-            <i className="bi bi-star"></i>
-          </Button>
-          <Button variant="outline-primary">
-            <i className="bi bi-star"></i>
-          </Button>
-          <Button variant="outline-primary">
-            <i className="bi bi-star"></i>
-          </Button>
-        </ButtonGroup>
+        <Container className="d-flex justify-content-center">
+          <Row className="w-auto">
+            <Col>
+              <StarRating
+                overallRating={menuItem.customerRatingsAvg}
+                currentRating={1}
+              />
+              <StarRating
+                overallRating={menuItem.customerRatingsAvg}
+                currentRating={2}
+              />
+              <StarRating
+                overallRating={menuItem.customerRatingsAvg}
+                currentRating={3}
+              />
+              <StarRating
+                overallRating={menuItem.customerRatingsAvg}
+                currentRating={4}
+              />
+              <StarRating
+                overallRating={menuItem.customerRatingsAvg}
+                currentRating={5}
+              />
+            </Col>
+          </Row>
+        </Container>
       </Card.Body>
     </Card>
   );
