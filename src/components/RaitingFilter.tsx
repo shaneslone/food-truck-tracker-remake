@@ -15,7 +15,7 @@ const RatingFilter = () => {
         <Col md='auto'>Filter trucks by average rating.</Col>
       </Row>
       <Row className='d-flex justify-content-center'>
-        <Col md='auto'>
+        <Col md={1}>
           <Form.Select onChange={onChange}>
             <option value={5}>5</option>
             <option value={4}>4</option>

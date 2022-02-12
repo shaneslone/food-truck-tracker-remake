@@ -9,6 +9,7 @@ import { fetchTrucks } from '../store/actions/trucks';
 import OptionsContainer from './OptionsContainer';
 import CuisineFilter from './CuisineFilter';
 import RatingFilter from './RaitingFilter';
+import LocationSearch from './LocationSearch';
 
 const mapContainerStyle: React.CSSProperties = {
   width: '100%',
@@ -54,7 +55,7 @@ const TruckMap = () => {
   }, []);
 
   // pans the map to the target location
-  const panTo = useCallback(({ lat, lng }) => {
+  const panTo = useCallback(({ lat, lng }: google.maps.LatLngLiteral) => {
     if (mapRef.current) {
       mapRef.current.panTo({ lat, lng });
       mapRef.current.setZoom(15);
@@ -104,6 +105,7 @@ const TruckMap = () => {
         </InfoWindow>
       )}
       <OptionsContainer>
+        <LocationSearch panTo={panTo} />
         <CuisineFilter />
         <RatingFilter />
       </OptionsContainer>
