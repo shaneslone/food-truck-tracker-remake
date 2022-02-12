@@ -1,5 +1,6 @@
 import { useState, ReactNode } from 'react';
 import { Button, Offcanvas } from 'react-bootstrap';
+
 interface IProps {
   children?: ReactNode;
 }
@@ -35,7 +36,12 @@ const OptionsContainer: React.FC<IProps> = ({ children }) => {
         </svg>{' '}
         Options
       </Button>
-      <Offcanvas show={show} onHide={toggleShow} placement='bottom'>
+      <Offcanvas
+        show={show}
+        onHide={toggleShow}
+        placement='bottom'
+        style={{ height: '75vh' }}
+      >
         {children}
       </Offcanvas>
     </>
