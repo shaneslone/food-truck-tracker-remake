@@ -3,6 +3,7 @@ import { MenuItem, RootState, User } from "../types";
 import { Rating } from "react-simple-star-rating";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import axiosWithAuth from "../utils/axoisWithAuth";
 
 interface Iprops {
   menuItem: MenuItem;
@@ -12,11 +13,16 @@ const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
   const user = useSelector<RootState, User>((state) => state.user.user);
   const [rating, setRating] = useState<number>(0);
 
-  const handleRating = (rating: number) => setRating(rating);
+  const handleRating = async (rating: number) => {
+    setRating(rating);
+    await axiosWithAuth().post(
+      `menuitems/menuitem/${menuItem.menuId}/rating/${rating / 20}`
+    );
+  };
 
   const getCustomerRating = () => {
-    const result = user.menuItemReviews.filter(
-      (review) => review.menuItem.menuId === menuItem.menuId
+    const result = menuItem.customerRatings.filter(
+      (review) => review.diner.userid === user.userid
     );
     if (result.length) return result[0].score;
     return 0;
