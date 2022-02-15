@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchCurrentTruck } from "../store/actions/trucks";
+import { fetchCurrentTruck, updateTruck } from "../store/actions/trucks";
 import { RootState, Truck, User } from "../types";
 import axiosWithAuth from "../utils/axoisWithAuth";
 
@@ -45,7 +45,7 @@ export default function useFetchTruck(): [
         `/trucks/truck/${currentTruck.truckId}/rating/${rating / 20}`
       );
     }
-    dispatch(res);
+    dispatch(updateTruck(res.data));
   };
 
   const getCustomerRating = () => {
