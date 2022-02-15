@@ -17,7 +17,7 @@ const TruckInfo = () => {
   if (Loading) return <LoadingSpinner />;
   return (
     <Container className="d-flex align-items-center flex-column bg-danger">
-      <Row>
+      <Row className="d-flex justify-content-center align-items-center">
         <Col className="d-flex justify-content-center m-2">
           {currentTruck.name}
         </Col>
@@ -79,8 +79,8 @@ const TruckInfo = () => {
       </Row>
       <Row xs={1} md={2} className="w-75 m-2">
         {currentTruck.menu.map((menuItem) => (
-          <Col>
-            <MenuItemCard key={menuItem.menuId} menuItem={menuItem} />
+          <Col key={menuItem.menuId}>
+            <MenuItemCard menuItem={menuItem} />
           </Col>
         ))}
       </Row>

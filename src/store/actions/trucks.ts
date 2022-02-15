@@ -1,11 +1,12 @@
 import { Dispatch } from "react";
-import { Truck } from "../../types";
+import { Truck, MenuItem } from "../../types";
 import axiosWithAuth from "../../utils/axoisWithAuth";
 
 export const TRUCK_LOADING = "TRUCK_LOADING";
 export const TRUCK_FAIL = "TRUCK_FAIL";
 export const TRUCK_SUCCESS = "TRUCK_SUCCESS";
 export const TRUCK_LOADING_COMPLETE = "TRUCK_LOADING_COMPLETE";
+export const UPDATE_MENU_ITEM = 'UPDATE_MENU_ITEM'
 
 export interface TruckLoading {
   type: typeof TRUCK_LOADING;
@@ -22,6 +23,11 @@ export interface TruckSuccess {
   payload: Truck[];
 }
 
+export interface UpdateMenuItem{
+  type: typeof UPDATE_MENU_ITEM;
+  payload: MenuItem;
+}
+
 export interface TruckLoadingComplete {
   type: typeof TRUCK_LOADING_COMPLETE;
 }
@@ -30,7 +36,8 @@ export type TruckDispatchTypes =
   | TruckLoading
   | TruckFail
   | TruckSuccess
-  | TruckLoadingComplete;
+  | TruckLoadingComplete
+  | UpdateMenuItem;
 
 export const fetchTrucks =
   () => async (dispatch: Dispatch<TruckDispatchTypes>) => {
@@ -83,3 +90,17 @@ export const fetchCurrentTruck =
       });
     }
   };
+export const updateMenuItem = (menuItem: MenuItem) => async (dispatch: Dispatch<TruckDispatchTypes>) =>
+{
+dispatch({
+        type: TRUCK_LOADING,
+      });
+dispatch({
+    type: UPDATE_MENU_ITEM,
+    payload: menuItem
+})
+ dispatch({
+        type: TRUCK_LOADING_COMPLETE,
+      });
+
+}

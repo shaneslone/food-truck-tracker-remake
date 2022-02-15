@@ -5,6 +5,7 @@ import {
   TRUCK_LOADING,
   TRUCK_LOADING_COMPLETE,
   TRUCK_SUCCESS,
+  UPDATE_MENU_ITEM,
 } from "../actions/trucks";
 
 export interface TruckState {
@@ -45,6 +46,20 @@ export const truckReducer = (
       return { ...state, errorMessage: action.payload };
     case TRUCK_LOADING_COMPLETE:
       return { ...state, loading: false };
+    case UPDATE_MENU_ITEM:
+      return {
+        ...state,
+        currentTruck: {
+          ...state.currentTruck,
+          menu: state.currentTruck.menu.map((menuItem) => {
+            if (menuItem.menuId === action.payload.menuId) {
+              return action.payload;
+            } else {
+              return menuItem;
+            }
+          }),
+        },
+      };
     default:
       return state;
   }

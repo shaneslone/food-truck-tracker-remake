@@ -1,32 +1,14 @@
 import { Card, Carousel, Col, Container, Image, Row } from "react-bootstrap";
-import { MenuItem, RootState, User } from "../types";
+import { MenuItem } from "../types";
 import { Rating } from "react-simple-star-rating";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import axiosWithAuth from "../utils/axoisWithAuth";
+import useMenuCardItem from "../hooks/useMenuCardItem";
 
 interface Iprops {
   menuItem: MenuItem;
 }
 
 const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
-  const user = useSelector<RootState, User>((state) => state.user.user);
-  const [rating, setRating] = useState<number>(0);
-
-  const handleRating = async (rating: number) => {
-    setRating(rating);
-    await axiosWithAuth().post(
-      `menuitems/menuitem/${menuItem.menuId}/rating/${rating / 20}`
-    );
-  };
-
-  const getCustomerRating = () => {
-    const result = menuItem.customerRatings.filter(
-      (review) => review.diner.userid === user.userid
-    );
-    if (result.length) return result[0].score;
-    return 0;
-  };
+  const [rating, handleRating, getCustomerRating] = useMenuCardItem(menuItem);
 
   return (
     <Card className="w-100">

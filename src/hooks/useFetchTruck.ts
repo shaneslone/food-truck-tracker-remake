@@ -7,11 +7,11 @@ import axiosWithAuth from "../utils/axoisWithAuth";
 
 export default function useFetchTruck(): [
   Truck,
-  Boolean,
-  String,
+  boolean,
+  string,
   number,
-  (rating: number) => Promise<void>,
-  () => number
+  typeof handleRating,
+  typeof getCustomerRating
 ] {
   const dispatch = useDispatch();
   const { truckId } = useParams();
@@ -20,11 +20,11 @@ export default function useFetchTruck(): [
     (state) => state.trucks.currentTruck
   );
 
-  const loading = useSelector<RootState, Boolean>(
+  const loading = useSelector<RootState, boolean>(
     (state) => state.trucks.loading
   );
 
-  const errorMessage = useSelector<RootState, String>(
+  const errorMessage = useSelector<RootState, string>(
     (state) => state.trucks.errorMessage
   );
 
@@ -34,8 +34,14 @@ export default function useFetchTruck(): [
 
   const handleRating = async (rating: number) => {
     setRating(rating);
+    if (getCustomerRating()) {
+      await axiosWithAuth().put(
+        `/trucks/truck/${currentTruck.truckId}/rating/${rating / 20}`
+      );
+      return;
+    }
     await axiosWithAuth().post(
-      `trucks/truck/${currentTruck.truckId}/rating/${rating}`
+      `/trucks/truck/${currentTruck.truckId}/rating/${rating / 20}`
     );
   };
 
