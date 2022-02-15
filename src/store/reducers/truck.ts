@@ -6,6 +6,7 @@ import {
   TRUCK_LOADING_COMPLETE,
   TRUCK_SUCCESS,
   UPDATE_MENU_ITEM,
+  UPDATE_TRUCK,
 } from "../actions/trucks";
 
 export interface TruckState {
@@ -60,6 +61,8 @@ export const truckReducer = (
           }),
         },
       };
+    case UPDATE_TRUCK:
+      return { ...state, currentTruck: action.payload };
     default:
       return state;
   }

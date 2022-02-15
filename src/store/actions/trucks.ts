@@ -6,7 +6,8 @@ export const TRUCK_LOADING = "TRUCK_LOADING";
 export const TRUCK_FAIL = "TRUCK_FAIL";
 export const TRUCK_SUCCESS = "TRUCK_SUCCESS";
 export const TRUCK_LOADING_COMPLETE = "TRUCK_LOADING_COMPLETE";
-export const UPDATE_MENU_ITEM = 'UPDATE_MENU_ITEM'
+export const UPDATE_MENU_ITEM = "UPDATE_MENU_ITEM";
+export const UPDATE_TRUCK = "UPDATE_TRUCK";
 
 export interface TruckLoading {
   type: typeof TRUCK_LOADING;
@@ -23,9 +24,14 @@ export interface TruckSuccess {
   payload: Truck[];
 }
 
-export interface UpdateMenuItem{
+export interface UpdateMenuItem {
   type: typeof UPDATE_MENU_ITEM;
   payload: MenuItem;
+}
+
+export interface UpdateTruck {
+  type: typeof UPDATE_TRUCK;
+  payload: Truck;
 }
 
 export interface TruckLoadingComplete {
@@ -37,7 +43,8 @@ export type TruckDispatchTypes =
   | TruckFail
   | TruckSuccess
   | TruckLoadingComplete
-  | UpdateMenuItem;
+  | UpdateMenuItem
+  | UpdateTruck;
 
 export const fetchTrucks =
   () => async (dispatch: Dispatch<TruckDispatchTypes>) => {
@@ -90,17 +97,30 @@ export const fetchCurrentTruck =
       });
     }
   };
-export const updateMenuItem = (menuItem: MenuItem) => async (dispatch: Dispatch<TruckDispatchTypes>) =>
-{
-dispatch({
-        type: TRUCK_LOADING,
-      });
-dispatch({
-    type: UPDATE_MENU_ITEM,
-    payload: menuItem
-})
- dispatch({
-        type: TRUCK_LOADING_COMPLETE,
-      });
+export const updateMenuItem =
+  (menuItem: MenuItem) => async (dispatch: Dispatch<TruckDispatchTypes>) => {
+    dispatch({
+      type: TRUCK_LOADING,
+    });
+    dispatch({
+      type: UPDATE_MENU_ITEM,
+      payload: menuItem,
+    });
+    dispatch({
+      type: TRUCK_LOADING_COMPLETE,
+    });
+  };
 
-}
+export const updateTruck =
+  (truck: Truck) => async (dispatch: Dispatch<TruckDispatchTypes>) => {
+    dispatch({
+      type: TRUCK_LOADING,
+    });
+    dispatch({
+      type: UPDATE_TRUCK,
+      payload: truck,
+    });
+    dispatch({
+      type: TRUCK_LOADING_COMPLETE,
+    });
+  };

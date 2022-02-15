@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -34,15 +35,17 @@ export default function useFetchTruck(): [
 
   const handleRating = async (rating: number) => {
     setRating(rating);
+    let res: AxiosResponse<Truck>;
     if (getCustomerRating()) {
-      await axiosWithAuth().put(
+      res = await axiosWithAuth().put(
         `/trucks/truck/${currentTruck.truckId}/rating/${rating / 20}`
       );
-      return;
+    } else {
+      res = await axiosWithAuth().post(
+        `/trucks/truck/${currentTruck.truckId}/rating/${rating / 20}`
+      );
     }
-    await axiosWithAuth().post(
-      `/trucks/truck/${currentTruck.truckId}/rating/${rating / 20}`
-    );
+    dispatch(res);
   };
 
   const getCustomerRating = () => {
