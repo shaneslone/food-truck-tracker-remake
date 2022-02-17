@@ -1,13 +1,14 @@
-import { Dispatch } from "react";
-import { User, UserMin } from "../../types";
-import axiosWithAuth, { baseURL } from "../../utils/axoisWithAuth";
-import axios from "axios";
-import { Credentials } from "../../types";
-import { NavigateFunction } from "react-router-dom";
+import { Dispatch } from 'react';
+import { User, UserMin } from '../../types';
+import axiosWithAuth, { baseURL } from '../../utils/axoisWithAuth';
+import axios from 'axios';
+import { Credentials } from '../../types';
+import { NavigateFunction } from 'react-router-dom';
 
-export const USER_LOADING = "USER_LOADING";
-export const USER_FAIL = "USER_FAIL";
-export const USER_SUCCESS = "USER_SUCCESS";
+export const USER_LOADING = 'USER_LOADING';
+export const USER_FAIL = 'USER_FAIL';
+export const USER_SUCCESS = 'USER_SUCCESS';
+export const USER_LOGOUT = 'USER_LOGOUT';
 
 export interface UserLoading {
   type: typeof USER_LOADING;
@@ -23,11 +24,19 @@ export interface UserSuccess {
   payload: User;
 }
 
+export interface UserLogout {
+  type: typeof USER_LOGOUT;
+}
+
 interface Token {
   access_token: string;
 }
 
-export type UserDispatchTypes = UserLoading | UserFail | UserSuccess;
+export type UserDispatchTypes =
+  | UserLoading
+  | UserFail
+  | UserSuccess
+  | UserLogout;
 
 export const createUser =
   (newUser: UserMin, navigate: NavigateFunction) =>
@@ -39,14 +48,14 @@ export const createUser =
 
       const res = await axios.post<Token>(`${baseURL}/createnewuser`, newUser);
 
-      localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem('token', res.data.access_token);
 
       getUser(navigate)(dispatch);
     } catch (e) {
       console.log(e);
       dispatch({
         type: USER_FAIL,
-        payload: "Failed to create new user!",
+        payload: 'Failed to create new user!',
       });
     }
   };
@@ -59,20 +68,20 @@ export const getUser =
         type: USER_LOADING,
       });
 
-      const res = await axiosWithAuth().get<User>("/users/getuserinfo");
+      const res = await axiosWithAuth().get<User>('/users/getuserinfo');
 
       dispatch({
         type: USER_SUCCESS,
         payload: res.data,
       });
 
-      localStorage.setItem("user", JSON.stringify(res.data));
+      localStorage.setItem('user', JSON.stringify(res.data));
 
-      navigate("/map");
+      navigate('/map');
     } catch (e) {
       dispatch({
         type: USER_FAIL,
-        payload: "Failed to fetch user information!",
+        payload: 'Failed to fetch user information!',
       });
     }
   };
@@ -92,17 +101,17 @@ export const login =
           headers: {
             // btoa is converting our client id/client secret into base64
             Authorization: `Basic ${btoa(auth)}`,
-            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
         }
       );
-      localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem('token', res.data.access_token);
 
       getUser(navigate)(dispatch);
     } catch (e) {
       dispatch({
         type: USER_FAIL,
-        payload: "Incorrect username or password!",
+        payload: 'Incorrect username or password!',
       });
     }
   };
@@ -124,7 +133,7 @@ export const addFavoriteTruck =
     } catch (e) {
       dispatch({
         type: USER_FAIL,
-        payload: "User Failed",
+        payload: 'User Failed',
       });
     }
   };
@@ -146,7 +155,28 @@ export const deleteFavoriteTruck =
     } catch (e) {
       dispatch({
         type: USER_FAIL,
-        payload: "User Failed",
+        payload: 'User Failed',
+      });
+    }
+  };
+
+export const userLogout =
+  (navigate: NavigateFunction) =>
+  async (dispatch: Dispatch<UserDispatchTypes>) => {
+    try {
+      await axiosWithAuth().get('/logout');
+
+      localStorage.clear();
+
+      dispatch({
+        type: USER_LOGOUT,
+      });
+
+      navigate('/');
+    } catch (e) {
+      dispatch({
+        type: USER_FAIL,
+        payload: 'Failed to log out.',
       });
     }
   };

@@ -10,6 +10,7 @@ import OptionsContainer from './OptionsContainer';
 import CuisineFilter from './CuisineFilter';
 import RatingFilter from './RaitingFilter';
 import LocationSearch from './LocationSearch';
+import Menu from './Menu';
 
 const mapContainerStyle: React.CSSProperties = {
   width: '100%',
@@ -70,6 +71,7 @@ const TruckMap = () => {
       options={options}
       onLoad={onMapLoad}
     >
+      <Menu />
       {error && (
         <Alert
           variant='danger'
