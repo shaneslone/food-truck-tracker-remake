@@ -72,13 +72,42 @@ export const fetchTrucks =
     }
   };
 
+export const fetchTrucksByCuisine =
+  (cuisineType: string) => async (dispatch: Dispatch<TruckDispatchTypes>) => {
+    try {
+      dispatch({
+        type: TRUCK_LOADING,
+      });
+     
+      const res = await axiosWithAuth().get(
+        `/trucks/trucks/cuisinetype/${cuisineType}`
+      );
+
+      dispatch({
+        type: TRUCK_SUCCESS,
+        field: 'allTrucks',
+        payload: res.data
+      })
+    } catch (e) {
+      dispatch({
+        type: TRUCK_FAIL,
+        payload: "Failed to load trucks"
+      })
+    } finally {
+      dispatch({
+        type: TRUCK_LOADING_COMPLETE,
+      });
+    }
+  };
+
+
 export const fetchCurrentTruck =
   (truckId: string) => async (dispatch: Dispatch<TruckDispatchTypes>) => {
     try {
       dispatch({
         type: TRUCK_LOADING,
       });
-
+      
       const res = await axiosWithAuth().get(`/trucks/truck/${truckId}`);
 
       dispatch({
@@ -138,6 +167,33 @@ export const updateTruckRating =
     }
   };
 
+export const fetchTrucksByRating =
+  (rating: string) => async (dispatch: Dispatch<TruckDispatchTypes>) => {
+    try {
+      dispatch({
+        type: TRUCK_LOADING,
+      });
+
+      const res = await axiosWithAuth().get(`/trucks/trucks/rating/${rating}`);
+
+      dispatch({
+        type: TRUCK_SUCCESS,
+        field: "allTrucks",
+        payload: res.data
+      })
+      
+    } catch (e) {
+      dispatch({
+        type: TRUCK_FAIL,
+        payload: "Failed to load trucks."
+      })
+    } finally {
+      dispatch({
+        type: TRUCK_LOADING_COMPLETE,
+      });
+    }
+  }
+
 export const addMenuItemRating =
   (menuItemId: number, rating: number) =>
   async (dispatch: Dispatch<TruckDispatchTypes>) => {
@@ -174,6 +230,6 @@ export const updateMenuItemRating =
       dispatch({
         type: TRUCK_FAIL,
         payload: "Failed to update Menu Item rating",
-      });
+      })
     }
   };

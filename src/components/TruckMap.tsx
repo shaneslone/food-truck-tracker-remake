@@ -1,12 +1,15 @@
 import { useRef, useCallback, useState, useEffect } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
-import { Alert, Button } from 'react-bootstrap';
-import axiosWithAuth from '../utils/axoisWithAuth';
+import { Alert } from 'react-bootstrap';
 import { parseLocation } from '../utils/locationHelpers';
 import { RootState, Truck, User } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
 import TruckMapCard from './TruckMapCard';
 import { fetchTrucks } from '../store/actions/trucks';
+import OptionsContainer from './OptionsContainer';
+import CuisineFilter from './CuisineFilter';
+import RatingFilter from './RaitingFilter';
+import LocationSearch from './LocationSearch';
 
 const mapContainerStyle: React.CSSProperties = {
   width: '100%',
@@ -44,7 +47,7 @@ const TruckMap = () => {
     } else {
       setCenter(parseLocation(user.currentLocation));
     }
-  }, [user.currentLocation]);
+  }, [user.currentLocation, dispatch]);
 
   const mapRef = useRef<google.maps.Map | null>(null);
   const onMapLoad = useCallback((map: google.maps.Map): void => {
@@ -52,7 +55,7 @@ const TruckMap = () => {
   }, []);
 
   // pans the map to the target location
-  const panTo = useCallback(({ lat, lng }) => {
+  const panTo = useCallback(({ lat, lng }: google.maps.LatLngLiteral) => {
     if (mapRef.current) {
       mapRef.current.panTo({ lat, lng });
       mapRef.current.setZoom(15);
@@ -101,16 +104,11 @@ const TruckMap = () => {
           <TruckMapCard truck={selected} />
         </InfoWindow>
       )}
-      <Button
-        style={{
-          position: 'absolute',
-          bottom: '15px',
-          left: '50%',
-          transform: 'translate(-50%)',
-        }}
-      >
-        Show Options
-      </Button>
+      <OptionsContainer>
+        <LocationSearch panTo={panTo} />
+        <CuisineFilter />
+        <RatingFilter />
+      </OptionsContainer>
     </GoogleMap>
   );
 };
