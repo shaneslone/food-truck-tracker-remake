@@ -1,18 +1,24 @@
-import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchCurrentTruck, updateTruck } from "../store/actions/trucks";
+import {
+  addTruckRating,
+  fetchCurrentTruck,
+  updateTruckRating,
+} from "../store/actions/trucks";
+import { addFavoriteTruck, deleteFavoriteTruck } from "../store/actions/users";
 import { RootState, Truck, User } from "../types";
-import axiosWithAuth from "../utils/axoisWithAuth";
 
 export default function useFetchTruck(): [
   Truck,
   boolean,
+  boolean,
   string,
   number,
   typeof handleRating,
-  typeof getCustomerRating
+  typeof getCustomerRating,
+  typeof getFavoriteTruck,
+  typeof handleFavoriteTruck
 ] {
   const dispatch = useDispatch();
   const { truckId } = useParams();
@@ -31,21 +37,31 @@ export default function useFetchTruck(): [
 
   const user = useSelector<RootState, User>((state) => state.user.user);
 
+  const isDiner =
+    user.roles.filter((role) => role.role.name === "DINER").length > 0;
+
   const [rating, setRating] = useState<number>(0);
+
+  const getFavoriteTruck = () =>
+    user.favoriteTrucks.filter(
+      (truck) => truck.truck.truckId === currentTruck.truckId
+    ).length;
+
+  const handleFavoriteTruck = async () => {
+    if (getFavoriteTruck()) {
+      dispatch(deleteFavoriteTruck(currentTruck.truckId));
+    } else {
+      dispatch(addFavoriteTruck(currentTruck.truckId));
+    }
+  };
 
   const handleRating = async (rating: number) => {
     setRating(rating);
-    let res: AxiosResponse<Truck>;
     if (getCustomerRating()) {
-      res = await axiosWithAuth().put(
-        `/trucks/truck/${currentTruck.truckId}/rating/${rating / 20}`
-      );
+      dispatch(updateTruckRating(currentTruck.truckId, rating));
     } else {
-      res = await axiosWithAuth().post(
-        `/trucks/truck/${currentTruck.truckId}/rating/${rating / 20}`
-      );
+      dispatch(addTruckRating(currentTruck.truckId, rating));
     }
-    dispatch(updateTruck(res.data));
   };
 
   const getCustomerRating = () => {
@@ -62,10 +78,13 @@ export default function useFetchTruck(): [
 
   return [
     currentTruck,
+    isDiner,
     loading,
     errorMessage,
     rating,
     handleRating,
     getCustomerRating,
+    getFavoriteTruck,
+    handleFavoriteTruck,
   ];
 }

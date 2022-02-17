@@ -4,14 +4,18 @@ import LoadingSpinner from "./LoadingSpinner";
 import { Rating } from "react-simple-star-rating";
 import MenuItemCard from "./MenuItemCard";
 
-const TruckInfo = () => {
+const TruckInfo = () =>{
+
   const [
     currentTruck,
+    isDiner,
     Loading,
     errorMessage,
     rating,
     handleRating,
     getCustomerRating,
+    getFavoriteTruck,
+    handleFavoriteTruck,
   ] = useFetchTruck();
 
   if (Loading) return <LoadingSpinner />;
@@ -22,7 +26,9 @@ const TruckInfo = () => {
           {currentTruck.name}
         </Col>
         <Col className="d-flex justify-content-center m-2">
-          <Button>Add to Favorites</Button>
+          {isDiner && <Button onClick={handleFavoriteTruck}>
+            {getFavoriteTruck() ? "Remove from Favorites" : "Add to Favorites"}
+          </Button>}
         </Col>
       </Row>
       <Row className="w-75 m-2">
@@ -57,7 +63,7 @@ const TruckInfo = () => {
                 ]}
               />
             </ListGroup.Item>
-            <ListGroup.Item className="d-flex justify-content-center align-items-center">
+            {isDiner && <ListGroup.Item className="d-flex justify-content-center align-items-center">
               Your Rating:{" "}
               <Rating
                 ratingValue={rating}
@@ -73,7 +79,7 @@ const TruckInfo = () => {
                   "#f1d045",
                 ]}
               />
-            </ListGroup.Item>
+            </ListGroup.Item>}
           </ListGroup>
         </Col>
       </Row>

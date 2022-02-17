@@ -1,31 +1,30 @@
-import { AxiosResponse } from "axios";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateMenuItem } from "../store/actions/trucks";
+import {
+  addMenuItemRating,
+  updateMenuItemRating,
+} from "../store/actions/trucks";
 import { RootState, User, MenuItem } from "../types";
-import axiosWithAuth from "../utils/axoisWithAuth";
 
 export default function useMenuCardItem(
   menuItem: MenuItem
-): [number, typeof handleRating, typeof getCustomerRating] {
+): [number, boolean, typeof handleRating, typeof getCustomerRating] {
   const user = useSelector<RootState, User>((state) => state.user.user);
+
+  const isDiner =
+    user.roles.filter((role) => role.role.name === "DINER").length > 0;
+
   const [rating, setRating] = useState<number>(0);
+
   const dispatch = useDispatch();
 
   const handleRating = async (rating: number) => {
     setRating(rating);
-    let res: AxiosResponse<MenuItem>;
     if (getCustomerRating()) {
-      res = await axiosWithAuth().put<MenuItem>(
-        `/menuitems/menuitem/${menuItem.menuId}/rating/${rating / 20}`
-      );
+      dispatch(updateMenuItemRating(menuItem.menuId, rating));
     } else {
-      res = await axiosWithAuth().post<MenuItem>(
-        `/menuitems/menuitem/${menuItem.menuId}/rating/${rating / 20}`
-      );
+      dispatch(addMenuItemRating(menuItem.menuId, rating));
     }
-
-    dispatch(updateMenuItem(res.data));
   };
 
   const getCustomerRating = () => {
@@ -36,5 +35,5 @@ export default function useMenuCardItem(
     return 0;
   };
 
-  return [rating, handleRating, getCustomerRating];
+  return [rating, isDiner, handleRating, getCustomerRating];
 }

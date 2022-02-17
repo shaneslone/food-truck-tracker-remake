@@ -106,3 +106,47 @@ export const login =
       });
     }
   };
+
+export const addFavoriteTruck =
+  (truckId: number) => async (dispatch: Dispatch<UserDispatchTypes>) => {
+    try {
+      dispatch({
+        type: USER_LOADING,
+      });
+
+      const res = await axiosWithAuth().post<User>(
+        `/users/user/favorite/truck/${truckId}`
+      );
+      dispatch({
+        type: USER_SUCCESS,
+        payload: res.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: USER_FAIL,
+        payload: "User Failed",
+      });
+    }
+  };
+
+export const deleteFavoriteTruck =
+  (truckId: number) => async (dispatch: Dispatch<UserDispatchTypes>) => {
+    try {
+      dispatch({
+        type: USER_LOADING,
+      });
+
+      const res = await axiosWithAuth().delete<User>(
+        `/users/user/favorite/truck/${truckId}`
+      );
+      dispatch({
+        type: USER_SUCCESS,
+        payload: res.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: USER_FAIL,
+        payload: "User Failed",
+      });
+    }
+  };

@@ -97,30 +97,83 @@ export const fetchCurrentTruck =
       });
     }
   };
-export const updateMenuItem =
-  (menuItem: MenuItem) => async (dispatch: Dispatch<TruckDispatchTypes>) => {
-    dispatch({
-      type: TRUCK_LOADING,
-    });
-    dispatch({
-      type: UPDATE_MENU_ITEM,
-      payload: menuItem,
-    });
-    dispatch({
-      type: TRUCK_LOADING_COMPLETE,
-    });
+
+export const addTruckRating =
+  (truckId: number, rating: number) =>
+  async (dispatch: Dispatch<TruckDispatchTypes>) => {
+    try {
+      const res = await axiosWithAuth().post<Truck>(
+        `/trucks/truck/${truckId}/rating/${rating / 20}`
+      );
+
+      dispatch({
+        type: UPDATE_TRUCK,
+        payload: res.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: TRUCK_FAIL,
+        payload: "Failed to add rating",
+      });
+    }
   };
 
-export const updateTruck =
-  (truck: Truck) => async (dispatch: Dispatch<TruckDispatchTypes>) => {
-    dispatch({
-      type: TRUCK_LOADING,
-    });
-    dispatch({
-      type: UPDATE_TRUCK,
-      payload: truck,
-    });
-    dispatch({
-      type: TRUCK_LOADING_COMPLETE,
-    });
+export const updateTruckRating =
+  (truckId: number, rating: number) =>
+  async (dispatch: Dispatch<TruckDispatchTypes>) => {
+    try {
+      const res = await axiosWithAuth().put<Truck>(
+        `/trucks/truck/${truckId}/rating/${rating / 20}`
+      );
+
+      dispatch({
+        type: UPDATE_TRUCK,
+        payload: res.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: TRUCK_FAIL,
+        payload: "Failed to update rating",
+      });
+    }
+  };
+
+export const addMenuItemRating =
+  (menuItemId: number, rating: number) =>
+  async (dispatch: Dispatch<TruckDispatchTypes>) => {
+    try {
+      const res = await axiosWithAuth().post<MenuItem>(
+        `/menuitems/menuitem/${menuItemId}/rating/${rating / 20}`
+      );
+
+      dispatch({
+        type: UPDATE_MENU_ITEM,
+        payload: res.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: TRUCK_FAIL,
+        payload: "Failed to add Menu Item rating",
+      });
+    }
+  };
+
+export const updateMenuItemRating =
+  (menuItemId: number, rating: number) =>
+  async (dispatch: Dispatch<TruckDispatchTypes>) => {
+    try {
+      const res = await axiosWithAuth().put<MenuItem>(
+        `/menuitems/menuitem/${menuItemId}/rating/${rating / 20}`
+      );
+
+      dispatch({
+        type: UPDATE_MENU_ITEM,
+        payload: res.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: TRUCK_FAIL,
+        payload: "Failed to update Menu Item rating",
+      });
+    }
   };

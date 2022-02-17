@@ -36,7 +36,7 @@ export interface User extends UserMin {
   userid: number;
   roles: Role[];
   ownedTrucks: Truck[];
-  favoriteTrucks: Truck[];
+  favoriteTrucks: FavoriteTruck[];
   truckReviews: TruckReview[];
   menuItemReviews: MenuItemReview[];
 }
@@ -116,4 +116,8 @@ export interface MenuItemReview {
     menuId: number;
   };
   score: number;
+}
+
+export interface FavoriteTruck {
+truck: Truck;
 }

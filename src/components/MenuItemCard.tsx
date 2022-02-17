@@ -8,7 +8,8 @@ interface Iprops {
 }
 
 const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
-  const [rating, handleRating, getCustomerRating] = useMenuCardItem(menuItem);
+  const [rating, isDiner, handleRating, getCustomerRating] =
+    useMenuCardItem(menuItem);
 
   return (
     <Card className="w-100">
@@ -22,9 +23,11 @@ const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
         {menuItem.itemPhotos.length > 1 && (
           <Carousel>
             {menuItem.itemPhotos.map((photo) => {
-              <Carousel.Item>
-                <Image src={photo.url} />
-              </Carousel.Item>;
+              return (
+                <Carousel.Item>
+                  <Image src={photo.url} />
+                </Carousel.Item>
+              );
             })}
           </Carousel>
         )}
@@ -56,27 +59,31 @@ const MenuItemCard: React.FC<Iprops> = ({ menuItem }) => {
               />
             </Col>
           </Row>
-          <Row className="w-auto">
-            <Col>Your Rating</Col>
-          </Row>
-          <Row className="w-auto">
-            <Col>
-              <Rating
-                ratingValue={rating}
-                initialValue={getCustomerRating()}
-                onClick={handleRating}
-                allowHalfIcon
-                transition
-                fillColorArray={[
-                  "#f17a45",
-                  "#f19745",
-                  "#f1a545",
-                  "#f1b345",
-                  "#f1d045",
-                ]}
-              />
-            </Col>
-          </Row>
+          {isDiner && (
+            <Row className="w-auto">
+              <Col>Your Rating</Col>
+            </Row>
+          )}
+          {isDiner && (
+            <Row className="w-auto">
+              <Col>
+                <Rating
+                  ratingValue={rating}
+                  initialValue={getCustomerRating()}
+                  onClick={handleRating}
+                  allowHalfIcon
+                  transition
+                  fillColorArray={[
+                    "#f17a45",
+                    "#f19745",
+                    "#f1a545",
+                    "#f1b345",
+                    "#f1d045",
+                  ]}
+                />
+              </Col>
+            </Row>
+          )}
         </Container>
       </Card.Body>
     </Card>
