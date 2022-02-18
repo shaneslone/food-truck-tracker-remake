@@ -3,6 +3,7 @@ import useFetchTruck from '../hooks/useFetchTruck';
 import LoadingSpinner from './LoadingSpinner';
 import { Rating } from 'react-simple-star-rating';
 import MenuItemCard from './MenuItemCard';
+import Menu from './Menu';
 
 const TruckInfo = () => {
   const [
@@ -20,6 +21,7 @@ const TruckInfo = () => {
   if (Loading) return <LoadingSpinner />;
   return (
     <Container className='d-flex align-items-center flex-column'>
+      <Menu />
       <Row className='d-flex justify-content-center align-items-center'>
         <Col className='d-flex justify-content-center m-2'>
           {currentTruck.name}

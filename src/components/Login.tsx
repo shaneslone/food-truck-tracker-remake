@@ -23,7 +23,7 @@ const Login = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <Container>
+    <Container fluid>
       <Row className='d-flex justify-content-center'>
         <Col md={4}>
           {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}

@@ -4,6 +4,7 @@ import { RootState, User } from '../types';
 import MenuContainer from './MenuContainer';
 import { Person } from 'react-bootstrap-icons';
 import LogoutButton from './LogoutButton';
+import MapButton from './MapButton';
 
 const Menu = () => {
   const user = useSelector<RootState, User>(state => state.user.user);
@@ -14,6 +15,9 @@ const Menu = () => {
           <Col>
             <Person />
             {user.username}
+          </Col>
+          <Col>
+            <MapButton />
           </Col>
           <Col>
             <LogoutButton />
