@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 interface IProps {
   truck: Truck;
 }
-const TruckMapCard: React.FC<IProps> = props => {
+const TruckCard: React.FC<IProps> = props => {
   const { truck } = props;
 
   const navigate = useNavigate();
@@ -16,13 +16,8 @@ const TruckMapCard: React.FC<IProps> = props => {
         <Card.Title>{truck.name}</Card.Title>
         <ListGroup variant='flush'>
           <ListGroup.Item>Food Type: {truck.cuisineType}</ListGroup.Item>
-          <ListGroup.Item>
-            Average Rating:{' '}
-            {truck.customerRatingsAvg ? truck.customerRatingsAvg : 'N/A'}
-          </ListGroup.Item>
           <ListGroup.Item>Departure Time: {truck.departureTime}</ListGroup.Item>
         </ListGroup>
-
         <Button
           variant='primary'
           onClick={() => {
@@ -36,4 +31,4 @@ const TruckMapCard: React.FC<IProps> = props => {
   );
 };
 
-export default TruckMapCard;
+export default TruckCard;

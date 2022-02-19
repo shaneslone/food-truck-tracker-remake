@@ -4,7 +4,7 @@ import { Alert } from 'react-bootstrap';
 import { parseLocation } from '../utils/locationHelpers';
 import { RootState, Truck, User } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
-import TruckMapCard from './TruckMapCard';
+import TruckCard from './TruckCard';
 import { fetchTrucks } from '../store/actions/trucks';
 import OptionsContainer from './OptionsContainer';
 import CuisineFilter from './CuisineFilter';
@@ -103,7 +103,7 @@ const TruckMap = () => {
             setSelected(null);
           }}
         >
-          <TruckMapCard truck={selected} />
+          <TruckCard truck={selected} />
         </InfoWindow>
       )}
       <OptionsContainer>

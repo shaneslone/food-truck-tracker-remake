@@ -27,7 +27,12 @@ const MenuContainer: React.FC<IProps> = ({ children }) => {
       >
         <List />
       </Button>
-      <Offcanvas show={show} onHide={toggleShow} placement='end'>
+      <Offcanvas
+        show={show}
+        onHide={toggleShow}
+        placement='end'
+        style={{ maxHeight: '100vh', overflow: 'scroll' }}
+      >
         {children}
       </Offcanvas>
     </>
