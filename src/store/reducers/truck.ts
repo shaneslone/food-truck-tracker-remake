@@ -7,11 +7,13 @@ import {
   TRUCK_SUCCESS,
   UPDATE_MENU_ITEM,
   UPDATE_TRUCK,
+  SET_TRUCK_TO_LOCATE,
 } from "../actions/trucks";
 
 export interface TruckState {
   allTrucks: Truck[];
   currentTruck: Truck;
+  truckToLocate: Truck | null;
   loading: boolean;
   errorMessage: string;
 }
@@ -30,6 +32,7 @@ const initalState: TruckState = {
     reviews: [],
     customerRatingsAvg: 0,
   },
+  truckToLocate: null,
   loading: false,
   errorMessage: "",
 };
@@ -63,6 +66,8 @@ export const truckReducer = (
       };
     case UPDATE_TRUCK:
       return { ...state, currentTruck: action.payload };
+    case SET_TRUCK_TO_LOCATE:
+      return { ...state, truckToLocate: action.payload };
     default:
       return state;
   }
