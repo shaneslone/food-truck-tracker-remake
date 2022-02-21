@@ -5,7 +5,7 @@ import { parseLocation } from "../utils/locationHelpers";
 import { RootState, Truck, User } from "../types";
 import { useDispatch, useSelector } from "react-redux";
 import TruckCard from "./TruckCard";
-import { fetchTrucks } from "../store/actions/trucks";
+import { fetchTrucks, locateTruck } from "../store/actions/trucks";
 import OptionsContainer from "./OptionsContainer";
 import CuisineFilter from "./CuisineFilter";
 import RatingFilter from "./RaitingFilter";
@@ -43,6 +43,7 @@ const TruckMap = () => {
     dispatch(fetchTrucks());
     if (truckToLocate) {
       setCenter(parseLocation(truckToLocate.currentLocation));
+      dispatch(locateTruck(null));
     } else {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {

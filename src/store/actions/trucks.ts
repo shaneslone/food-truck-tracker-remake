@@ -37,7 +37,7 @@ export interface UpdateTruck {
 
 export interface SetTruckToLocate {
   type: typeof SET_TRUCK_TO_LOCATE;
-  payload: Truck;
+  payload: Truck | null;
 }
 
 export interface TruckLoadingComplete {
@@ -200,7 +200,7 @@ export const addMenuItemRating =
   };
 
 export const locateTruck =
-  (truck: Truck) => async (dispatch: Dispatch<TruckDispatchTypes>) =>
+  (truck: Truck | null) => async (dispatch: Dispatch<TruckDispatchTypes>) =>
     dispatch({
       type: SET_TRUCK_TO_LOCATE,
       payload: truck,
