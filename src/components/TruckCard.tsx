@@ -10,8 +10,13 @@ interface IProps {
 const TruckCard: React.FC<IProps> = (props) => {
   const { truck } = props;
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+
+  const findTruck = () => {
+    dispatch(locateTruck(truck));
+    navigate("/map");
+  };
+
   return (
     <Card style={{ width: "18rem" }}>
       <Card.Img variant="top" src={truck.imageOfTruck} />
@@ -29,9 +34,7 @@ const TruckCard: React.FC<IProps> = (props) => {
         >
           More Info
         </Button>
-        <Button onClick={() => dispatch(locateTruck(truck))}>
-          Locate Truck
-        </Button>
+        <Button onClick={findTruck}>Locate Truck</Button>
       </Card.Body>
     </Card>
   );
