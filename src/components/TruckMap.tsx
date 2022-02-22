@@ -1,20 +1,20 @@
-import { useRef, useCallback, useState, useEffect } from "react";
-import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
-import { Alert } from "react-bootstrap";
-import { parseLocation } from "../utils/locationHelpers";
-import { RootState, Truck, User } from "../types";
-import { useDispatch, useSelector } from "react-redux";
-import TruckCard from "./TruckCard";
-import { fetchTrucks, locateTruck } from "../store/actions/trucks";
-import OptionsContainer from "./OptionsContainer";
-import CuisineFilter from "./CuisineFilter";
-import RatingFilter from "./RaitingFilter";
-import LocationSearch from "./LocationSearch";
-import Menu from "./Menu";
+import { useRef, useCallback, useState, useEffect } from 'react';
+import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import { Alert } from 'react-bootstrap';
+import { parseLocation } from '../utils/locationHelpers';
+import { RootState, Truck, User } from '../types';
+import { useDispatch, useSelector } from 'react-redux';
+import TruckCard from './TruckCard';
+import { fetchTrucks, locateTruck } from '../store/actions/trucks';
+import OptionsContainer from './OptionsContainer';
+import CuisineFilter from './CuisineFilter';
+import RatingFilter from './RaitingFilter';
+import LocationSearch from './LocationSearch';
+import Menu from './Menu';
 
 const mapContainerStyle: React.CSSProperties = {
-  width: "100%",
-  height: "100vh",
+  width: '100%',
+  height: '100vh',
 };
 
 const options: google.maps.MapOptions = {
@@ -25,28 +25,28 @@ const options: google.maps.MapOptions = {
 const TruckMap = () => {
   const dispatch = useDispatch();
   const error = useSelector<RootState, string>(
-    (state) => state.trucks.errorMessage
+    state => state.trucks.errorMessage
   );
   const trucks = useSelector<RootState, Truck[]>(
-    (state) => state.trucks.allTrucks
+    state => state.trucks.allTrucks
   );
   const truckToLocate = useSelector<RootState, Truck | null>(
-    (state) => state.trucks.truckToLocate
+    state => state.trucks.truckToLocate
   );
   const [selected, setSelected] = useState<Truck | null>(null);
-  const user = useSelector<RootState, User>((state) => state.user.user);
+  const user = useSelector<RootState, User>(state => state.user.user);
   const [center, setCenter] = useState<google.maps.LatLngLiteral>(
-    parseLocation("43.6034958,-110.7363361")
+    parseLocation('43.6034958,-110.7363361')
   );
 
   useEffect(() => {
     dispatch(fetchTrucks());
     if (truckToLocate) {
       setCenter(parseLocation(truckToLocate.currentLocation));
-      dispatch(locateTruck(null));
+      setSelected(truckToLocate);
     } else {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
+        navigator.geolocation.getCurrentPosition(position => {
           setCenter({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -56,6 +56,9 @@ const TruckMap = () => {
         setCenter(parseLocation(user.currentLocation));
       }
     }
+    return () => {
+      dispatch(locateTruck(null));
+    };
   }, [user.currentLocation, dispatch, truckToLocate]);
 
   const mapRef = useRef<google.maps.Map | null>(null);
@@ -82,19 +85,19 @@ const TruckMap = () => {
       <Menu />
       {error && (
         <Alert
-          variant="danger"
+          variant='danger'
           style={{
-            position: "absolute",
-            top: "15px",
-            left: "50%",
-            transform: "translate(-50%)",
+            position: 'absolute',
+            top: '15px',
+            left: '50%',
+            transform: 'translate(-50%)',
           }}
         >
           {error}
         </Alert>
       )}
       {trucks &&
-        trucks.map((truck) => (
+        trucks.map(truck => (
           <Marker
             key={truck.truckId}
             position={parseLocation(truck.currentLocation)}
