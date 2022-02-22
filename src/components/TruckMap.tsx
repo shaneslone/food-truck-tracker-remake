@@ -4,8 +4,8 @@ import { Alert } from 'react-bootstrap';
 import { parseLocation } from '../utils/locationHelpers';
 import { RootState, Truck, User } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
-import TruckMapCard from './TruckMapCard';
-import { fetchTrucks } from '../store/actions/trucks';
+import TruckCard from './TruckCard';
+import { fetchTrucks, locateTruck } from '../store/actions/trucks';
 import OptionsContainer from './OptionsContainer';
 import CuisineFilter from './CuisineFilter';
 import RatingFilter from './RaitingFilter';
@@ -30,6 +30,9 @@ const TruckMap = () => {
   const trucks = useSelector<RootState, Truck[]>(
     state => state.trucks.allTrucks
   );
+  const truckToLocate = useSelector<RootState, Truck | null>(
+    state => state.trucks.truckToLocate
+  );
   const [selected, setSelected] = useState<Truck | null>(null);
   const user = useSelector<RootState, User>(state => state.user.user);
   const [center, setCenter] = useState<google.maps.LatLngLiteral>(
@@ -38,17 +41,25 @@ const TruckMap = () => {
 
   useEffect(() => {
     dispatch(fetchTrucks());
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        setCenter({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-      });
+    if (truckToLocate) {
+      setCenter(parseLocation(truckToLocate.currentLocation));
+      setSelected(truckToLocate);
     } else {
-      setCenter(parseLocation(user.currentLocation));
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        });
+      } else {
+        setCenter(parseLocation(user.currentLocation));
+      }
     }
-  }, [user.currentLocation, dispatch]);
+    return () => {
+      dispatch(locateTruck(null));
+    };
+  }, [user.currentLocation, dispatch, truckToLocate]);
 
   const mapRef = useRef<google.maps.Map | null>(null);
   const onMapLoad = useCallback((map: google.maps.Map): void => {
@@ -103,7 +114,7 @@ const TruckMap = () => {
             setSelected(null);
           }}
         >
-          <TruckMapCard truck={selected} />
+          <TruckCard truck={selected} />
         </InfoWindow>
       )}
       <OptionsContainer>
