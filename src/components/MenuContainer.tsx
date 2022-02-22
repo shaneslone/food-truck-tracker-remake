@@ -1,6 +1,11 @@
 import { ReactNode, useState } from 'react';
-import { Button, Offcanvas } from 'react-bootstrap';
+import { Col, Container, Row, Button, Offcanvas } from 'react-bootstrap';
 import { List } from 'react-bootstrap-icons';
+import { Person } from 'react-bootstrap-icons';
+import LogoutButton from './LogoutButton';
+import MapButton from './MapButton';
+import { useSelector } from 'react-redux';
+import { RootState, User } from '../types';
 
 interface IProps {
   children?: ReactNode;
@@ -8,6 +13,7 @@ interface IProps {
 
 const MenuContainer: React.FC<IProps> = ({ children }) => {
   const [show, setShow] = useState<boolean>(false);
+  const user = useSelector<RootState, User>(state => state.user.user);
 
   const toggleShow = () => {
     setShow(prevShow => !prevShow);
@@ -33,6 +39,22 @@ const MenuContainer: React.FC<IProps> = ({ children }) => {
         placement='end'
         style={{ maxHeight: '100vh', overflow: 'scroll' }}
       >
+        <Offcanvas.Header closeButton>
+          <Container fluid>
+            <Row className='m-2'>
+              <Col className='d-flex align-items-center'>
+                <Person />
+                {user.username}
+              </Col>
+              <Col>
+                <MapButton />
+              </Col>
+              <Col>
+                <LogoutButton />
+              </Col>
+            </Row>
+          </Container>
+        </Offcanvas.Header>
         {children}
       </Offcanvas>
     </>
