@@ -16,7 +16,11 @@ const LocateTruckButton: React.FC<IProps> = ({ truck }) => {
     navigate('/map');
   };
 
-  return <Button onClick={findTruck}>Locate Truck</Button>;
+  return (
+    <Button className='m-1' onClick={findTruck}>
+      Locate Truck
+    </Button>
+  );
 };
 
 export default LocateTruckButton;

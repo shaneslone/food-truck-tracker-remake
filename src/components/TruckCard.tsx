@@ -1,5 +1,5 @@
 import { Truck } from '../types';
-import { Card, ListGroup, Button } from 'react-bootstrap';
+import { Card, Container, ListGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { ReactNode } from 'react';
 
@@ -29,7 +29,9 @@ const TruckCard: React.FC<IProps> = ({ truck, children }) => {
             Departure Time: {new Date(truck.departureTime).toLocaleString()}
           </ListGroup.Item>
         </ListGroup>
-        {children}
+        <Container className='d-flex justify-content-center'>
+          {children}
+        </Container>
       </Card.Body>
     </Card>
   );

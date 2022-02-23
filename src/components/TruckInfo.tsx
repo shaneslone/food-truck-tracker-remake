@@ -4,6 +4,7 @@ import LoadingSpinner from './LoadingSpinner';
 import { Rating } from 'react-simple-star-rating';
 import MenuItemCard from './MenuItemCard';
 import Menu from './Menu';
+import { Star, StarFill } from 'react-bootstrap-icons';
 
 const TruckInfo = () => {
   const [
@@ -23,17 +24,8 @@ const TruckInfo = () => {
     <Container className='d-flex align-items-center flex-column'>
       <Menu />
       <Row className='d-flex justify-content-center align-items-center'>
-        <Col className='d-flex justify-content-center m-2'>
+        <Col className='d-flex justify-content-center m-2 h1'>
           {currentTruck.name}
-        </Col>
-        <Col className='d-flex justify-content-center m-2'>
-          {isDiner && (
-            <Button onClick={handleFavoriteTruck}>
-              {getFavoriteTruck()
-                ? 'Remove from Favorites'
-                : 'Add to Favorites'}
-            </Button>
-          )}
         </Col>
       </Row>
       <Row className='w-75 m-2'>
@@ -49,6 +41,22 @@ const TruckInfo = () => {
       <Row className='w-75 m-2'>
         <Col>
           <ListGroup>
+            <ListGroup.Item className='d-flex justify-content-center'>
+              {' '}
+              {isDiner && (
+                <Button onClick={handleFavoriteTruck}>
+                  {getFavoriteTruck() ? (
+                    <span>
+                      <StarFill /> Unfavorite
+                    </span>
+                  ) : (
+                    <span>
+                      <Star /> Favorite
+                    </span>
+                  )}
+                </Button>
+              )}
+            </ListGroup.Item>
             <ListGroup.Item className='d-flex justify-content-center'>{`Cuisine Type: ${currentTruck.cuisineType}`}</ListGroup.Item>
             <ListGroup.Item className='d-flex justify-content-center'>{`Departure Time: ${currentTruck.departureTime}`}</ListGroup.Item>
             <ListGroup.Item className='d-flex justify-content-center align-items-center'>
@@ -92,7 +100,7 @@ const TruckInfo = () => {
           </ListGroup>
         </Col>
       </Row>
-      <Row xs={1} md={2} className='w-75 m-2'>
+      <Row xs={1} md={2} className='w-75 m-2 d-flex justify-content-center'>
         {currentTruck.menu.map(menuItem => (
           <Col key={menuItem.menuId}>
             <MenuItemCard menuItem={menuItem} />

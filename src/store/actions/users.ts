@@ -126,6 +126,9 @@ export const addFavoriteTruck =
       const res = await axiosWithAuth().post<User>(
         `/users/user/favorite/truck/${truckId}`
       );
+
+      localStorage.setItem('user', JSON.stringify(res.data));
+
       dispatch({
         type: USER_SUCCESS,
         payload: res.data,
@@ -148,6 +151,9 @@ export const deleteFavoriteTruck =
       const res = await axiosWithAuth().delete<User>(
         `/users/user/favorite/truck/${truckId}`
       );
+
+      localStorage.setItem('user', JSON.stringify(res.data));
+
       dispatch({
         type: USER_SUCCESS,
         payload: res.data,

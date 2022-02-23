@@ -1,4 +1,5 @@
 import { Button } from 'react-bootstrap';
+import { BoxArrowRight } from 'react-bootstrap-icons';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userLogout } from '../store/actions/users';
@@ -12,7 +13,7 @@ const LogoutButton = () => {
   };
   return (
     <Button variant='primary' onClick={onClick}>
-      Logout
+      <BoxArrowRight /> Logout
     </Button>
   );
 };
