@@ -39,22 +39,24 @@ const MenuContainer: React.FC<IProps> = ({ children }) => {
         placement='end'
         style={{ maxHeight: '100vh', overflow: 'scroll' }}
       >
-        <Offcanvas.Header closeButton>
-          <Container fluid>
+        <Container fluid>
+          <Offcanvas.Header closeButton>
             <Row className='m-2'>
               <Col className='d-flex align-items-center'>
                 <Person />
                 {user.username}
               </Col>
-              <Col>
-                <MapButton />
-              </Col>
-              <Col>
-                <LogoutButton />
-              </Col>
             </Row>
-          </Container>
-        </Offcanvas.Header>
+          </Offcanvas.Header>
+          <Row className='d-flex justify-content-around m-1'>
+            <Col md='auto'>
+              <MapButton />
+            </Col>
+            <Col md='auto'>
+              <LogoutButton />
+            </Col>
+          </Row>
+        </Container>
         {children}
       </Offcanvas>
     </>
