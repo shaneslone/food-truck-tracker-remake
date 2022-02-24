@@ -1,4 +1,4 @@
-import { Truck } from "../../types";
+import { Truck } from '../../types';
 import {
   TruckDispatchTypes,
   TRUCK_FAIL,
@@ -8,11 +8,11 @@ import {
   UPDATE_MENU_ITEM,
   UPDATE_TRUCK,
   SET_TRUCK_TO_LOCATE,
-} from "../actions/trucks";
+} from '../actions/trucks';
 
 export interface TruckState {
   allTrucks: Truck[];
-  currentTruck: Truck;
+  currentTruck: Truck | null;
   truckToLocate: Truck | null;
   loading: boolean;
   errorMessage: string;
@@ -20,21 +20,10 @@ export interface TruckState {
 
 const initalState: TruckState = {
   allTrucks: [],
-  currentTruck: {
-    truckId: 0,
-    name: "",
-    imageOfTruck: "",
-    cuisineType: "",
-    currentLocation: "",
-    departureTime: 0,
-    dinerFavorites: [],
-    menu: [],
-    reviews: [],
-    customerRatingsAvg: 0,
-  },
+  currentTruck: null,
   truckToLocate: null,
   loading: false,
-  errorMessage: "",
+  errorMessage: '',
 };
 
 export const truckReducer = (
@@ -45,7 +34,7 @@ export const truckReducer = (
     case TRUCK_LOADING:
       return { ...state, loading: true };
     case TRUCK_SUCCESS:
-      return { ...state, [action.field]: action.payload, errorMessage: "" };
+      return { ...state, [action.field]: action.payload, errorMessage: '' };
     case TRUCK_FAIL:
       return { ...state, errorMessage: action.payload };
     case TRUCK_LOADING_COMPLETE:
@@ -55,13 +44,15 @@ export const truckReducer = (
         ...state,
         currentTruck: {
           ...state.currentTruck,
-          menu: state.currentTruck.menu.map((menuItem) => {
-            if (menuItem.menuId === action.payload.menuId) {
-              return action.payload;
-            } else {
-              return menuItem;
-            }
-          }),
+          menu:
+            state.currentTruck &&
+            state.currentTruck.menu.map(menuItem => {
+              if (menuItem.menuId === action.payload.menuId) {
+                return action.payload;
+              } else {
+                return menuItem;
+              }
+            }),
         },
       };
     case UPDATE_TRUCK:

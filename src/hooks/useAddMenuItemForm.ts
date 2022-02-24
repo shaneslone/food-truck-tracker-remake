@@ -1,8 +1,10 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { MenuItemMin } from "../types";
-import * as yup from "yup";
-import axiosWithAuth from "../utils/axoisWithAuth";
-import { useParams } from "react-router-dom";
+import { ChangeEvent, useEffect, useState } from 'react';
+import { MenuItemMin } from '../types';
+import * as yup from 'yup';
+import axiosWithAuth from '../utils/axoisWithAuth';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getUser } from '../store/actions/users';
 
 export default function useAddMenuItem(): [
   MenuItemMin,
@@ -13,10 +15,12 @@ export default function useAddMenuItem(): [
   (e: ChangeEvent<HTMLFormElement>) => Promise<void>
 ] {
   const initalValues: MenuItemMin = {
-    itemName: "",
-    itemDescription: "",
+    itemName: '',
+    itemDescription: '',
     itemPrice: 0,
   };
+
+  const dispatch = useDispatch();
 
   const [menuItem, setMenuItem] = useState<MenuItemMin>(initalValues);
 
@@ -24,24 +28,24 @@ export default function useAddMenuItem(): [
 
   const [disabled, setDisabled] = useState<boolean>(true);
 
-  const [ajaxError, setAjaxError] = useState<string>("");
+  const [ajaxError, setAjaxError] = useState<string>('');
 
   const { truckId } = useParams();
 
   const menuItemValidation = yup.object().shape({
-    itemName: yup.string().trim().required("Menu Item must have a name."),
+    itemName: yup.string().trim().required('Menu Item must have a name.'),
     itemDescription: yup
       .string()
       .trim()
-      .required("Please provide an item description"),
+      .required('Please provide an item description'),
     itemPrice: yup
       .number()
-      .min(0, "Price can not be less than 0")
-      .required("Please provide an item price"),
+      .min(0, 'Price can not be less than 0')
+      .required('Please provide an item price'),
   });
 
   useEffect(() => {
-    menuItemValidation.isValid(menuItem).then((valid) => setDisabled(!valid));
+    menuItemValidation.isValid(menuItem).then(valid => setDisabled(!valid));
   }, [menuItemValidation, menuItem]);
 
   const validateChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -49,10 +53,10 @@ export default function useAddMenuItem(): [
       .reach(menuItemValidation, e.target.name)
       .validate(e.target.value)
       .then(() => {
-        setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "" }));
+        setErrors(prevErrors => ({ ...prevErrors, [e.target.name]: '' }));
       })
       .catch((error: yup.ValidationError) => {
-        setErrors((prevErrors) => ({
+        setErrors(prevErrors => ({
           ...prevErrors,
           [e.target.name]: error.errors[0],
         }));
@@ -60,7 +64,7 @@ export default function useAddMenuItem(): [
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setMenuItem((menuItem) => ({
+    setMenuItem(menuItem => ({
       ...menuItem,
       [e.target.name]: e.target.value,
     }));
@@ -74,8 +78,9 @@ export default function useAddMenuItem(): [
         `/menuitems/menuitem/truck/${truckId}`,
         menuItem
       );
+      dispatch(getUser());
     } catch (e) {
-      setAjaxError("Failed to create new menu item!");
+      setAjaxError('Failed to create new menu item!');
     }
   };
 

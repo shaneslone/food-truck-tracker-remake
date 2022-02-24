@@ -61,7 +61,7 @@ export const createUser =
   };
 
 export const getUser =
-  (navigate: NavigateFunction) =>
+  (navigate: NavigateFunction | undefined = undefined) =>
   async (dispatch: Dispatch<UserDispatchTypes>) => {
     try {
       dispatch({
@@ -77,7 +77,7 @@ export const getUser =
 
       localStorage.setItem('user', JSON.stringify(res.data));
 
-      navigate('/map');
+      navigate && navigate('/map');
     } catch (e) {
       dispatch({
         type: USER_FAIL,

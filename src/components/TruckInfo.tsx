@@ -1,4 +1,12 @@
-import { Button, Col, Container, Image, ListGroup, Row } from 'react-bootstrap';
+import {
+  Alert,
+  Button,
+  Col,
+  Container,
+  Image,
+  ListGroup,
+  Row,
+} from 'react-bootstrap';
 import useFetchTruck from '../hooks/useFetchTruck';
 import LoadingSpinner from './LoadingSpinner';
 import { Rating } from 'react-simple-star-rating';
@@ -20,9 +28,16 @@ const TruckInfo = () => {
   ] = useFetchTruck();
 
   if (Loading) return <LoadingSpinner />;
+  if (!currentTruck)
+    return <Alert variant='danger'>Failed to load truck.</Alert>;
   return (
     <Container className='d-flex align-items-center flex-column'>
       <Menu />
+      <Row className='d-flex justify-content-center'>
+        <Col md={4}>
+          {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
+        </Col>
+      </Row>
       <Row className='d-flex justify-content-center align-items-center'>
         <Col className='d-flex justify-content-center m-2 h1'>
           {currentTruck.name}

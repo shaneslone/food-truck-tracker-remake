@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { addTruckRating, fetchCurrentTruck } from '../store/actions/trucks';
 import { addFavoriteTruck, deleteFavoriteTruck } from '../store/actions/users';
-import { RootState, Truck, User } from '../types';
+import { RootState, Truck, User, DinerReview } from '../types';
 
 export default function useFetchTruck(): [
-  Truck,
+  Truck | null,
   boolean,
   boolean,
   string,
@@ -19,7 +19,7 @@ export default function useFetchTruck(): [
   const dispatch = useDispatch();
   const { truckId } = useParams();
 
-  const currentTruck = useSelector<RootState, Truck>(
+  const currentTruck = useSelector<RootState, Truck | null>(
     state => state.trucks.currentTruck
   );
 
@@ -38,28 +38,36 @@ export default function useFetchTruck(): [
 
   const [rating, setRating] = useState<number>(0);
 
-  const getFavoriteTruck = () =>
-    user.favoriteTrucks.filter(
-      truck => truck.truck.truckId === currentTruck.truckId
-    ).length;
+  const getFavoriteTruck = () => {
+    if (currentTruck) {
+      return user.favoriteTrucks.filter(
+        truck => truck.truck.truckId === currentTruck.truckId
+      ).length;
+    } else {
+      return 0;
+    }
+  };
 
   const handleFavoriteTruck = async () => {
     if (getFavoriteTruck()) {
-      dispatch(deleteFavoriteTruck(currentTruck.truckId));
+      currentTruck && dispatch(deleteFavoriteTruck(currentTruck.truckId));
     } else {
-      dispatch(addFavoriteTruck(currentTruck.truckId));
+      currentTruck && dispatch(addFavoriteTruck(currentTruck.truckId));
     }
   };
 
   const handleRating = async (rating: number) => {
     setRating(rating);
-    dispatch(addTruckRating(currentTruck.truckId, rating));
+    currentTruck && dispatch(addTruckRating(currentTruck.truckId, rating));
   };
 
   const getCustomerRating = () => {
-    const result = currentTruck.reviews.filter(
-      review => review.diner.userid === user.userid
-    );
+    const result: DinerReview[] = [];
+    if (currentTruck) {
+      currentTruck.reviews.filter(
+        review => review.diner.userid === user.userid
+      );
+    }
     if (result.length) return result[0].score;
     return 0;
   };

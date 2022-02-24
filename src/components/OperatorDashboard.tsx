@@ -2,8 +2,6 @@ import { Button, Container, Row, Col, Accordion } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState, User } from '../types';
-import TruckMap from './TruckMap';
-import TruckCard from './TruckCard';
 import OperatorTruckCard from './OperatorTruckCard';
 
 const OperatorDashboard = () => {
