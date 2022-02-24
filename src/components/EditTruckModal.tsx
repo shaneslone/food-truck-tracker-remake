@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Modal, Container, Row, Col, Button } from 'react-bootstrap';
 import { Truck } from '../types';
 import AddMenuItem from './AddMenuItem';
+import AddPhoto from './AddPhoto';
 import MenuItemCard from './MenuItemCard';
 
 interface IProps {
@@ -25,7 +26,7 @@ const EditTruckModal: React.FC<IProps> = ({ show, toggle, truck }) => {
           <Row className='d-flex justify-content-center'>
             <Col md='auto'>
               <Button variant='primary' onClick={toggleAddMenuItem}>
-                Add New Menu Item
+                {addMenuItem ? 'Finished' : 'Add New Menu Item'}
               </Button>
             </Col>
           </Row>
@@ -37,7 +38,9 @@ const EditTruckModal: React.FC<IProps> = ({ show, toggle, truck }) => {
             {truck.menu.map(menuItem => {
               return (
                 <Col md={4}>
-                  <MenuItemCard menuItem={menuItem} />
+                  <MenuItemCard menuItem={menuItem}>
+                    <AddPhoto menuItem={menuItem} />
+                  </MenuItemCard>
                 </Col>
               );
             })}

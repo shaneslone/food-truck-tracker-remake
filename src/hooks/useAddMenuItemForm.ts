@@ -1,9 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { MenuItemMin } from '../types';
+import { MenuItemMin, RootState, Truck } from '../types';
 import * as yup from 'yup';
 import axiosWithAuth from '../utils/axoisWithAuth';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../store/actions/users';
 
 export default function useAddMenuItem(): [
@@ -30,7 +29,9 @@ export default function useAddMenuItem(): [
 
   const [ajaxError, setAjaxError] = useState<string>('');
 
-  const { truckId } = useParams();
+  const truckToEdit = useSelector<RootState, Truck | null>(
+    state => state.trucks.truckToEdit
+  );
 
   const menuItemValidation = yup.object().shape({
     itemName: yup.string().trim().required('Menu Item must have a name.'),
@@ -74,10 +75,12 @@ export default function useAddMenuItem(): [
   const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axiosWithAuth().post(
-        `/menuitems/menuitem/truck/${truckId}`,
-        menuItem
-      );
+      if (truckToEdit) {
+        await axiosWithAuth().post(
+          `/menuitems/menuitem/truck/${truckToEdit.truckId}`,
+          menuItem
+        );
+      }
       dispatch(getUser());
     } catch (e) {
       setAjaxError('Failed to create new menu item!');
