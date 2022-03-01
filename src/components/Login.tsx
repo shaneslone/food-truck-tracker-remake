@@ -37,6 +37,7 @@ const Login = () => {
                 <Form.Control
                   type='text'
                   placeholder='Enter username.'
+                  data-testid='username'
                   name='username'
                   value={credentials.username}
                   onChange={onChange}
@@ -56,6 +57,7 @@ const Login = () => {
                 <Form.Control
                   type='password'
                   placeholder='Enter password.'
+                  data-testid='password'
                   name='password'
                   value={credentials.password}
                   onChange={onChange}
@@ -70,7 +72,7 @@ const Login = () => {
         </Row>
         <Row className='d-flex justify-content-center'>
           <Col md='auto'>
-            <Button variant='primary' type='submit' disabled={disabled}>
+            <Button variant='primary' type='submit' data-testid="submit-btn" disabled={disabled}>
               Log In
             </Button>
           </Col>
