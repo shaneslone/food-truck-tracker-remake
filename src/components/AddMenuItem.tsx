@@ -8,21 +8,24 @@ import {
   Button,
 } from 'react-bootstrap';
 import useAddMenuItem from '../hooks/useAddMenuItemForm';
+import { MenuItem } from '../types';
 
-const AddMenuItem = () => {
+interface IProps {
+  itemToEdit?: MenuItem;
+}
+
+const AddMenuItem: React.FC<IProps> = ({ itemToEdit }) => {
   const [menuItem, errors, disabled, ajaxError, onChange, onSubmit] =
-    useAddMenuItem();
+    useAddMenuItem(itemToEdit);
 
   return (
     <Container>
       <Row className='d-flex justify-content-center'>
-        <Col md={4}>
-          {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}
-        </Col>
+        <Col>{ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}</Col>
       </Row>
       <Form onSubmit={onSubmit}>
         <Row className='d-flex justify-content-center m-4'>
-          <Col md={4}>
+          <Col>
             <Form.Group>
               <FloatingLabel label='Item Name'>
                 <Form.Control
@@ -42,11 +45,12 @@ const AddMenuItem = () => {
         </Row>
 
         <Row className='d-flex justify-content-center m-4'>
-          <Col md={4}>
+          <Col>
             <Form.Group>
               <FloatingLabel label='Item Description'>
                 <Form.Control
                   as='textarea'
+                  rows={3}
                   placeholder='Enter Item Description'
                   name='itemDescription'
                   value={menuItem.itemDescription}
@@ -62,7 +66,7 @@ const AddMenuItem = () => {
         </Row>
 
         <Row className='d-flex justify-content-center m-4'>
-          <Col md={4}>
+          <Col>
             <Form.Group>
               <FloatingLabel label='Item Price'>
                 <Form.Control

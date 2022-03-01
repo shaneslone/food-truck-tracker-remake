@@ -13,8 +13,8 @@ const OperatorDashboard = () => {
   return (
     <Container fluid>
       <Row className='d-flex justify-content-center m-1'>
-        <Col md='auto'>
-          <Button variant='primary' onClick={addTruck}>
+        <Col xs={6}>
+          <Button size='sm' variant='primary' onClick={addTruck}>
             Add Truck
           </Button>
         </Col>

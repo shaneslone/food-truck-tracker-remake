@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Modal, Container, Row, Col, Button } from 'react-bootstrap';
 import { Truck } from '../types';
 import AddMenuItem from './AddMenuItem';
-import AddPhoto from './AddPhoto';
+import AddPhotoButton from './AddPhotoButton';
+import EditMenuItemButton from './EditMenuItemButton';
 import MenuItemCard from './MenuItemCard';
 
 interface IProps {
@@ -16,6 +17,7 @@ const EditTruckModal: React.FC<IProps> = ({ show, toggle, truck }) => {
   const toggleAddMenuItem = () => {
     setAddMenuItem(prev => !prev);
   };
+
   return (
     <Modal show={show} onHide={toggle} size='lg' centered>
       <Container>
@@ -39,7 +41,8 @@ const EditTruckModal: React.FC<IProps> = ({ show, toggle, truck }) => {
               return (
                 <Col md={4}>
                   <MenuItemCard menuItem={menuItem}>
-                    <AddPhoto menuItem={menuItem} />
+                    <AddPhotoButton menuItem={menuItem} />
+                    <EditMenuItemButton itemToEdit={menuItem} />
                   </MenuItemCard>
                 </Col>
               );

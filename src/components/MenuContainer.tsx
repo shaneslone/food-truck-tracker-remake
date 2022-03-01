@@ -44,15 +44,15 @@ const MenuContainer: React.FC<IProps> = ({ children }) => {
             <Row className='m-2'>
               <Col className='d-flex align-items-center'>
                 <Person />
-                {user.username}
+                {user.username.toUpperCase()}
               </Col>
             </Row>
           </Offcanvas.Header>
           <Row className='d-flex justify-content-around m-1'>
-            <Col md='auto'>
+            <Col className='d-flex justify-content-around'>
               <MapButton />
             </Col>
-            <Col md='auto'>
+            <Col className='d-flex justify-content-around'>
               <LogoutButton />
             </Col>
           </Row>

@@ -1,11 +1,13 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { MenuItemMin, RootState, Truck } from '../types';
+import { MenuItemMin, MenuItem, RootState, Truck } from '../types';
 import * as yup from 'yup';
 import axiosWithAuth from '../utils/axoisWithAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../store/actions/users';
 
-export default function useAddMenuItem(): [
+export default function useAddMenuItem(
+  values: MenuItem | undefined = undefined
+): [
   MenuItemMin,
   MenuItemMin,
   boolean,
@@ -21,7 +23,9 @@ export default function useAddMenuItem(): [
 
   const dispatch = useDispatch();
 
-  const [menuItem, setMenuItem] = useState<MenuItemMin>(initalValues);
+  const [menuItem, setMenuItem] = useState<MenuItemMin | MenuItem>(
+    values ? values : initalValues
+  );
 
   const [errors, setErrors] = useState<MenuItemMin>(initalValues);
 
@@ -72,14 +76,25 @@ export default function useAddMenuItem(): [
     validateChange(e);
   };
 
+  const isMenuItem = (item: MenuItem | MenuItemMin): item is MenuItem => {
+    return 'menuId' in item;
+  };
+
   const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      if (truckToEdit) {
-        await axiosWithAuth().post(
-          `/menuitems/menuitem/truck/${truckToEdit.truckId}`,
+      if (isMenuItem(menuItem)) {
+        await axiosWithAuth().put(
+          `/menuitems/menuitem/${menuItem.menuId}`,
           menuItem
         );
+      } else {
+        if (truckToEdit) {
+          await axiosWithAuth().post(
+            `/menuitems/menuitem/truck/${truckToEdit.truckId}`,
+            menuItem
+          );
+        }
       }
       dispatch(getUser());
     } catch (e) {

@@ -12,7 +12,7 @@ const LogoutButton = () => {
     dispatch(userLogout(navigate));
   };
   return (
-    <Button variant='primary' onClick={onClick}>
+    <Button variant='primary' onClick={onClick} size='sm' className='m-1'>
       <BoxArrowRight /> Logout
     </Button>
   );
