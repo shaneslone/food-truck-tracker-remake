@@ -31,7 +31,7 @@ describe("Login Tests", () => {
     });
 
     test("Username field has correct placeholder text", () => {
-      expect(usernameEl).toHaveAttribute("placeholder", "Enter username.");
+      expect(usernameEl).toHaveAttribute("placeholder", expect.stringMatching(/enter username/i));
     });
   });
 
@@ -41,8 +41,11 @@ describe("Login Tests", () => {
     });
 
     test("Password field has correct placeholder text", () => {
-        expect(passwordEl).toHaveAttribute("placeholder", "Enter password.");
-      });
+      expect(passwordEl).toHaveAttribute(
+        "placeholder",
+        expect.stringMatching(/enter password/i)
+      );
+    });
   });
 
   describe("Submit Button", () => {
