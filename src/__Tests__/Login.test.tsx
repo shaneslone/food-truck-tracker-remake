@@ -1,4 +1,5 @@
-import { Matcher, MatcherOptions, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { applyMiddleware, createStore } from "redux";
@@ -18,33 +19,34 @@ const mockLogin = () => {
 };
 
 describe("Login Tests", () => {
-  let getByTestId: (
-    id: Matcher,
-    options?: MatcherOptions | undefined
-  ) => HTMLElement;
-
-  beforeEach(() => {
-    const component = render(mockLogin());
-    getByTestId = component.getByTestId;
-  });
+  const component = render(mockLogin());
+  const getByTestId = component.getByTestId;
+  const usernameEl = getByTestId("username");
+  const passwordEl = getByTestId("password");
+  const submitBtn = getByTestId("submit-btn");
 
   describe("Username Field", () => {
     test("Username field renders", () => {
-      const usernameEl = getByTestId("username");
       expect(usernameEl).toBeInTheDocument;
+    });
+
+    test("Username field has correct placeholder text", () => {
+      expect(usernameEl).toHaveAttribute("placeholder", "Enter username.");
     });
   });
 
   describe("Password Field", () => {
     test("Password field renders", () => {
-      const passwordEl = getByTestId("password");
       expect(passwordEl).toBeInTheDocument;
     });
+
+    test("Password field has correct placeholder text", () => {
+        expect(passwordEl).toHaveAttribute("placeholder", "Enter password.");
+      });
   });
 
   describe("Submit Button", () => {
     test("Submit button renders", () => {
-      const submitBtn = getByTestId("submit-btn");
       expect(submitBtn).toBeInTheDocument;
     });
   });
