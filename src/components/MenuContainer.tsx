@@ -4,8 +4,9 @@ import { List } from 'react-bootstrap-icons';
 import { Person } from 'react-bootstrap-icons';
 import LogoutButton from './LogoutButton';
 import MapButton from './MapButton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState, User } from '../types';
+import { getUser } from '../store/actions/users';
 
 interface IProps {
   children?: ReactNode;
@@ -15,7 +16,10 @@ const MenuContainer: React.FC<IProps> = ({ children }) => {
   const [show, setShow] = useState<boolean>(false);
   const user = useSelector<RootState, User>(state => state.user.user);
 
+  const dispatch = useDispatch();
+
   const toggleShow = () => {
+    dispatch(getUser());
     setShow(prevShow => !prevShow);
   };
 

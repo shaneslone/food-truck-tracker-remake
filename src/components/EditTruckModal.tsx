@@ -3,6 +3,7 @@ import { Modal, Container, Row, Col, Button } from 'react-bootstrap';
 import { Truck } from '../types';
 import AddMenuItem from './AddMenuItem';
 import AddPhotoButton from './AddPhotoButton';
+import AddTruck from './AddTruck';
 import DeleteMenuItemButton from './DeleteMenuItemButton';
 import EditMenuItemButton from './EditMenuItemButton';
 import MenuItemCard from './MenuItemCard';
@@ -19,6 +20,11 @@ const EditTruckModal: React.FC<IProps> = ({ show, toggle, truck }) => {
     setAddMenuItem(prev => !prev);
   };
 
+  const [editTruck, setEditTruck] = useState<boolean>(false);
+  const toggleEditTruck = () => {
+    setEditTruck(prev => !prev);
+  };
+
   return (
     <Modal show={show} onHide={toggle} size='lg' centered>
       <Container>
@@ -32,8 +38,14 @@ const EditTruckModal: React.FC<IProps> = ({ show, toggle, truck }) => {
                 {addMenuItem ? 'Finished' : 'Add New Menu Item'}
               </Button>
             </Col>
+            <Col>
+              <Button variant='primary' onClick={toggleEditTruck}>
+                {editTruck ? 'Finished' : 'Edit Truck'}
+              </Button>
+            </Col>
           </Row>
           <Row>{addMenuItem && <AddMenuItem />}</Row>
+          <Row>{editTruck && <AddTruck truckToEdit={truck} />}</Row>
           <Row>
             {truck.menu.length > 0 && <Col className='h3'>Menu Items</Col>}
           </Row>
