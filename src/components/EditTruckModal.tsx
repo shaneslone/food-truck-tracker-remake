@@ -3,6 +3,7 @@ import { Modal, Container, Row, Col, Button } from 'react-bootstrap';
 import { Truck } from '../types';
 import AddMenuItem from './AddMenuItem';
 import AddPhotoButton from './AddPhotoButton';
+import DeleteMenuItemButton from './DeleteMenuItemButton';
 import EditMenuItemButton from './EditMenuItemButton';
 import MenuItemCard from './MenuItemCard';
 
@@ -43,6 +44,7 @@ const EditTruckModal: React.FC<IProps> = ({ show, toggle, truck }) => {
                   <MenuItemCard menuItem={menuItem}>
                     <AddPhotoButton menuItem={menuItem} />
                     <EditMenuItemButton itemToEdit={menuItem} />
+                    <DeleteMenuItemButton itemToDelete={menuItem} />
                   </MenuItemCard>
                 </Col>
               );
