@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal, Container, Row, Col, Button } from 'react-bootstrap';
-import { Truck } from '../types';
+import { useSelector } from 'react-redux';
+import { RootState, Truck } from '../types';
 import AddMenuItem from './AddMenuItem';
 import AddPhotoButton from './AddPhotoButton';
 import AddTruck from './AddTruck';
@@ -11,10 +12,9 @@ import MenuItemCard from './MenuItemCard';
 interface IProps {
   show: boolean;
   toggle: () => void;
-  truck: Truck;
 }
 
-const EditTruckModal: React.FC<IProps> = ({ show, toggle, truck }) => {
+const EditTruckModal: React.FC<IProps> = ({ show, toggle }) => {
   const [addMenuItem, setAddMenuItem] = useState<boolean>(false);
   const toggleAddMenuItem = () => {
     setAddMenuItem(prev => !prev);
@@ -25,6 +25,11 @@ const EditTruckModal: React.FC<IProps> = ({ show, toggle, truck }) => {
     setEditTruck(prev => !prev);
   };
 
+  const truck = useSelector<RootState, Truck | null>(
+    state => state.trucks.truckToEdit
+  );
+
+  if (!truck) return null;
   return (
     <Modal show={show} onHide={toggle} size='lg' centered>
       <Container>

@@ -7,6 +7,7 @@ import axiosWithAuth from '../utils/axoisWithAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../store/actions/users';
 import { userInfo } from 'os';
+import { fetchTrucks, setTruckToEdit } from '../store/actions/trucks';
 
 const useAddTruckForm = (
   truckToEdit: Truck | undefined = undefined
@@ -107,11 +108,16 @@ const useAddTruckForm = (
     e.preventDefault();
     try {
       if (isTurck(truckInfo)) {
-        await axiosWithAuth().put(`trucks/truck/${truckInfo.truckId}`, {
-          ...truckInfo,
-          operator: user,
-        });
+        const res = await axiosWithAuth().put<Truck>(
+          `trucks/truck/${truckInfo.truckId}`,
+          {
+            ...truckInfo,
+            operator: user,
+          }
+        );
         dispatch(getUser());
+        dispatch(setTruckToEdit(res.data));
+        dispatch(fetchTrucks());
       } else {
         await axiosWithAuth().post('/trucks/truck', truckInfo);
         navigate('/map');
