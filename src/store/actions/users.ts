@@ -61,7 +61,7 @@ export const createUser =
   };
 
 export const getUser =
-  (navigate: NavigateFunction) =>
+  (navigate: NavigateFunction | undefined = undefined) =>
   async (dispatch: Dispatch<UserDispatchTypes>) => {
     try {
       dispatch({
@@ -77,7 +77,7 @@ export const getUser =
 
       localStorage.setItem('user', JSON.stringify(res.data));
 
-      navigate('/map');
+      navigate && navigate('/map');
     } catch (e) {
       dispatch({
         type: USER_FAIL,
@@ -126,6 +126,9 @@ export const addFavoriteTruck =
       const res = await axiosWithAuth().post<User>(
         `/users/user/favorite/truck/${truckId}`
       );
+
+      localStorage.setItem('user', JSON.stringify(res.data));
+
       dispatch({
         type: USER_SUCCESS,
         payload: res.data,
@@ -148,6 +151,9 @@ export const deleteFavoriteTruck =
       const res = await axiosWithAuth().delete<User>(
         `/users/user/favorite/truck/${truckId}`
       );
+
+      localStorage.setItem('user', JSON.stringify(res.data));
+
       dispatch({
         type: USER_SUCCESS,
         payload: res.data,
