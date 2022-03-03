@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
 import { XCircle } from 'react-bootstrap-icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchTrucks, setTruckToEdit } from '../store/actions/trucks';
+import { useDispatch } from 'react-redux';
+import { fetchTrucks } from '../store/actions/trucks';
 import { getUser } from '../store/actions/users';
-import { RootState, Truck } from '../types';
+import { Truck } from '../types';
 import axiosWithAuth from '../utils/axoisWithAuth';
 import EditMenuItemModal from './EditMenuItemModal';
 
