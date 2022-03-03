@@ -1,6 +1,12 @@
 import { ReactNode, useState } from 'react';
-import { Button, Offcanvas } from 'react-bootstrap';
+import { Col, Container, Row, Button, Offcanvas } from 'react-bootstrap';
 import { List } from 'react-bootstrap-icons';
+import { Person } from 'react-bootstrap-icons';
+import LogoutButton from './LogoutButton';
+import MapButton from './MapButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, User } from '../types';
+import { getUser } from '../store/actions/users';
 
 interface IProps {
   children?: ReactNode;
@@ -8,8 +14,12 @@ interface IProps {
 
 const MenuContainer: React.FC<IProps> = ({ children }) => {
   const [show, setShow] = useState<boolean>(false);
+  const user = useSelector<RootState, User>(state => state.user.user);
+
+  const dispatch = useDispatch();
 
   const toggleShow = () => {
+    dispatch(getUser());
     setShow(prevShow => !prevShow);
   };
 
@@ -33,6 +43,24 @@ const MenuContainer: React.FC<IProps> = ({ children }) => {
         placement='end'
         style={{ maxHeight: '100vh', overflow: 'scroll' }}
       >
+        <Container fluid>
+          <Offcanvas.Header closeButton>
+            <Row className='m-2'>
+              <Col className='d-flex align-items-center'>
+                <Person />
+                {user.username.toUpperCase()}
+              </Col>
+            </Row>
+          </Offcanvas.Header>
+          <Row className='d-flex justify-content-around m-1'>
+            <Col className='d-flex justify-content-around'>
+              <MapButton />
+            </Col>
+            <Col className='d-flex justify-content-around'>
+              <LogoutButton />
+            </Col>
+          </Row>
+        </Container>
         {children}
       </Offcanvas>
     </>

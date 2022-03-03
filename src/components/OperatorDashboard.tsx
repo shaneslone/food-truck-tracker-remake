@@ -2,8 +2,7 @@ import { Button, Container, Row, Col, Accordion } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState, User } from '../types';
-import TruckMap from './TruckMap';
-import TruckCard from './TruckCard';
+import OperatorTruckCard from './OperatorTruckCard';
 
 const OperatorDashboard = () => {
   const user = useSelector<RootState, User>(state => state.user.user);
@@ -13,9 +12,9 @@ const OperatorDashboard = () => {
   };
   return (
     <Container fluid>
-      <Row className='d-flex align-items-center'>
-        <Col md='auto'>
-          <Button variant='primary' onClick={addTruck}>
+      <Row className='d-flex justify-content-center m-1'>
+        <Col xs={6}>
+          <Button size='sm' variant='primary' onClick={addTruck}>
             Add Truck
           </Button>
         </Col>
@@ -30,7 +29,7 @@ const OperatorDashboard = () => {
               <Accordion.Item eventKey={truck.name}>
                 <Accordion.Header>{truck.name}</Accordion.Header>
                 <Accordion.Body>
-                  <TruckCard truck={truck} />
+                  <OperatorTruckCard truck={truck} />
                 </Accordion.Body>
               </Accordion.Item>
             );

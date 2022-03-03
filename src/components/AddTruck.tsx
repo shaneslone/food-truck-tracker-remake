@@ -19,8 +19,13 @@ import useAddTruckForm from '../hooks/useAddTruckForm';
 import usePlacesAutocomplete from 'use-places-autocomplete';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { stringifyLoction } from '../utils/locationHelpers';
+import { Truck } from '../types';
 
-const AddTruck = () => {
+interface IProps {
+  truckToEdit?: Truck;
+}
+
+const AddTruck: React.FC<IProps> = ({ truckToEdit }) => {
   const {
     ready,
     value,
@@ -37,7 +42,7 @@ const AddTruck = () => {
     updateLocation,
     onChange,
     onSubmit,
-  ] = useAddTruckForm();
+  ] = useAddTruckForm(truckToEdit);
 
   return (
     <Container>

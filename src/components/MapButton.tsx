@@ -9,7 +9,7 @@ const MapButton = () => {
   };
 
   return (
-    <Button variant='primary' onClick={onClick}>
+    <Button variant='primary' onClick={onClick} size='sm' className='m-1'>
       <Map /> Map
     </Button>
   );
