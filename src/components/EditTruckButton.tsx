@@ -30,6 +30,8 @@ const EditTruckButton: React.FC<IProps> = ({ truck }) => {
         onClick={() => {
           edit(truck);
         }}
+        size='sm'
+        className='m-1'
       >
         <Pencil />
       </Button>

@@ -6,7 +6,6 @@ import { ValidationError } from 'yup';
 import axiosWithAuth from '../utils/axoisWithAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../store/actions/users';
-import { userInfo } from 'os';
 import { fetchTrucks, setTruckToEdit } from '../store/actions/trucks';
 
 const useAddTruckForm = (
