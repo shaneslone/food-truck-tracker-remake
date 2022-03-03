@@ -29,7 +29,7 @@ const Login = () => {
           {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}
         </Col>
       </Row>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit} data-testid='login-form'>
         <Row className='d-flex justify-content-center m-4'>
           <Col md={4}>
             <Form.Group>
@@ -72,7 +72,7 @@ const Login = () => {
         </Row>
         <Row className='d-flex justify-content-center'>
           <Col md='auto'>
-            <Button variant='primary' type='submit' data-testid="submit-btn" disabled={disabled}>
+            <Button variant='primary' type='submit' data-testid="login-btn" disabled={disabled}>
               Log In
             </Button>
           </Col>
