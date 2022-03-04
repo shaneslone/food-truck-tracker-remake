@@ -4,6 +4,7 @@ import axiosWithAuth, { baseURL } from "../../utils/axoisWithAuth";
 import axios from "axios";
 import { Credentials } from "../../types";
 import { NavigateFunction } from "react-router-dom";
+import { doLogin } from "../../services/ApiServices";
 
 export const USER_LOADING = "USER_LOADING";
 export const USER_FAIL = "USER_FAIL";
@@ -28,7 +29,7 @@ export interface UserLogout {
   type: typeof USER_LOGOUT;
 }
 
-interface Token {
+export interface Token {
   access_token: string;
 }
 
@@ -77,7 +78,7 @@ export const getUser =
 
       localStorage.setItem("user", JSON.stringify(res.data));
 
-      navigate && navigate('/map');
+      navigate && navigate("/map");
     } catch (e) {
       dispatch({
         type: USER_FAIL,
@@ -89,23 +90,12 @@ export const getUser =
 export const login =
   (credentials: Credentials, navigate: NavigateFunction) =>
   async (dispatch: Dispatch<UserDispatchTypes>) => {
-    const auth = `${process.env.REACT_APP_OAUTHCLIENTID}:${process.env.REACT_APP_OAUTHCLIENTSECRET}`;
     try {
       dispatch({
         type: USER_LOADING,
       });
-      const res = await axios.post<Token>(
-        `${baseURL}/login`,
-        `grant_type=password&username=${credentials.username}&password=${credentials.password}`,
-        {
-          headers: {
-            // btoa is converting our client id/client secret into base64
-            Authorization: `Basic ${btoa(auth)}`,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-      localStorage.setItem("token", res.data.access_token);
+      const token = await doLogin(credentials);
+      localStorage.setItem("token", token);
 
       getUser(navigate)(dispatch);
     } catch (e) {
@@ -127,7 +117,7 @@ export const addFavoriteTruck =
         `/users/user/favorite/truck/${truckId}`
       );
 
-      localStorage.setItem('user', JSON.stringify(res.data));
+      localStorage.setItem("user", JSON.stringify(res.data));
 
       dispatch({
         type: USER_SUCCESS,
@@ -152,7 +142,7 @@ export const deleteFavoriteTruck =
         `/users/user/favorite/truck/${truckId}`
       );
 
-      localStorage.setItem('user', JSON.stringify(res.data));
+      localStorage.setItem("user", JSON.stringify(res.data));
 
       dispatch({
         type: USER_SUCCESS,
