@@ -78,7 +78,12 @@ const Login = () => {
         </Row>
         <Row className="d-flex justify-content-center">
           <Col md="auto">
-            <Button variant="primary" type="submit" data-testid="login-btn">
+            <Button
+              variant="primary"
+              type="submit"
+              data-testid="login-btn"
+              disabled={disabled}
+            >
               Log In
             </Button>
           </Col>
