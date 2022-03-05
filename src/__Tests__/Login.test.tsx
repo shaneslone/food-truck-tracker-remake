@@ -2,6 +2,7 @@ import {
   Matcher,
   MatcherOptions,
   render,
+  waitFor,
   waitForOptions,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -12,7 +13,8 @@ import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import Login from "../components/Login";
 import reducers from "../store/reducers";
-import { doLogin } from "../services/ApiServices";
+import * as mockApi from "../services/ApiServices";
+import { Credentials } from "../types";
 
 const mockLogin = () => {
   const store = createStore(reducers, applyMiddleware(thunk));
@@ -24,6 +26,10 @@ const mockLogin = () => {
     </Provider>
   );
 };
+
+jest.mock("../services/ApiServices");
+
+const { doLogin } = mockApi;
 
 let usernameEl: HTMLElement;
 let passwordEl: HTMLElement;
@@ -37,7 +43,6 @@ let findByTestId: (
   options?: MatcherOptions | undefined,
   waitForElementOptions?: waitForOptions | undefined
 ) => Promise<HTMLElement>;
-jest.mock("../services/ApiServices");
 
 describe("Login Tests", () => {
   beforeEach(() => {
@@ -86,21 +91,33 @@ describe("Login Tests", () => {
   });
 
   describe("Login Button", () => {
-    test("Login button renders", async () => {
+    test("Login button renders", () => {
       expect(loginBtn).toBeInTheDocument;
       expect(loginBtn).toBeDisabled();
+    });
+
+    test("Submiting invalid login credintials rendors error", async () => {
+      jest
+        .spyOn(mockApi, "doLogin")
+        .mockImplementation((credintials: Credentials) => {
+          const { username, password } = credintials;
+          if (username === "admin" && password === "password")
+            return Promise.resolve("testtoken");
+          else return Promise.reject("invalid login");
+        });
       userEvent.type(usernameEl, "admin");
-      userEvent.type(passwordEl, "password");
+      userEvent.type(passwordEl, "password2");
       expect(usernameEl).toHaveValue("admin");
-      expect(passwordEl).toHaveValue("password");
+      expect(passwordEl).toHaveValue("password2");
       loginBtn = await findByTestId("login-btn");
       expect(loginBtn).not.toBeDisabled();
       userEvent.click(loginBtn);
       expect(doLogin).toHaveBeenCalledTimes(1);
       expect(doLogin).toHaveBeenCalledWith({
         username: "admin",
-        password: "password",
+        password: "password2",
       });
+      expect(doLogin).toHaveReturnedWith(Promise.resolve("testtoken2"));
       const error = await findByTestId("login-alert");
       expect(error).toBeInTheDocument();
     });
