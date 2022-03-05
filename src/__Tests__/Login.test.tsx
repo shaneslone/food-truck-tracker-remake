@@ -97,29 +97,20 @@ describe("Login Tests", () => {
     });
 
     test("Submiting invalid login credintials rendors error", async () => {
-      jest
-        .spyOn(mockApi, "doLogin")
-        .mockImplementation((credintials: Credentials) => {
-          const { username, password } = credintials;
-          if (username === "admin" && password === "password")
-            return Promise.resolve("testtoken");
-          else return Promise.reject("invalid login");
-        });
       userEvent.type(usernameEl, "admin");
-      userEvent.type(passwordEl, "password2");
+      userEvent.type(passwordEl, "wrongpassword");
       expect(usernameEl).toHaveValue("admin");
-      expect(passwordEl).toHaveValue("password2");
+      expect(passwordEl).toHaveValue("wrongpassword");
       loginBtn = await findByTestId("login-btn");
       expect(loginBtn).not.toBeDisabled();
       userEvent.click(loginBtn);
       expect(doLogin).toHaveBeenCalledTimes(1);
       expect(doLogin).toHaveBeenCalledWith({
         username: "admin",
-        password: "password2",
+        password: "wrongpassword",
       });
-      expect(doLogin).toHaveReturnedWith(Promise.resolve("testtoken2"));
       const error = await findByTestId("login-alert");
-      expect(error).toBeInTheDocument();
+      expect(error).toBeVisible();
     });
   });
 });
