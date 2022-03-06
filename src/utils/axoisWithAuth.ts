@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = 'http://localhost:2019';
+export const baseURL = 'https://foodtrucktracker-be.herokuapp.com';
 
 const axiosWithAuth = () => {
   const token = localStorage.getItem('token');

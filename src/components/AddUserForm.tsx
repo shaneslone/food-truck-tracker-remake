@@ -41,11 +41,14 @@ const UserForm = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <Container>
+    <Container className='text-center'>
       <Row className='d-flex justify-content-center'>
         <Col md={4}>
           {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}
         </Col>
+      </Row>
+      <Row>
+        <Col className='h1'>Join Food Truck Tracker</Col>
       </Row>
       <Form onSubmit={onSubmit}>
         <Row className='d-flex justify-content-center m-4'>
@@ -188,7 +191,7 @@ const UserForm = () => {
           </Col>
         </Row>
         <Row className='d-flex justify-content-center'>
-          <Col md='auto'>
+          <Col md='auto' className='d-flex justify-content-center'>
             <Button variant='primary' type='submit' disabled={disabled}>
               Submit
             </Button>

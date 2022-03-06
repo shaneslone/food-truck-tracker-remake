@@ -86,7 +86,7 @@ const AddMenuItem: React.FC<IProps> = ({ itemToEdit }) => {
         </Row>
 
         <Row className='d-flex justify-content-center'>
-          <Col md='auto'>
+          <Col md='auto' className='d-flex justify-content-center'>
             <Button variant='primary' type='submit' disabled={disabled}>
               Submit
             </Button>

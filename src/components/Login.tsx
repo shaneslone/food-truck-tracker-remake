@@ -8,6 +8,7 @@ import {
   Alert,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import useLogin from '../hooks/useLogin';
 import { RootState } from '../types';
 import LoadingSpinner from './LoadingSpinner';
@@ -23,11 +24,14 @@ const Login = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <Container fluid>
+    <Container fluid className='text-center'>
       <Row className='d-flex justify-content-center'>
         <Col md={4}>
           {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}
         </Col>
+      </Row>
+      <Row>
+        <Col className='text-center h1'>Food Truck Tracker</Col>
       </Row>
       <Form onSubmit={onSubmit}>
         <Row className='d-flex justify-content-center m-4'>
@@ -69,13 +73,19 @@ const Login = () => {
           </Col>
         </Row>
         <Row className='d-flex justify-content-center'>
-          <Col md='auto'>
+          <Col md='auto' className='d-flex justify-content-center'>
             <Button variant='primary' type='submit' disabled={disabled}>
               Log In
             </Button>
           </Col>
         </Row>
       </Form>
+      <Row>
+        <Col>
+          Don't have an account?{' '}
+          <Link to={'/signup'}>Click here to sign up!</Link>
+        </Col>
+      </Row>
     </Container>
   );
 };

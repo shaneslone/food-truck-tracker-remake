@@ -30,8 +30,8 @@ const MenuContainer: React.FC<IProps> = ({ children }) => {
         onClick={toggleShow}
         style={{
           position: 'fixed',
-          right: '5%',
-          top: '5%',
+          right: '2%',
+          top: '2%',
           zIndex: '10',
         }}
       >
