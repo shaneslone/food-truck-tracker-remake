@@ -12,7 +12,7 @@ import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import Login from "../components/Login";
 import reducers from "../store/reducers";
-const mockApi = require("../services/ApiServices");
+import { doLogin } from "../services/ApiServices";
 
 const mockLogin = () => {
   const store = createStore(reducers, applyMiddleware(thunk));
@@ -124,8 +124,8 @@ describe("Login Tests", () => {
       loginBtn = await findByTestId("login-btn");
       expect(loginBtn).not.toBeDisabled();
       userEvent.click(loginBtn);
-      expect(mockApi.doLogin).toHaveBeenCalledTimes(1);
-      expect(mockApi.doLogin).toHaveBeenCalledWith({
+      expect(doLogin).toHaveBeenCalledTimes(1);
+      expect(doLogin).toHaveBeenCalledWith({
         username: "admin",
         password: "wrongpassword",
       });
