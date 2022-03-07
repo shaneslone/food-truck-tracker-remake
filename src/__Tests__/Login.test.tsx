@@ -2,7 +2,6 @@ import {
   Matcher,
   MatcherOptions,
   render,
-  waitFor,
   waitForOptions,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -14,7 +13,6 @@ import thunk from "redux-thunk";
 import Login from "../components/Login";
 import reducers from "../store/reducers";
 import * as mockApi from "../services/ApiServices";
-import { Credentials } from "../types";
 
 const mockLogin = () => {
   const store = createStore(reducers, applyMiddleware(thunk));
@@ -97,6 +95,9 @@ describe("Login Tests", () => {
     });
 
     test("Submiting invalid login credintials rendors error", async () => {
+      const mockDoLogin = jest
+        .spyOn(mockApi, "doLogin")
+        .mockReturnValueOnce(Promise.resolve("dog"));
       userEvent.type(usernameEl, "admin");
       userEvent.type(passwordEl, "wrongpassword");
       expect(usernameEl).toHaveValue("admin");
@@ -104,11 +105,12 @@ describe("Login Tests", () => {
       loginBtn = await findByTestId("login-btn");
       expect(loginBtn).not.toBeDisabled();
       userEvent.click(loginBtn);
-      expect(doLogin).toHaveBeenCalledTimes(1);
-      expect(doLogin).toHaveBeenCalledWith({
+      expect(mockDoLogin).toHaveBeenCalledTimes(1);
+      expect(mockDoLogin).toHaveBeenCalledWith({
         username: "admin",
         password: "wrongpassword",
       });
+      expect(mockDoLogin).toHaveReturnedWith("dog");
       const error = await findByTestId("login-alert");
       expect(error).toBeVisible();
     });
