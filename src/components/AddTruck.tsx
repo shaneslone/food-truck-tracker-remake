@@ -20,6 +20,7 @@ import usePlacesAutocomplete from 'use-places-autocomplete';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { stringifyLoction } from '../utils/locationHelpers';
 import { Truck } from '../types';
+import Menu from './Menu';
 
 interface IProps {
   truckToEdit?: Truck;
@@ -45,11 +46,15 @@ const AddTruck: React.FC<IProps> = ({ truckToEdit }) => {
   ] = useAddTruckForm(truckToEdit);
 
   return (
-    <Container>
+    <Container className='text-center'>
+      <Menu />
       <Row className='d-flex justify-content-center'>
         <Col md={4}>
           {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}
         </Col>
+      </Row>
+      <Row>
+        <Col className='h1'>Enter your truck's information</Col>
       </Row>
       <Form onSubmit={onSubmit}>
         <Row className='d-flex justify-content-center m-4'>
@@ -176,7 +181,7 @@ const AddTruck: React.FC<IProps> = ({ truckToEdit }) => {
         </Row>
 
         <Row className='d-flex justify-content-center'>
-          <Col md='auto'>
+          <Col md='auto' className='d-flex justify-content-center'>
             <Button variant='primary' type='submit' disabled={disabled}>
               Submit
             </Button>
