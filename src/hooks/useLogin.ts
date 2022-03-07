@@ -1,10 +1,10 @@
-import { useState, ChangeEvent, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import * as yup from 'yup';
-import { ValidationError } from 'yup';
-import { Credentials, CredentialsErrors } from '../types';
-import { login } from '../store/actions/users';
-import { useNavigate } from 'react-router-dom';
+import { useState, ChangeEvent, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import * as yup from "yup";
+import { ValidationError } from "yup";
+import { Credentials, CredentialsErrors } from "../types";
+import { login } from "../store/actions/users";
+import { useNavigate } from "react-router-dom";
 
 const useLogin = (): [
   Credentials,
@@ -17,8 +17,8 @@ const useLogin = (): [
   const navigate = useNavigate();
 
   const initalState: Credentials = {
-    username: '',
-    password: '',
+    username: "",
+    password: "",
   };
 
   const [credentials, setCredentials] = useState<Credentials>(initalState);
@@ -26,12 +26,12 @@ const useLogin = (): [
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const loginValidation = yup.object().shape({
-    username: yup.string().required('Username is required.'),
-    password: yup.string().required('Password is required.'),
+    username: yup.string().required("Username is required."),
+    password: yup.string().required("Password is required."),
   });
 
   useEffect(() => {
-    loginValidation.isValid(credentials).then(valid => {
+    loginValidation.isValid(credentials).then((valid) => {
       setDisabled(!valid);
     });
   }, [loginValidation, credentials]);
@@ -41,10 +41,10 @@ const useLogin = (): [
       .reach(loginValidation, e.target.name)
       .validate(e.target.value)
       .then(() => {
-        setErrors(prevErrors => ({ ...prevErrors, [e.target.name]: '' }));
+        setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "" }));
       })
       .catch((error: ValidationError) => {
-        setErrors(prevErrors => ({
+        setErrors((prevErrors) => ({
           ...prevErrors,
           [e.target.name]: error.errors[0],
         }));
@@ -52,9 +52,10 @@ const useLogin = (): [
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCredentials(prevCredentials => ({
+    const { name, value } = e.target;
+    setCredentials((prevCredentials) => ({
       ...prevCredentials,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
     validateChange(e);
   };
