@@ -12,7 +12,7 @@ import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import Login from "../components/Login";
 import reducers from "../store/reducers";
-import * as mockApi from "../services/ApiServices";
+const mockApi = require("../services/ApiServices");
 
 const mockLogin = () => {
   const store = createStore(reducers, applyMiddleware(thunk));
@@ -27,11 +27,11 @@ const mockLogin = () => {
 
 jest.mock("../services/ApiServices");
 
-const { doLogin } = mockApi;
-
 let usernameEl: HTMLElement;
 let passwordEl: HTMLElement;
 let loginBtn: HTMLElement;
+let headerEl: HTMLElement;
+let formEl: HTMLElement;
 let getByTestId: (
   id: Matcher,
   options?: MatcherOptions | undefined
@@ -50,11 +50,33 @@ describe("Login Tests", () => {
     usernameEl = getByTestId("username");
     passwordEl = getByTestId("password");
     loginBtn = getByTestId("login-btn");
+    headerEl = getByTestId("header");
+    formEl = getByTestId("login-form");
   });
 
+  describe("Header", () => {
+    test("Header renders", () => {
+      expect(headerEl).toBeVisible();
+    });
+
+    test("Header has correct value", () => {
+      expect(headerEl).toHaveTextContent(/food truck tracker/i);
+    });
+  });
+
+  describe("Login Form", () => {
+    test("Login form renders", () => {
+      expect(formEl).toBeVisible();
+    });
+
+    test("Login form has correct input fields", () => {
+      expect(formEl).toContainElement(usernameEl);
+      expect(formEl).toContainElement(passwordEl);
+    });
+  });
   describe("Username Field", () => {
     test("Username field renders", () => {
-      expect(usernameEl).toBeInTheDocument;
+      expect(usernameEl).toBeVisible();
     });
 
     test("Username field has correct placeholder text", () => {
@@ -95,9 +117,6 @@ describe("Login Tests", () => {
     });
 
     test("Submiting invalid login credintials rendors error", async () => {
-      const mockDoLogin = jest
-        .spyOn(mockApi, "doLogin")
-        .mockReturnValueOnce(Promise.resolve("dog"));
       userEvent.type(usernameEl, "admin");
       userEvent.type(passwordEl, "wrongpassword");
       expect(usernameEl).toHaveValue("admin");
@@ -105,12 +124,11 @@ describe("Login Tests", () => {
       loginBtn = await findByTestId("login-btn");
       expect(loginBtn).not.toBeDisabled();
       userEvent.click(loginBtn);
-      expect(mockDoLogin).toHaveBeenCalledTimes(1);
-      expect(mockDoLogin).toHaveBeenCalledWith({
+      expect(mockApi.doLogin).toHaveBeenCalledTimes(1);
+      expect(mockApi.doLogin).toHaveBeenCalledWith({
         username: "admin",
         password: "wrongpassword",
       });
-      expect(mockDoLogin).toHaveReturnedWith("dog");
       const error = await findByTestId("login-alert");
       expect(error).toBeVisible();
     });

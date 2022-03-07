@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Token } from "../store/actions/users";
 import { Credentials } from "../types"
-import axiosWithAuth, { baseURL } from "../utils/axoisWithAuth"
+import { baseURL } from "../utils/axoisWithAuth"
 
 export const doLogin = async (credentials: Credentials) => {
     const auth = `${process.env.REACT_APP_OAUTHCLIENTID}:${process.env.REACT_APP_OAUTHCLIENTSECRET}`;

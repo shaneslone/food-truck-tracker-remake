@@ -6,20 +6,12 @@ import {
   Button,
   FloatingLabel,
   Alert,
-<<<<<<< HEAD
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import { RootState } from "../types";
 import LoadingSpinner from "./LoadingSpinner";
-=======
-} from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import useLogin from '../hooks/useLogin';
-import { RootState } from '../types';
-import LoadingSpinner from './LoadingSpinner';
->>>>>>> master
 
 const Login = () => {
   const loading = useSelector<RootState, boolean>(
@@ -34,13 +26,8 @@ const Login = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-<<<<<<< HEAD
-    <Container fluid>
+    <Container fluid className="text-center">
       <Row className="d-flex justify-content-center">
-=======
-    <Container fluid className='text-center'>
-      <Row className='d-flex justify-content-center'>
->>>>>>> master
         <Col md={4}>
           {ajaxError && (
             <Alert variant="danger" data-testid="login-alert">
@@ -49,16 +36,11 @@ const Login = () => {
           )}
         </Col>
       </Row>
-<<<<<<< HEAD
-      <Form onSubmit={onSubmit} data-testid="login-form">
-        <Row className="d-flex justify-content-center m-4">
-=======
       <Row>
-        <Col className='text-center h1'>Food Truck Tracker</Col>
+        <Col className="text-center h1" data-testid='header'>Food Truck Tracker</Col>
       </Row>
-      <Form onSubmit={onSubmit}>
-        <Row className='d-flex justify-content-center m-4'>
->>>>>>> master
+      <Form onSubmit={onSubmit} data-testid='login-form'>
+        <Row className="d-flex justify-content-center m-4">
           <Col md={4}>
             <Form.Group>
               <FloatingLabel label="Username">
@@ -98,20 +80,14 @@ const Login = () => {
             </Form.Group>
           </Col>
         </Row>
-<<<<<<< HEAD
         <Row className="d-flex justify-content-center">
-          <Col md="auto">
+          <Col md="auto" className="d-flex justify-content-center">
             <Button
               variant="primary"
               type="submit"
               data-testid="login-btn"
               disabled={disabled}
             >
-=======
-        <Row className='d-flex justify-content-center'>
-          <Col md='auto' className='d-flex justify-content-center'>
-            <Button variant='primary' type='submit' disabled={disabled}>
->>>>>>> master
               Log In
             </Button>
           </Col>
@@ -119,8 +95,8 @@ const Login = () => {
       </Form>
       <Row>
         <Col>
-          Don't have an account?{' '}
-          <Link to={'/signup'}>Click here to sign up!</Link>
+          Don't have an account?{" "}
+          <Link to={"/signup"}>Click here to sign up!</Link>
         </Col>
       </Row>
     </Container>
