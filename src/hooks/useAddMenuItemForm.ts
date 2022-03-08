@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import axiosWithAuth from '../utils/axoisWithAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../store/actions/users';
+import { setTruckToEdit } from '../store/actions/trucks';
 
 export default function useAddMenuItem(
   values: MenuItem | undefined = undefined
@@ -88,6 +89,11 @@ export default function useAddMenuItem(
           `/menuitems/menuitem/${menuItem.menuId}`,
           menuItem
         );
+
+        const res = await axiosWithAuth().get(
+          `/trucks/truck/${truckToEdit?.truckId}`
+        );
+        dispatch(setTruckToEdit(res.data));
       } else {
         if (truckToEdit) {
           await axiosWithAuth().post(
