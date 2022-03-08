@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent } from "react";
 import {
   Container,
   Col,
@@ -13,14 +13,14 @@ import {
   PopoverBody,
   ListGroup,
   ListGroupItem,
-} from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import useAddUserForm from '../hooks/useAddUserForm';
-import LoadingSpinner from './LoadingSpinner';
-import usePlacesAutocomplete from 'use-places-autocomplete';
-import { getGeocode, getLatLng } from 'use-places-autocomplete';
-import { stringifyLoction } from '../utils/locationHelpers';
-import { RootState } from '../types';
+} from "react-bootstrap";
+import { useSelector } from "react-redux";
+import useAddUserForm from "../hooks/useAddUserForm";
+import LoadingSpinner from "./LoadingSpinner";
+import usePlacesAutocomplete from "use-places-autocomplete";
+import { getGeocode, getLatLng } from "use-places-autocomplete";
+import { stringifyLoction } from "../utils/locationHelpers";
+import { RootState } from "../types";
 
 const UserForm = () => {
   const {
@@ -30,9 +30,11 @@ const UserForm = () => {
     setValue,
     clearSuggestions,
   } = usePlacesAutocomplete();
-  const loading = useSelector<RootState, boolean>(state => state.user.loading);
+  const loading = useSelector<RootState, boolean>(
+    (state) => state.user.loading
+  );
   const ajaxError = useSelector<RootState, string>(
-    state => state.user.errorMessage
+    (state) => state.user.errorMessage
   );
 
   const [userInfo, errors, disabled, updateLocation, onChange, onSubmit] =
@@ -41,87 +43,92 @@ const UserForm = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <Container className='text-center'>
-      <Row className='d-flex justify-content-center'>
+    <Container className="text-center">
+      <Row className="d-flex justify-content-center">
         <Col md={4}>
-          {ajaxError && <Alert variant='danger'>{ajaxError}</Alert>}
+          {ajaxError && <Alert variant="danger">{ajaxError}</Alert>}
         </Col>
       </Row>
       <Row>
-        <Col className='h1' data-testid='header'>Join Food Truck Tracker</Col>
+        <Col className="h1" data-testid="header">
+          Join Food Truck Tracker
+        </Col>
       </Row>
-      <Form onSubmit={onSubmit}>
-        <Row className='d-flex justify-content-center m-4'>
+      <Form onSubmit={onSubmit} data-testid="addUser-form">
+        <Row className="d-flex justify-content-center m-4">
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label='Username'>
+              <FloatingLabel label="Username">
                 <Form.Control
-                  type='text'
-                  placeholder='Enter username.'
-                  name='username'
+                  type="text"
+                  placeholder="Enter username."
+                  data-testid="username"
+                  name="username"
                   value={userInfo.username}
                   onChange={onChange}
                   isInvalid={!!errors.username}
                 />
-                <Form.Control.Feedback type='invalid' tooltip>
+                <Form.Control.Feedback type="invalid" tooltip>
                   {errors.username}
                 </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center m-4'>
+        <Row className="d-flex justify-content-center m-4">
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label='Password'>
+              <FloatingLabel label="Password">
                 <Form.Control
-                  type='password'
-                  placeholder='Enter a password.'
-                  name='password'
+                  type="password"
+                  placeholder="Enter a password."
+                  name="password"
+                  data-testid="password"
                   value={userInfo.password}
                   onChange={onChange}
                   isInvalid={!!errors.password}
                 />
-                <Form.Control.Feedback type='invalid' tooltip>
+                <Form.Control.Feedback type="invalid" tooltip>
                   {errors.password}
                 </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center m-4'>
+        <Row className="d-flex justify-content-center m-4">
           <Col md={4}>
             <Form.Group>
-              <FloatingLabel label='Email'>
+              <FloatingLabel label="Email">
                 <Form.Control
-                  type='text'
-                  placeholder='Enter your email.'
-                  name='email'
+                  type="text"
+                  placeholder="Enter your email."
+                  name="email"
+                  data-testid="email"
                   value={userInfo.email}
                   onChange={onChange}
                   isInvalid={!!errors.email}
                 />
-                <Form.Control.Feedback type='invalid' tooltip>
+                <Form.Control.Feedback type="invalid" tooltip>
                   {errors.email}
                 </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center m-4'>
+        <Row className="d-flex justify-content-center m-4">
           <Col md={4}>
             <OverlayTrigger
-              trigger='focus'
-              placement='bottom-start'
+              trigger="focus"
+              placement="bottom-start"
               overlay={
                 <Popover>
                   <PopoverHeader>Location Suggestions</PopoverHeader>
                   <PopoverBody>
                     <ListGroup>
-                      {status === 'OK' &&
-                        data.map(suggestion => (
+                      {status === "OK" &&
+                        data.map((suggestion) => (
                           <ListGroupItem
-                            style={{ cursor: 'pointer' }}
+                            style={{ cursor: "pointer" }}
                             key={suggestion.place_id}
                             onClick={async () => {
                               setValue(suggestion.description);
@@ -146,12 +153,13 @@ const UserForm = () => {
               }
             >
               <Form.Group>
-                <FloatingLabel label='Current Location'>
+                <FloatingLabel label="Current Location">
                   <Form.Control
-                    autoComplete='off'
-                    type='text'
-                    placeholder='Current Location.'
-                    name='currentLocation'
+                    autoComplete="off"
+                    type="text"
+                    placeholder="Current Location."
+                    name="currentLocation"
+                    data-testid="currentLocation"
                     value={value}
                     disabled={!ready}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -163,36 +171,43 @@ const UserForm = () => {
             </OverlayTrigger>
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center m-4'>
+        <Row className="d-flex justify-content-center m-4">
           <Col md={2}>
             <Form.Check
               inline
-              name='accountType'
-              type='radio'
-              id='DINER'
-              label='Diner'
-              checked={userInfo.accountType === 'DINER'}
+              name="accountType"
+              type="radio"
+              id="DINER"
+              label="Diner"
+              data-testid="diner"
+              checked={userInfo.accountType === "DINER"}
               onChange={onChange}
             />
-            <Form.Control.Feedback type='invalid' tooltip>
+            <Form.Control.Feedback type="invalid" tooltip>
               {errors.accountType}
             </Form.Control.Feedback>
           </Col>
           <Col md={2}>
             <Form.Check
               inline
-              name='accountType'
-              type='radio'
-              id='OPERATOR'
-              label='Operator'
-              checked={userInfo.accountType === 'OPERATOR'}
+              name="accountType"
+              type="radio"
+              id="OPERATOR"
+              label="Operator"
+              data-testid="operator"
+              checked={userInfo.accountType === "OPERATOR"}
               onChange={onChange}
             />
           </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
-          <Col md='auto' className='d-flex justify-content-center'>
-            <Button variant='primary' type='submit' disabled={disabled}>
+        <Row className="d-flex justify-content-center">
+          <Col md="auto" className="d-flex justify-content-center">
+            <Button
+              variant="primary"
+              type="submit"
+              data-testid="submit-btn"
+              disabled={disabled}
+            >
               Submit
             </Button>
           </Col>
