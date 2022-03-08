@@ -44,9 +44,9 @@ let findByTestId: (
 
 describe("Login Tests", () => {
   beforeEach(() => {
-    const componenet = render(mockLogin());
-    getByTestId = componenet.getByTestId;
-    findByTestId = componenet.findByTestId;
+    const component = render(mockLogin());
+    getByTestId = component.getByTestId;
+    findByTestId = component.findByTestId;
     usernameEl = getByTestId("username");
     passwordEl = getByTestId("password");
     loginBtn = getByTestId("login-btn");
@@ -74,6 +74,7 @@ describe("Login Tests", () => {
       expect(formEl).toContainElement(passwordEl);
     });
   });
+
   describe("Username Field", () => {
     test("Username field renders", () => {
       expect(usernameEl).toBeVisible();
@@ -86,8 +87,9 @@ describe("Login Tests", () => {
       );
     });
 
-    test("Username field updates correctly", () => {
+    test("Username field updates correctly", async () => {
       userEvent.type(usernameEl, "admin");
+      usernameEl = await findByTestId("username");
       expect(usernameEl).toHaveValue("admin");
     });
   });
@@ -104,8 +106,9 @@ describe("Login Tests", () => {
       );
     });
 
-    test("Password field updates correctly", () => {
+    test("Password field updates correctly", async () => {
       userEvent.type(passwordEl, "password");
+      passwordEl = await findByTestId("password");
       expect(passwordEl).toHaveValue("password");
     });
   });
@@ -119,6 +122,8 @@ describe("Login Tests", () => {
     test("Submiting invalid login credintials rendors error", async () => {
       userEvent.type(usernameEl, "admin");
       userEvent.type(passwordEl, "wrongpassword");
+      usernameEl = await findByTestId("username");
+      passwordEl = await findByTestId("password");
       expect(usernameEl).toHaveValue("admin");
       expect(passwordEl).toHaveValue("wrongpassword");
       loginBtn = await findByTestId("login-btn");

@@ -48,7 +48,7 @@ const UserForm = () => {
         </Col>
       </Row>
       <Row>
-        <Col className='h1'>Join Food Truck Tracker</Col>
+        <Col className='h1' data-testid='header'>Join Food Truck Tracker</Col>
       </Row>
       <Form onSubmit={onSubmit}>
         <Row className='d-flex justify-content-center m-4'>
