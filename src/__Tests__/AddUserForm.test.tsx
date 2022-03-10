@@ -12,7 +12,7 @@ import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import UserForm from "../components/AddUserForm";
-import * as dog4 from "use-places-autocomplete";
+import { useState } from "react";
 
 const mockAddUserForm = () => {
   const store = createStore(reducers, applyMiddleware(thunk));
@@ -25,35 +25,23 @@ const mockAddUserForm = () => {
   );
 };
 
-const dog = jest.requireActual("use-places-autocomplete");
-
-jest.mock("use-places-autocomplete", () => ({
-  __esModule: true,
-  default: {
-    ...dog.default,
+const usePlaces = () => {
+  const [value, setValue] = useState("");
+  return {
+    ready: true,
+    value,
     suggestions: {
       status: "",
       data: [],
     },
-  },
-}));
+    setValue,
+  };
+};
 
-// jest.mock("use-places-autocomplete", () => {
-//   return {
-//     __esModule: true,
-//     default: () => {
-//       return {
-//         ready: true,
-//         value: "",
-//         suggestions: {
-//           status: "",
-//           data: [],
-//         },
-//         setValue: (val: string) => {usePlacesAutocomplete().value = val}
-//       };
-//     },
-//   };
-// });
+jest.mock("use-places-autocomplete", () => ({
+  __esModule: true,
+  default: usePlaces,
+}));
 
 let headerEl: HTMLElement;
 let formEl: HTMLElement;
