@@ -12,6 +12,7 @@ import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import UserForm from "../components/AddUserForm";
+import * as dog4 from "use-places-autocomplete";
 
 const mockAddUserForm = () => {
   const store = createStore(reducers, applyMiddleware(thunk));
@@ -24,21 +25,35 @@ const mockAddUserForm = () => {
   );
 };
 
-jest.mock("use-places-autocomplete", () => {
-  return {
-    __esModule: true,
-    default: () => {
-      return {
-        ready: true,
-        value: "",
-        suggestions: {
-          status: "",
-          data: [],
-        },
-      };
+const dog = jest.requireActual("use-places-autocomplete");
+
+jest.mock("use-places-autocomplete", () => ({
+  __esModule: true,
+  default: {
+    ...dog.default,
+    suggestions: {
+      status: "",
+      data: [],
     },
-  };
-});
+  },
+}));
+
+// jest.mock("use-places-autocomplete", () => {
+//   return {
+//     __esModule: true,
+//     default: () => {
+//       return {
+//         ready: true,
+//         value: "",
+//         suggestions: {
+//           status: "",
+//           data: [],
+//         },
+//         setValue: (val: string) => {usePlacesAutocomplete().value = val}
+//       };
+//     },
+//   };
+// });
 
 let headerEl: HTMLElement;
 let formEl: HTMLElement;
@@ -101,6 +116,82 @@ describe("AddUserForm Tests", () => {
       ];
       formInputs.forEach((input) => {
         expect(formEl).toContainElement(input);
+      });
+    });
+
+    describe("Username Field", () => {
+      test("Username field renders", () => {
+        expect(usernameEl).toBeVisible();
+      });
+
+      test("Username field has correct placeholder value", () => {
+        expect(usernameEl).toHaveAttribute(
+          "placeholder",
+          expect.stringMatching(/enter username/i)
+        );
+      });
+
+      test("Username field updates correctly", async () => {
+        userEvent.type(usernameEl, "Test");
+        usernameEl = await findByTestId("username");
+        expect(usernameEl).toHaveValue("Test");
+      });
+    });
+
+    describe("Password Field", () => {
+      test("Password field renders", () => {
+        expect(passwordEl).toBeVisible();
+      });
+
+      test("Password field has correct placeholder value", () => {
+        expect(passwordEl).toHaveAttribute(
+          "placeholder",
+          expect.stringMatching(/enter a password/i)
+        );
+      });
+
+      test("Password field updates correctly", async () => {
+        userEvent.type(passwordEl, "Test");
+        passwordEl = await findByTestId("password");
+        expect(passwordEl).toHaveValue("Test");
+      });
+    });
+
+    describe("Email Field", () => {
+      test("Email field renders", () => {
+        expect(emailEl).toBeVisible();
+      });
+
+      test("Email field has correct placeholder value", () => {
+        expect(emailEl).toHaveAttribute(
+          "placeholder",
+          expect.stringMatching(/enter your email/i)
+        );
+      });
+
+      test("Email field updates correctly", async () => {
+        userEvent.type(emailEl, "Test");
+        emailEl = await findByTestId("email");
+        expect(emailEl).toHaveValue("Test");
+      });
+    });
+
+    describe("Current Location Field", () => {
+      test("Current Location field renders", () => {
+        expect(locationEl).toBeVisible();
+      });
+
+      test("Current Location field has correct placeholder value", () => {
+        expect(locationEl).toHaveAttribute(
+          "placeholder",
+          expect.stringMatching(/current location/i)
+        );
+      });
+
+      test("Current Location field updates correctly", async () => {
+        userEvent.type(locationEl, "Test");
+        locationEl = await findByTestId("currentLocation");
+        expect(locationEl).toHaveValue("Test");
       });
     });
   });
