@@ -27,12 +27,7 @@ const OptionsContainer: React.FC<IProps> = ({ children }) => {
       >
         <Gear /> Options
       </Button>
-      <Offcanvas
-        show={show}
-        onHide={toggleShow}
-        placement='bottom'
-        style={{ height: '75vh' }}
-      >
+      <Offcanvas show={show} onHide={toggleShow} placement='bottom'>
         {children}
       </Offcanvas>
     </>
