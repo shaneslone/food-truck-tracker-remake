@@ -182,5 +182,31 @@ describe("AddUserForm Tests", () => {
         expect(locationEl).toHaveValue("Test");
       });
     });
+
+    describe("Diner Checkbox", () => {
+      test("Diner checkbox renders", () => {
+        expect(dinerEl).toBeVisible();
+      });
+
+      test("Diner checkbox updates correctly", async () => {
+        expect(dinerEl).not.toBeChecked();
+        userEvent.click(dinerEl);
+        dinerEl = await findByTestId("diner");
+        expect(dinerEl).toBeChecked();
+      });
+    });
+
+    describe("Operator Checkbox", () => {
+      test("Operator checkbox renders", () => {
+        expect(operatorEl).toBeVisible();
+      });
+
+      test("Operator checkbox updates correctly", async () => {
+        expect(operatorEl).not.toBeChecked();
+        userEvent.click(operatorEl);
+        operatorEl = await findByTestId("operator");
+        expect(operatorEl).toBeChecked();
+      });
+    });
   });
 });
