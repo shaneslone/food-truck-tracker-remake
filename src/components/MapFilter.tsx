@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  Button,
   Col,
   Container,
   DropdownButton,
@@ -7,6 +8,8 @@ import {
   Row,
 } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
+import { useDispatch } from 'react-redux';
+import { fetchTrucks } from '../store/actions/trucks';
 
 import CuisineFilter from './CuisineFilter';
 import LocationSearch from './LocationSearch';
@@ -17,6 +20,12 @@ interface IProps {
 
 const MapFilter: React.FC<IProps> = ({ panTo }) => {
   const [filterType, setFilterType] = useState<string>('Filter Type');
+
+  const dispatch = useDispatch();
+
+  const reset = () => {
+    dispatch(fetchTrucks());
+  };
 
   const onSelect = (type: string) => {
     return () => {
@@ -53,6 +62,13 @@ const MapFilter: React.FC<IProps> = ({ panTo }) => {
             </DropdownButton>
             {selectFilter()}
           </InputGroup>
+        </Col>
+      </Row>
+      <Row className='d-flex justify-content-center'>
+        <Col md='auto' className='d-flex justify-content-center'>
+          <Button variant='primary' onClick={reset}>
+            Reset
+          </Button>
         </Col>
       </Row>
     </Container>
