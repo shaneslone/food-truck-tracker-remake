@@ -13,6 +13,7 @@ import { fetchTrucks } from '../store/actions/trucks';
 
 import CuisineFilter from './CuisineFilter';
 import LocationSearch from './LocationSearch';
+import RatingFilter from './RatingFilter';
 
 interface IProps {
   panTo: ({ lat, lng }: google.maps.LatLngLiteral) => void;
@@ -36,6 +37,7 @@ const MapFilter: React.FC<IProps> = ({ panTo }) => {
   const selectFilter = () => {
     if (filterType === 'Location') return <LocationSearch panTo={panTo} />;
     if (filterType === 'Cuisine Type') return <CuisineFilter />;
+    if (filterType === 'Truck Rating') return <RatingFilter />;
     else return null;
   };
 
@@ -58,6 +60,12 @@ const MapFilter: React.FC<IProps> = ({ panTo }) => {
               </DropdownItem>
               <DropdownItem id='Location' onClick={onSelect('Location')}>
                 Location
+              </DropdownItem>
+              <DropdownItem
+                id='Truck Rating'
+                onClick={onSelect('Truck Rating')}
+              >
+                Truck Rating
               </DropdownItem>
             </DropdownButton>
             {selectFilter()}
