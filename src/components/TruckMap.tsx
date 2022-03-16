@@ -7,10 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import TruckCard from './TruckCard';
 import { fetchTrucks, locateTruck } from '../store/actions/trucks';
 import OptionsContainer from './OptionsContainer';
-import CuisineFilter from './CuisineFilter';
-import RatingFilter from './RaitingFilter';
-import LocationSearch from './LocationSearch';
 import Menu from './Menu';
+import MapFilter from './MapFilter';
 
 const mapContainerStyle: React.CSSProperties = {
   width: '100%',
@@ -118,9 +116,7 @@ const TruckMap = () => {
         </InfoWindow>
       )}
       <OptionsContainer>
-        <LocationSearch panTo={panTo} />
-        <CuisineFilter />
-        <RatingFilter />
+        <MapFilter panTo={panTo} />
       </OptionsContainer>
     </GoogleMap>
   );
