@@ -2,14 +2,14 @@ import { Card, Col, Container, Row } from 'react-bootstrap';
 
 const About = () => {
   return (
-    <Container className='mt-5'>
+    <Container fluid className='mt-5'>
       <Row>
         <Col className='text-center h2'>
           Food Truck Tracker is for everyone!
         </Col>
       </Row>
-      <Row>
-        <Col md={6}>
+      <Row className='d-flex justify-content-evenly'>
+        <Col md={6} className='p-2'>
           <Card>
             <Card.Header>Diners</Card.Header>
             <Card.Body>
@@ -21,7 +21,7 @@ const About = () => {
             </Card.Body>
           </Card>
         </Col>
-        <Col md={6}>
+        <Col md={6} className='p-2'>
           <Card>
             <Card.Header>Owners</Card.Header>
             <Card.Body>

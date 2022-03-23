@@ -20,8 +20,8 @@ const Reviews = () => {
           What people are saying?
         </Col>
       </Row>
-      <Row>
-        <Col md={4}>
+      <Row className='d-flex justify-content-evenly'>
+        <Col md={4} className='p-2'>
           <Card>
             <Card.Header>Finding my favorite trucks is so easy!</Card.Header>
             <Card.Body>
@@ -32,7 +32,7 @@ const Reviews = () => {
             <Card.Footer>Jane Smith - loyal diner</Card.Footer>
           </Card>
         </Col>
-        <Col md={4}>
+        <Col md={4} className='p-2'>
           <Card>
             <Card.Header>My business is up 50%!</Card.Header>
             <Card.Body>
@@ -45,7 +45,7 @@ const Reviews = () => {
             <Card.Footer>Alex Williams - truck owner</Card.Footer>
           </Card>
         </Col>
-        <Col md={4}>
+        <Col md={4} className='p-2'>
           <Card>
             <Card.Header>
               I can't imagine living without Food Truck Tracker!
