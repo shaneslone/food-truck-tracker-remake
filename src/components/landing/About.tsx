@@ -2,7 +2,12 @@ import { Card, Col, Container, Row } from 'react-bootstrap';
 
 const About = () => {
   return (
-    <Container>
+    <Container className='mt-5'>
+      <Row>
+        <Col className='text-center h2'>
+          Food Truck Tracker is for everyone!
+        </Col>
+      </Row>
       <Row>
         <Col md={6}>
           <Card>

@@ -8,8 +8,10 @@ import {
   NavItem,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+
 const NavBar = () => {
   const navigate = useNavigate();
+
   return (
     <Navbar fixed='top' bg='light'>
       <Container fluid>

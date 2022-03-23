@@ -17,11 +17,6 @@ const Hero = () => {
       style={style}
       className='text-center d-flex align-items-center justify-content-center'
     >
-      {/* <Row className='d-flex justify-content-center align-items-center'>
-        <Col md='auto' className='h1 bg-white m-3'>
-          Food Truck Tracker
-        </Col>
-      </Row> */}
       <Row>
         <Col md='auto' className='bg-white h2'>
           Find the food that you love! Join today as either a diner or truck
