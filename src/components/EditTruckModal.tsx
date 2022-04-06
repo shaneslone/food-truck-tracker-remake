@@ -38,12 +38,12 @@ const EditTruckModal: React.FC<IProps> = ({ show, toggle }) => {
         </Modal.Header>
         <Modal.Body>
           <Row className='d-flex justify-content-center'>
-            <Col md='auto'>
+            <Col xs='auto'>
               <Button variant='primary' onClick={toggleAddMenuItem}>
                 {addMenuItem ? 'Finished' : 'Add New Menu Item'}
               </Button>
             </Col>
-            <Col>
+            <Col xs='auto'>
               <Button variant='primary' onClick={toggleEditTruck}>
                 {editTruck ? 'Finished' : 'Edit Truck'}
               </Button>
@@ -57,7 +57,7 @@ const EditTruckModal: React.FC<IProps> = ({ show, toggle }) => {
           <Row className='d-flex justify-content-center'>
             {truck.menu.map(menuItem => {
               return (
-                <Col md={4}>
+                <Col md={4} key={menuItem.menuId}>
                   <MenuItemCard menuItem={menuItem}>
                     <AddPhotoButton menuItem={menuItem} />
                     <EditMenuItemButton itemToEdit={menuItem} />

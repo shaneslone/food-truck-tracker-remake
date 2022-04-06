@@ -53,7 +53,7 @@ const DeleteMenuItemButton: React.FC<IProps> = ({ itemToDelete }) => {
             <Col>Are you sure you want to delete {itemToDelete.itemName}?</Col>
           </Row>
           <Row className='d-flex justify-content-center'>
-            <Col md='auto'>
+            <Col xs='auto'>
               <Button variant='primary' onClick={confirmDelete}>
                 Confirm Delete
               </Button>
